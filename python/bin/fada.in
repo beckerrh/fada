@@ -1,0 +1,2 @@
+#!/bin/sh
+python3  @CMAKE_SOURCE_DIR@/python/bin/fada.py @CMAKE_INSTALL_PREFIX@ $*

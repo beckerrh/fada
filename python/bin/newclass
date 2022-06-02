@@ -1,0 +1,3 @@
+#!/bin/sh
+
+python3 /Users/becker/Programs/fada/fada/bin/newclass.py $*
