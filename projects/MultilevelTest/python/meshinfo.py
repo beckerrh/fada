@@ -28,7 +28,6 @@ class MeshInfo():
         self.geometry = geometry
         self.quadtotri = quadtotri
         self.meshtype = "QuadrilateralMesh"
-        if self.geometrytype == "Hex": self.meshtype = "HexahedralMesh"
         self.refinement_parameter = refinement_parameter
         self.coarsen_parameter = coarsen_parameter
         self.marking_type = marking_type

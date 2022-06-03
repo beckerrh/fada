@@ -1,10 +1,7 @@
 #include  "FadaMesh/basicadaptivemesh2d.h"
-#include  "FadaMesh/basicadaptivemesh3d.h"
 #include  "FadaMesh/coarsener2d.h"
-#include  "FadaMesh/coarsener3d.h"
 #include  "FadaMesh/constructadaptivemeshandadaptor.h"
 #include  "FadaMesh/refiner2d.h"
-#include  "FadaMesh/refiner3d.h"
 #include  "FadaMesh/getmeshtype.h"
 
 using namespace FadaMesh;
@@ -26,34 +23,13 @@ ConstructAdaptiveMeshAndAdaptor::ConstructAdaptiveMeshAndAdaptor(AdaptiveMeshInt
   {
     M = new BasicAdaptiveMesh2d<4>;
   }
-  else if(type == "FadaMesh::HexahedralMesh")
-  {
-    M = new BasicAdaptiveMesh3d<8,6,12,4>;
-  }
   else
   {
     std::cerr<<"***Error: ConstructAdaptiveMeshAndAdaptor: bad  type: "<<type<<'\n';
     assert(0);
     exit(1);
   }
-  if(type == "FadaMesh::HexahedralMesh")
-  {
-    if (adaption_type == "refine")
-    {
-       AM = new Refiner3d(M);
-    }
-    else if(adaption_type == "coarse")
-    {
-      AM = new  Coarsener3d(M);
-    }
-    else
-    {
-      std::cerr<<"***Error: ConstructAdaptiveMeshAndAdaptor: bad adaption type: "<<type<<"  "<<adaption_type<<'\n';
-      assert(0);
-      exit(1);
-    }
-  }
-  else if ((type == "FadaMesh::QuadrilateralMesh") or (type == "FadaMesh::TriangleMesh"))
+  if ((type == "FadaMesh::QuadrilateralMesh") or (type == "FadaMesh::TriangleMesh"))
   {
      if(adaption_type == "coarse")
      {
@@ -71,4 +47,3 @@ ConstructAdaptiveMeshAndAdaptor::ConstructAdaptiveMeshAndAdaptor(AdaptiveMeshInt
      }
   }
 }
-

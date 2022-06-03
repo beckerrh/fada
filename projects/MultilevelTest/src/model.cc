@@ -1,7 +1,6 @@
 #include  "applicationwithexactsolution.h"
 #include  "model.h"
 #include  "errorestimatorintegrator.h"
-// #include  "estimatorintegrator2.h"
 #include  "Fada/femtype.h"
 #include  "Fada/integratormanager.h"
 #include  "Fada/variable.h"

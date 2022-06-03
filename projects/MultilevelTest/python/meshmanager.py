@@ -18,8 +18,6 @@ class MeshManager():
 
         if self.meshinfo.meshtype == "QuadrilateralMesh":
             self.mesh_type_in = "quad"
-        elif self.meshinfo.meshtype == "HexahedralMesh":
-            self.mesh_type_in = "hex"
         else:
             raise ValueError("wrong meshtype %s" % self.meshinfo.meshtype)
         self.geometryin = os.path.join(sourcedir, "share", "Mesh", self.meshinfo.meshtype+"es", self.meshinfo.geometry)

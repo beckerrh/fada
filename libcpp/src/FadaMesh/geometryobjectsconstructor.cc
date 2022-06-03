@@ -1,5 +1,4 @@
 #include  "FadaMesh/coarseninfo.h"
-#include  "FadaMesh/curvedboundaryinformation.h"
 #include  "FadaMesh/geometryobjectsconstructor.h"
 #include  "FadaMesh/hangingnodeinfo.h"
 #include  "FadaMesh/hangingsideinfo.h"
@@ -40,10 +39,6 @@ FadaMesh::GeometryObject* GeometryObjectsConstructor::newGeometryObject( const s
   else if(name == "CoarsenInfo")
   {
     return  new FadaMesh::CoarsenInfo;
-  }
-  else if(name == "CurvedBoundaryInformation")
-  {
-    return new FadaMesh::CurvedBoundaryInformation;
   }
     _notWritten("createGeometryObject("+name+")");
 }

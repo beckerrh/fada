@@ -2,8 +2,8 @@
 #define __FadaMesh_AdaptiveMeshInterface_h
 
 #include  "geometryobject.h"
-#include  "curvedboundaryinformation.h"
 #include  "faceinterface.h"
+#include  "Alat/map.h"
 #include  "Alat/node.h"
 #include  "edge.h"
 #include  "typedefs.h"
@@ -34,7 +34,6 @@ public:
     virtual tree<Edge*> & getEdges()=0;
     virtual tree<FaceInterface*> & getFaces()=0;
     virtual tree<VolumeInterface*> & getVolumes()=0;
-    virtual const FadaMesh::CurvedBoundaryInformation* getCurvedBoundaries()=0;
     virtual int& getLastNodeId()=0;
     virtual int& getLastEdgeId()=0;
     virtual int& getLastFaceId()=0;

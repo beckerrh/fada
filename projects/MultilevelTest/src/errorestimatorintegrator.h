@@ -21,7 +21,6 @@
     std::string getName() const;
     std::string getClassName() const;
 
-    // int getOrderForIntegrationFormula(int orderin, int orderout) const;
     void initData();
     void setDomainsOfTerms();
     Fada::VariableInterface* constructPostProcessVariable(std::string name, const Fada::VariableManager& variablemanager) const;

@@ -160,11 +160,6 @@ void QuadToTri::convertMesh(const FadaMesh::MeshInterface& M, std::string type)
     }
   }
   constructSidesFromCells(bstc);
-  if( _quadmesh.geometryObjectExists("CurvedBoundaryInformation") )
-  {
-    const FadaMesh::CurvedBoundaryInformation* BD = _quadmesh.getCurvedBoundaryInformation();
-    getCurvedBoundaryInformation()->constructBoundaryInformation(this);
-  }
   // std::cerr << "QuadToTri::convertMesh() nnodes(quad) " << quadmesh->getNNodes() << " nnodes= "<< getNNodes()  << "\n";
 }
 

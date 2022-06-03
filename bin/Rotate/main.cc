@@ -1,7 +1,6 @@
 #include  "Alat/map.h"
 #include  "Alat/set.h"
 #include  "Alat/tokenize.h"
-#include  "FadaMesh/hexahedralmesh.h"
 #include  "FadaMesh/quadrilateralmesh.h"
 #include  <algorithm>
 #include  <iostream>
@@ -30,13 +29,6 @@ int main(int argc, char** argv)
     infilename += ".quad";
     quadmesh->readQuad(infilename);
   }
-  else if(mesh_type == "hex")
-  {
-    mesh = new FadaMesh::HexahedralMesh;
-    FadaMesh::HexahedralMesh* hexmesh = dynamic_cast<FadaMesh::HexahedralMesh*>( mesh );
-    infilename += ".hex";
-    hexmesh->readHex(infilename);
-  }
   else
   {
     std::cerr<<"***ERROR in " << argv[0] <<"  : invalid mesh type. Must be quad, hex or tri, but "<<mesh_type<<" given."<<'\n';
@@ -45,7 +37,7 @@ int main(int argc, char** argv)
   }
 
   Alat::Vector<Alat::Node>& nodes = mesh->getAllNodes();
-  
+
   double c = cos(2.0*M_PI*angle/360.0);
   double s = sin(2.0*M_PI*angle/360.0);
   for(int i=0;i<nodes.size();i++)

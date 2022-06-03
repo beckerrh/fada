@@ -54,7 +54,6 @@ FadaMeshBase<DIM, NODESPERCELL, SIDESPERCELL, NODESPERSIDE>::FadaMeshBase() : Fa
   _geometryobjects_constructor = new GeometryObjectsConstructor;
   createGeometryObject("HangingNodeInfo");
   createGeometryObject("HangingSideInfo");
-  createGeometryObject("CurvedBoundaryInformation");
 }
 
 /*---------------------------------------------------------*/
@@ -182,28 +181,6 @@ template<int DIM, int NODESPERCELL, int SIDESPERCELL, int NODESPERSIDE>
 Alat::Vector<typename FadaMeshBase<DIM, NODESPERCELL, SIDESPERCELL, NODESPERSIDE>::CellSide>&  FadaMeshBase<DIM, NODESPERCELL, SIDESPERCELL, NODESPERSIDE>::getCellsOfSides()
 {
   return _cells_of_sides;
-}
-
-/*---------------------------------------------------------*/
-
-template<int DIM, int NODESPERCELL, int SIDESPERCELL, int NODESPERSIDE>
-CurvedBoundaryInformation* FadaMeshBase<DIM, NODESPERCELL, SIDESPERCELL, NODESPERSIDE>::getCurvedBoundaryInformation()
-{
-  FadaMesh::GeometryObject* GO = getGeometryObject("CurvedBoundaryInformation");
-  CurvedBoundaryInformation* MO = dynamic_cast<CurvedBoundaryInformation*>( GO );
-  assert(MO);
-  return MO;
-}
-
-/*---------------------------------------------------------*/
-
-template<int DIM, int NODESPERCELL, int SIDESPERCELL, int NODESPERSIDE>
-const CurvedBoundaryInformation* FadaMeshBase<DIM, NODESPERCELL, SIDESPERCELL, NODESPERSIDE>::getCurvedBoundaryInformation() const
-{
-  const FadaMesh::GeometryObject* GO = getGeometryObject("CurvedBoundaryInformation");
-  const CurvedBoundaryInformation* MO = dynamic_cast<const CurvedBoundaryInformation*>( GO );
-  assert(MO);
-  return MO;
 }
 
 /*---------------------------------------------------------*/
@@ -468,22 +445,6 @@ FadaMesh::BoundaryInfo* FadaMeshBase<DIM, NODESPERCELL, SIDESPERCELL, NODESPERSI
 /*---------------------------------------------------------*/
 
 template<int DIM, int NODESPERCELL, int SIDESPERCELL, int NODESPERSIDE>
-const FadaMesh::CurvedInteriorSideInfo* FadaMeshBase<DIM, NODESPERCELL, SIDESPERCELL, NODESPERSIDE>::getCurvedInteriorSideInfo() const
-{
-  return &_curvedinteriorsideinfo;
-}
-//
-// /*---------------------------------------------------------*/
-//
-// template<int DIM, int NODESPERCELL, int SIDESPERCELL, int NODESPERSIDE>
-// FadaMesh::CurvedInteriorSideInfo* FadaMeshBase<DIM, NODESPERCELL, SIDESPERCELL, NODESPERSIDE>::getCurvedInteriorSideInfo()
-// {
-//   return &_boundaryinfo;
-// }
-
-/*---------------------------------------------------------*/
-
-template<int DIM, int NODESPERCELL, int SIDESPERCELL, int NODESPERSIDE>
 const Alat::IntVector& FadaMeshBase<DIM, NODESPERCELL, SIDESPERCELL, NODESPERSIDE>::getBoundaryColors() const
 {
   return getBoundaryInfo()->getColors();
@@ -502,7 +463,7 @@ const Alat::IntVector& FadaMeshBase<DIM, NODESPERCELL, SIDESPERCELL, NODESPERSID
 template<int DIM, int NODESPERCELL, int SIDESPERCELL, int NODESPERSIDE>
 bool FadaMeshBase<DIM, NODESPERCELL, SIDESPERCELL, NODESPERSIDE>::cellIsCurved(int iK) const
 {
-  return getCurvedBoundaryInformation()->cellIsCurved(iK);
+  return false;
 }
 
 /*---------------------------------------------------------*/
@@ -724,11 +685,6 @@ void FadaMeshBase<DIM, NODESPERCELL, SIDESPERCELL, NODESPERSIDE>::readFadaMesh(c
   //! read boundaryinfo
   filename = dirname+"/boundaryinfo";
   _boundaryinfo.read(filename);
-
-  //! read boundaryinfo
-  filename = dirname+"/curvedinteriorsideinfo";
-  _curvedinteriorsideinfo.read(filename);
-  // std::cerr << "***boundaryinfo ok\n";
 }
 
 /*---------------------------------------------------------*/
@@ -778,34 +734,6 @@ void FadaMeshBase<DIM, NODESPERCELL, SIDESPERCELL, NODESPERSIDE>::writeFadaMesh(
   }
   file.close();
 
-  /*** Temporary process for block structured meshes */
-  filename = dirname+"/CurvedBoundaryInformation";
-  if( !Alat::_FileExists(filename) )
-  {
-    assert(0);
-    Alat::IntVector curvedinfo;
-    std::cerr<<"getNCells :::"<<getNCells()<<std::endl;
-    curvedinfo.set_size(getNCells());
-    curvedinfo.fill(-1);
-    file.open( filename.c_str() );
-    file << "0\n\n";
-    curvedinfo.saveFada(file, datatype);
-    file << "0 ascii\n";
-    file << "1 ascii\n";
-    file << 0;
-    file.close();
-
-    filename = dirname+"/geometry_objects.desc";
-    file.open( filename.c_str() );
-    file<<( _geometryobjects.size()+1 )<<"\n";
-    for(std::map<std::string, FadaMesh::GeometryObject*>::const_iterator p = _geometryobjects.begin(); p != _geometryobjects.end(); p++)
-    {
-      file<<p->first<<"\n";
-      p->second->write(dirname+"/"+p->second->getName(), datatype);
-    }
-    file<<"CurvedBoundaryInformation\n";
-    file.close();
-  }
   /*************************************************/
 
   //! write nodes
@@ -850,10 +778,6 @@ void FadaMeshBase<DIM, NODESPERCELL, SIDESPERCELL, NODESPERSIDE>::writeFadaMesh(
   //! write boundaryinfo
   filename = dirname+"/boundaryinfo";
   _boundaryinfo.write(filename, datatype);
-
-  //! write curvedinteriorsideinfo
-  filename = dirname+"/curvedinteriorsideinfo";
-  _curvedinteriorsideinfo.write(filename, datatype);
 }
 
 /*---------------------------------------------------------*/
@@ -885,28 +809,6 @@ void FadaMeshBase<DIM, NODESPERCELL, SIDESPERCELL, NODESPERSIDE>::constructSides
     }
     size_of_color[col]++;
   }
-  _curvedinteriorsideinfo.set_size(size_of_color);
-
-  int count=0;
-  for(int iside = 0; iside < _sides.size(); iside++)
-  {
-    Side s = _sides[iside];
-    Side ssorted=s;
-    sort(ssorted.begin(), ssorted.end());
-    for(typename BoundarySideToColor::const_iterator p = icsides.begin(); p != icsides.end(); p++)
-    {
-      Side s2 = p->first;
-      Side s2sorted=s2;
-      sort(s2sorted.begin(), s2sorted.end());
-      // std::cerr << "ssorted="<< ssorted << " s2sorted="<< s2sorted<< "\n";
-      if(ssorted==s2sorted)
-      {
-        // std::cerr << "FOUND  s="<<s<<" iside="<<iside<<"\n";
-        _curvedinteriorsideinfo.getSidesOfColor(p->second)[count++]=iside;
-      }
-    }
-  }
-  // assert(0);
 }
 
 /*---------------------------------------------------------*/
@@ -1234,10 +1136,6 @@ void FadaMeshBase<DIM, NODESPERCELL, SIDESPERCELL, NODESPERSIDE>::writeMeshInfo(
   else if(meshtype == FadaMeshEnums::QuadrilateralMesh)
   {
     file<<"Quadrilateral"<< "\n";
-  }
-  else if(meshtype == FadaMeshEnums::HexahedralMesh)
-  {
-    file<<"Hexahedron"<< "\n";
   }
   else
   {

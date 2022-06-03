@@ -1,7 +1,7 @@
 #ifndef __Alat_armadillo_h
 #define __Alat_armadillo_h
 
-#define ARMA_NO_DEBUG
+// #define ARMA_NO_DEBUG
 #include  <armadillo>
 
 /*--------------------------------------------------------------------------*/

@@ -1,7 +1,6 @@
 #include  "Alat/tokenize.h"
 #include  "FadaMesh/constructadaptivemeshandadaptor.h"
 #include  "FadaMesh/multimeshcreator.h"
-#include  "FadaMesh/multimeshcreator3d.h"
 #include  "FadaMesh/multilevelmesh.h"
 #include  <dirent.h>
 #include  <sstream>
@@ -82,14 +81,6 @@ int main(int argc, char** argv)
   {
     M->readAdaptiveMesh(inadaptive, lastnamein);
   }
-  if (M->getName()=="FadaMesh::HexahedralMesh")
-  {
-    FadaMesh::Coarsener3d* coarsener = dynamic_cast<FadaMesh::Coarsener3d*>( AM );
-    FadaMesh::MultiMeshCreator3d multimeshcreator(coarsener);
-    multimeshcreator.createMultiMesh(infilename, datatype, nlevels, ncells);
-
-  }
-  else
   {
     FadaMesh::Coarsener2d* coarsener = dynamic_cast<FadaMesh::Coarsener2d*>( AM );
     FadaMesh::MultiMeshCreator multimeshcreator(coarsener);

@@ -2,10 +2,8 @@
 #define __FadaMesh_FadaMeshBase_h
 
 #include  "boundaryinfo.h"
-#include  "curvedinteriorsideinfo.h"
 #include  "geometryobjectsconstructorinterface.h"
 #include  "meshinterface.h"
-#include  "curvedboundaryinformation.h"
 #include  <sstream>
 
 /*---------------------------------------------------------*/
@@ -41,10 +39,8 @@ protected:
     Alat::Vector<Side>   _sides;
     Alat::Vector<SideCell>   _sides_of_cells;
     Alat::Vector<CellSide>   _cells_of_sides;
-    // Alat::SparsityPatternFixArray<2> _neighbors_of_cells;
 
     FadaMesh::BoundaryInfo _boundaryinfo;
-    FadaMesh::CurvedInteriorSideInfo _curvedinteriorsideinfo;
 
     FadaMesh::GeometryObjectsConstructorInterface* _geometryobjects_constructor;
     std::map<std::string, FadaMesh::GeometryObject*>   _geometryobjects;
@@ -83,8 +79,6 @@ public:
     Alat::Vector<Side>&   getSides();
     Alat::Vector<SideCell>&  getSidesOfCells();
     Alat::Vector<CellSide>&  getCellsOfSides();
-    CurvedBoundaryInformation* getCurvedBoundaryInformation();
-    const CurvedBoundaryInformation* getCurvedBoundaryInformation() const;
     const Alat::Vector<Alat::Node>&   getNodes() const;
     const Alat::Vector<Cell>&   getCells() const;
     const Alat::Vector<Side>&   getSides() const;
@@ -116,7 +110,6 @@ public:
     int getLocalIndexOfSideInCell(int iK, int iS) const;
     const FadaMesh::BoundaryInfo* getBoundaryInfo() const;
     FadaMesh::BoundaryInfo* getBoundaryInfo();
-    const FadaMesh::CurvedInteriorSideInfo* getCurvedInteriorSideInfo() const;
     const Alat::IntVector& getBoundaryColors() const;
     const Alat::IntVector& getBoundarySides(int color) const;
     bool cellIsCurved(int iK) const;

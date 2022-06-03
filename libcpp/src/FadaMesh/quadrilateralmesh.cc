@@ -144,30 +144,6 @@ void QuadrilateralMesh::writeQuad(std::string filename) const
       }
     }
   }
-
-  {
-    const FadaMesh::CurvedInteriorSideInfo* curvedinteriorsideinfo = getCurvedInteriorSideInfo();
-    const Alat::IntVector& colors = curvedinteriorsideinfo->getColors();
-    int nintcurvedsides = curvedinteriorsideinfo->getNSides();
-    file << "CurvedInteriorSides " << nintcurvedsides << "\n";
-    for(int i = 0; i < colors.size(); i++)
-    {
-      int color = colors[i];
-      const Alat::IntVector& sides = curvedinteriorsideinfo->getSidesOfColor(color);
-      for(int j = 0; j < sides.size(); j++)
-      {
-        for(int ii = 0; ii < getNNodesPerSide(0); ii++)
-        {
-          file << getNodeIdOfSide(sides[j], ii) << " ";
-        }
-        file << color << std::endl;
-      }
-    }
-  }
-
-  const CurvedBoundaryInformation* BD = getCurvedBoundaryInformation();
-  assert(BD);
-  BD->writeCurvedBoundaryDescription(file);
 }
 
 /*--------------------------------------------------------------------------*/
@@ -280,18 +256,11 @@ void QuadrilateralMesh::readQuad(std::string filename)
   }
 
 
-  CurvedBoundaryInformation* curvedboundaryinformation = getCurvedBoundaryInformation();
-  assert(curvedboundaryinformation);
 
-  file.clear();
-  file.seekg(afterboundaries);
-
-  curvedboundaryinformation->readCurvedBoundaryDescription(file);
   file.close();
 
   constructSidesFromCells(bstc, istc);
 
-  curvedboundaryinformation->constructBoundaryInformation(this);
 }
 
 /*--------------------------------------------------------------------------*/

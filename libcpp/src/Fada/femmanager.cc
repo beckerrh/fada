@@ -1,17 +1,10 @@
 #include  "Fada/femcgq12d.h"
-#include  "Fada/femcgq13d.h"
 #include  "Fada/femcgq22d.h"
 #include  "Fada/femdgq02d.h"
 #include  "Fada/femdgp02d.h"
-#include  "Fada/femdgp12d.h"
-#include  "Fada/femdgq03d.h"
-#include  "Fada/femdgq12d.h"
-#include  "Fada/femdgq22d.h"
 #include  "Fada/femcgp12d.h"
 #include  "Fada/femvrtm2d.h"
-#include  "Fada/femvrtm3d.h"
 #include  "Fada/q12dtransformation.h"
-#include  "Fada/q13dtransformation.h"
 #include  "Fada/q22dtransformation.h"
 #include  "Fada/p12dtransformation.h"
 #include  "Alat/assemblevector.h"
@@ -278,10 +271,6 @@ Fada::TransformationInterface* FemManager::newTransformation(const FadaMesh::Mes
   {
     return new Q12DTransformation;
   }
-  else if(meshtype == FadaMeshEnums::HexahedralMesh)
-  {
-    return new Q13DTransformation;
-  }
   else
   {
     _error_string( "newTransformation", "unknown mesh", FadaMeshEnums::meshTypeToString(meshtype) );
@@ -300,11 +289,6 @@ Fada::TransformationInterface* FemManager::newTransformationCurved(const FadaMes
   else if(meshtype == FadaMeshEnums::QuadrilateralMesh)
   {
     return new Q22DTransformation;
-  }
-  else if(meshtype == FadaMeshEnums::HexahedralMesh)
-  {
-    // assert(0);
-    return new Q13DTransformation;
   }
   else
   {
@@ -328,41 +312,17 @@ Fada::FemInterface* FemManager::newFem(std::string femname)
   {
     return new FemCgQ22d;
   }
-  else if(femname == "cgq13d")
-  {
-    return new FemCgQ13d;
-  }
   else if(femname == "dgp02d")
   {
     return new FemDgP02d;
-  }
-  else if(femname == "dgp12d")
-  {
-    return new FemDgP12d;
   }
   else if(femname == "dgq02d")
   {
     return new FemDgQ02d;
   }
-  else if(femname == "dgq12d")
-  {
-    return new FemDgQ12d;
-  }
-  else if(femname == "dgq22d")
-  {
-    return new FemDgQ22d;
-  }
-  else if(femname == "dgq03d")
-  {
-    return new FemDgQ03d;
-  }
   else if(femname == "nc12d")
   {
     return new FemVRTM2d;
-  }
-  else if(femname == "nc13d")
-  {
-    return new FemVRTM3d;
   }
   else if(femname == "none")
   {

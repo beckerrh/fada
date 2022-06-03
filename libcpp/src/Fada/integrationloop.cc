@@ -3,7 +3,6 @@
 #include  "Fada/femmanager.h"
 #include  "Fada/femmanagerinterface.h"
 #include  "Fada/integrationformulainterface.h"
-#include  "Fada/integrationformulaselectorhexahedralmesh.h"
 #include  "Fada/integrationformulaselectorquadrilateralmesh.h"
 #include  "Fada/integrationformulaselectortrianglemesh.h"
 #include  "Fada/integrationloop.h"
@@ -89,10 +88,6 @@ void IntegrationLoop::basicInit(const FadaMesh::MeshInterface* mesh, const Fada:
   if( celltype == "Quadrilateral"  )
   {
     integrationformulaselector = new IntegrationFormulaSelectorQuadrilateralMesh;
-  }
-  else if( celltype == "Hexahedral")
-  {
-    integrationformulaselector = new IntegrationFormulaSelectorHexahedralMesh;
   }
   else if( celltype == "Triangle")
   {

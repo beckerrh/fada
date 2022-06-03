@@ -219,9 +219,6 @@ void BasicAdaptiveMesh2d<NODESPERCELL>::writeAdaptiveMesh(std::string name, std:
   assert( file.is_open() );
   _faceid2id.write(file, datatype);
   file.close();
-  //!write _curvedboundaries
-  // filename = dirname+"/CurvedBoundaryInformation";
-  // _curvedboundaries.write(filename, datatype);
 }
 
 /*--------------------------------------------------------------------------*/
@@ -413,9 +410,6 @@ void BasicAdaptiveMesh2d<NODESPERCELL>::readAdaptiveMesh(std::string name, std::
     int ip =  ( *p )->id();
     _last_face_id=std::max(ip,_last_face_id);
   }
-  //!read _curvedboundaries
-  // filename = dirname+"/CurvedBoundaryInformation";
-  // _curvedboundaries.read(filename);
 
   //!read cell_map
   filename = dirname+"/cell_map";
@@ -459,14 +453,6 @@ void BasicAdaptiveMesh2d<NODESPERCELL>::readFadaMeshAndInitTrees(std::string nam
 // lecture du FadaMesh
   FadaMeshBase2d<NODESPERCELL>::readFadaMesh(name);
 
-//lecture des CurvedBoundaryInfo
-  // if(FadaMeshBase2d<NODESPERCELL>::geometryObjectExists("CurvedBoundaryInformation") )
-  // {
-  //   const FadaMesh::GeometryObject* GO = FadaMeshBase2d<NODESPERCELL>::getGeometryObject("CurvedBoundaryInformation");
-  //   const FadaMesh::CurvedBoundaryInformation* BD = dynamic_cast<const FadaMesh::CurvedBoundaryInformation*>( GO );
-  //   assert(BD);
-  //   _curvedboundaries.set_size(*BD);
-  // }
 //map provisoires pour connectivités
   map<int, Node*> id2node;
   map<int, edge_pointer> id2edge;
@@ -556,7 +542,6 @@ void BasicAdaptiveMesh2d<NODESPERCELL>::writeFadaMesh(std::string name, std::str
     reInitFadaMesh();
   // Mise à jour des information sur les bords courbes
     // FadaMeshBase2d<NODESPERCELL>::reInit();
-    FadaMeshBase2d<NODESPERCELL>::getCurvedBoundaryInformation()->constructBoundaryInformation(this);
     FadaMeshBase2d<NODESPERCELL>::writeFadaMesh(name,datatype);
 }
 

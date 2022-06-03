@@ -1,4 +1,3 @@
-#include  "FadaMesh/hexahedralmesh.h"
 #include  "FadaMesh/quadrilateralmesh.h"
 // #include  "FadaMesh/trianglemesh.h"
 #include  <iostream>
@@ -21,11 +20,6 @@ int main(int argc, char** argv)
   {
     mesh = new FadaMesh::QuadrilateralMesh;
     outfilename += ".quad";
-  }
-  else if(mesh_type == "hex")
-  {
-    mesh = new FadaMesh::HexahedralMesh;
-    outfilename += ".hex";
   }
   else
   {

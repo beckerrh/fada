@@ -5,7 +5,6 @@
 #include  "meshadaptorinterface.h"
 #include  "edgerefiner.h"
 #include  "facerefinerinterface.h"
-#include  "hexrefiner.h"
 /*--------------------------------------------------------------------------*/
 
 namespace FadaMesh
@@ -20,7 +19,7 @@ protected:
 /// outil de raffinement des faces de type abstrait à spécialiser en fonction des types de faces
    FaceRefinerInterface* _facerefiner;
 /// outil de raffinement des faces de type abstrait à spécialiser en fonction des types de faces
-   HexRefiner* _volumerefiner;
+   // HexRefiner* _volumerefiner;
 
    /// fonction d'accés à l'ensemble des nodes
    NodeSet & _getNodes(){return _adaptive_mesh->getNodes();}
@@ -30,7 +29,6 @@ protected:
    tree<FaceInterface*> & _getFaces(){return _adaptive_mesh->getFaces();}
    tree<VolumeInterface*> & _getVolumes(){return _adaptive_mesh->getVolumes();}
    /// fonction d'accés aux informations sur les bords courbes
-   const FadaMesh::CurvedBoundaryInformation* _getCurvedBoundaries(){return _adaptive_mesh->getCurvedBoundaries();}
    /// fonction d'accès à la dernière identité de node affectée
    int& _getLastNodeId(){return _adaptive_mesh->getLastNodeId();}
    /// fonction d'accès à la dernière identité de node affectée

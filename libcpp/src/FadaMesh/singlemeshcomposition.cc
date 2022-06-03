@@ -1,8 +1,6 @@
 #include "Alat/iomanager.h"
 #include  "FadaMesh/getmeshtype.h"
-#include  "FadaMesh/hexahedralmesh.h"
 #include  "FadaMesh/singlemeshcomposition.h"
-// #include  "FadaMesh/tetrahedralmesh.h"
 #include  "FadaMesh/quadrilateralmesh.h"
 #include  "FadaMesh/trianglemesh.h"
 // #include  "FadaMesh/linemesh.h"
@@ -108,10 +106,6 @@ void SingleMeshComposition::constructFadaMesh(const std::string& meshname)
   if(type == "FadaMesh::QuadrilateralMesh")
   {
     _mesh = new FadaMesh::QuadrilateralMesh;
-  }
-  else if(type == "FadaMesh::HexahedralMesh")
-  {
-    _mesh = new FadaMesh::HexahedralMesh;
   }
   else if(type=="FadaMesh::TriangleMesh")
   {

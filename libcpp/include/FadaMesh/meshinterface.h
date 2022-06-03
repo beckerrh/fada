@@ -18,8 +18,6 @@ namespace Alat
 namespace FadaMesh
 {
   class BoundaryInfo;
-  class CurvedBoundaryInformation;
-  class CurvedInteriorSideInfo;
   class GeometryObject;
   class GeometryObjectsConstructorInterface;
   class SparsityPattern;
@@ -68,7 +66,6 @@ public:
     virtual int getNEdgesPerCell(int iK) const;
     virtual int getNEdgesPerSide(int iS) const;
     virtual const FadaMesh::BoundaryInfo* getBoundaryInfo() const;
-    virtual const FadaMesh::CurvedInteriorSideInfo* getCurvedInteriorSideInfo() const ;
     virtual int getNodeIdOfCell(int i, int ii) const;
     virtual int getNodeIdOfSide(int i, int ii) const;
     virtual int getNodeIdOfEdge(int i, int ii) const;
@@ -81,7 +78,6 @@ public:
     virtual const FadaMesh::GeometryObject* getGeometryObject(std::string name) const;
     virtual FadaMesh::GeometryObject* getGeometryObject(std::string name);
     virtual void createGeometryObject(std::string name);
-    virtual const FadaMesh::CurvedBoundaryInformation* getCurvedBoundaryInformation() const;
     virtual void read(std::string filename);
     virtual void write(std::string filename) const;
     virtual void readFadaMesh(const std::string& basefilename);

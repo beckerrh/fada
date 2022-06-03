@@ -203,10 +203,6 @@ const FadaMesh::BoundaryInfo* MeshInterface::getBoundaryInfo() const
   _notWritten("getBoundaryInfo");
   return NULL;
 }
-const FadaMesh::CurvedInteriorSideInfo* MeshInterface::getCurvedInteriorSideInfo() const
-{
-  _notWritten("getCurvedInteriorSideInfo");
-}
 
 /*--------------------------------------------------------------------------*/
 
@@ -317,14 +313,6 @@ FadaMesh::GeometryObject* MeshInterface::getGeometryObject(std::string name)
 void MeshInterface::createGeometryObject(std::string name)
 {
   _notWritten("CreateGeometryObject");
-}
-
-/*--------------------------------------------------------------------------*/
-
-const FadaMesh::CurvedBoundaryInformation* MeshInterface::getCurvedBoundaryInformation() const
-{
-  _notWritten("getCurvedBoundaryInformation");
-  return NULL;
 }
 
 /*--------------------------------------------------------------------------*/

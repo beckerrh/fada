@@ -1,4 +1,3 @@
-#include  "FadaMesh/hexahedralmesh.h"
 #include  "FadaMesh/quadrilateralmesh.h"
 #include  "Alat/map.h"
 #include  "Alat/set.h"
@@ -53,16 +52,6 @@ int main(int argc, char** argv)
     infilename += ".quad";
     quadmesh->readQuad(infilename);
   }
-  else if(mesh_type == "hex")
-  {
-    mesh = new FadaMesh::HexahedralMesh;
-    // FadaMesh::HexahedralMesh* hexmeshcropped = new FadaMesh::HexahedralMesh;
-    // meshcropped = hexmeshcropped;
-    meshcropped = new FadaMesh::HexahedralMesh;
-    FadaMesh::HexahedralMesh* hexmesh = dynamic_cast<FadaMesh::HexahedralMesh*>( mesh );
-    infilename += ".hex";
-    hexmesh->readHex(infilename);
-  }
   else
   {
     std::cerr<<"***ERROR in " << argv[0] <<"  : invalid mesh type. Must be quad, hex or tri, but "<<mesh_type<<" given."<<'\n';
@@ -79,7 +68,7 @@ int main(int argc, char** argv)
     // cut the bounding box
     {
       if( ( (node.x() <= boundu.x()) and (node.x() >= boundl.x()) )and ( (node.y() <= boundu.y())  and (node.y() >= boundl.y()) ) and ( (node.z() <= boundu.z())  and (node.z() >= boundl.z()) ) )
-      {                                                                   
+      {
         std::cerr << "deleting: " << node << "\n";
         nodestodelete.insert(i);
       }
@@ -225,51 +214,7 @@ int main(int argc, char** argv)
   }
   else
   {
-    FadaMesh::HexahedralMesh* hexmesh = dynamic_cast<FadaMesh::HexahedralMesh*>( mesh );
-    assert(hexmesh);
-    FadaMesh::HexahedralMesh* hexmeshcropped = dynamic_cast<FadaMesh::HexahedralMesh*>( meshcropped );
-    assert(hexmeshcropped);
-    Alat::Vector<FadaMesh::HexahedralMesh::Hexahedral>& cellscropped =  hexmeshcropped->getCells();
-    cellscropped.set_size( cell_oldtonew.size() );
-    for(Alat::IntMap::const_iterator p = cell_oldtonew.begin(); p != cell_oldtonew.end(); p++)
-    {
-      cellscropped[p->second] = hexmesh->getCell(p->first);
-    }
-    for(int i = 0; i < cellscropped.size(); i++)
-    {
-      for(int ii = 0; ii < mesh->getNNodesPerCell(i); ii++)
-      {
-        int inode = cellscropped[i][ii];
-        cellscropped[i][ii] = node_oldtonew[inode];
-      }
-    }
-
-    // new boundary sides
-    FadaMesh::HexahedralMesh::BoundarySideToColor bstc;
-    const FadaMesh::BoundaryInfo* boundaryinfo = mesh->getBoundaryInfo();
-    const Alat::IntVector& colors = boundaryinfo->getColors();
-    for(int i = 0; i < colors.size(); i++)
-    {
-      int color = colors[i];
-      const Alat::IntVector& sides = boundaryinfo->getSidesOfColor(color);
-      for(int j = 0; j < sides.size(); j++)
-      {
-        if( sidestodelete.find(sides[j]) == sidestodelete.end() )
-        {
-          FadaMesh::HexahedralMesh::Side S;
-          for(int ii = 0; ii < mesh->getNNodesPerSide(0); ii++)
-          {
-            int inode = hexmesh->getNodeIdOfSide(sides[j], ii);
-            assert( nodestodelete.find(inode) == nodestodelete.end() );
-            S[ii] = node_oldtonew[inode];
-          }
-          std::sort( S.begin(), S.end() );
-          bstc[S] = color;
-        }
-      }
-    }
-    // std::cerr << " bstc " << bstc << "\n";
-    hexmeshcropped->constructSidesFromCells(bstc, 111);
+    assert(0);
   }
 
 // meshcropped->writeFadaMesh(outfilename, datatype);

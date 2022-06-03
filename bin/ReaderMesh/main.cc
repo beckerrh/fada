@@ -1,4 +1,3 @@
-#include  "FadaMesh/hexahedralmesh.h"
 #include  "FadaMesh/quadrilateralmesh.h"
 #include  "FadaMesh/quadtotri.h"
 // #include  "FadaMesh/trianglemesh.h"
@@ -24,13 +23,6 @@ int main(int argc, char** argv)
     FadaMesh::QuadrilateralMesh* Mquad = dynamic_cast<FadaMesh::QuadrilateralMesh*>( M );
     infilename += ".quad";
     Mquad->readQuad(infilename);
-  }
-  else if(mesh_type == "hex")
-  {
-    M = new FadaMesh::HexahedralMesh;
-    FadaMesh::HexahedralMesh* Mhex = dynamic_cast<FadaMesh::HexahedralMesh*>( M );
-    infilename += ".hex";
-    Mhex->readHex(infilename);
   }
   else if(mesh_type == "quadtotri")
   {

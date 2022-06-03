@@ -18,21 +18,6 @@ namespace FadaMeshEnums
     {
       return "QuadrilateralMesh";
     }
-    else if(m == HexahedralMesh)
-    {
-      return "HexahedralMesh";
-    }
-    else if(m == TetrahedralMesh)
-    {
-      return "TetrahedralMesh";
-    }
-    else if(m == CouplingMesh2D)
-    {
-      return "CouplingMesh2D";
-    }
-    else if(m == CouplingMesh3D)
-    {
-      return "CouplingMesh3D";
-    }
+    return "not found";
   }
 }

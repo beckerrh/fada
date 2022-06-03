@@ -3,7 +3,6 @@
 
 #include  "Alat/node.h"
 #include  "Alat/vector.h"
-#include  "curvedboundaryinformation.h"
 #include  "fadalightmeshbase2d.h"
 #include  "adaptivemeshinterface.h"
 #include  "edge.h"
@@ -32,7 +31,6 @@ protected:
     /// ensemble des noeuds
     NodeSet _Nodes;
     /// information pour les bords courbes
-    // FadaMesh::CurvedBoundaryInformation _curvedboundaries;
     /// pointeur sur un quadtotri pour un redécoupage éventuel
     // FadaMesh::QuadToTri* _quad_to_tri_pointer;
     /// indicateur de redécoupage en quadtotri
@@ -175,13 +173,6 @@ public:
     tree<VolumeInterface*>& getVolumes()
     {
       return _Volumes;
-    }
-
-    /// Renvoie les informations sur les bords courbes
-    const FadaMesh::CurvedBoundaryInformation* getCurvedBoundaries()
-    {
-      return FadaMesh::FadaMeshBase2d<NODESPERCELL>::getCurvedBoundaryInformation();
-      // return _curvedboundaries;
     }
 
     /// renvoie la dernière identité de node utilisée

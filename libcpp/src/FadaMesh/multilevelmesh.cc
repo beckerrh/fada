@@ -1,4 +1,3 @@
-#include  "FadaMesh/hexahedralmesh.h"
 #include  "FadaMesh/multilevelmesh.h"
 #include  "FadaMesh/quadrilateralmesh.h"
 #include  "FadaMesh/quadtotri.h"
@@ -284,10 +283,6 @@ void MultiLevelMesh::readFadaMesh(const std::string& basefilename)
     else if(_type == "FadaMesh::QuadToTri")
     {
       _meshes[level] = new FadaMesh::QuadToTri;
-    }
-    else if(_type == "FadaMesh::HexahedralMesh")
-    {
-      _meshes[level] = new FadaMesh::HexahedralMesh;
     }
     else
     {
