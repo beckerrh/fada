@@ -179,14 +179,9 @@ void Main::run()
 
   std::cerr << "Main::run() _meshname = " << _meshname << "\n";
 
-  // loop->getMeshCompositionPointer() = meshselector.newMeshComposition(_meshtype, _rundirectory+"/"+_meshname);
   loop->getMeshCompositionPointer() = meshselector.newMeshComposition(_meshtype, _meshname);
-  assert(loop->getMeshComposition());
   if(loop->getType() == FadaEnums::InterpolationLoop)
   {
-    // std::cerr << "Main::basicInit() meshname " << _meshname << "\n";
-    // std::cerr << "Main::basicInit() refinedmeshname " << _refinedmeshname << "\n";
-    // loop->getRefinedMeshCompositionPointer() = meshselector.newMeshComposition(_meshtype, _rundirectory+"/"+_refinedmeshname);
     loop->getRefinedMeshCompositionPointer() = meshselector.newMeshComposition(_meshtype, _refinedmeshname);
     assert(loop->getRefinedMeshComposition());
   }

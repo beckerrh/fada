@@ -10,16 +10,16 @@ using namespace Integrators;
 
 MeshSelector::~MeshSelector()
 {}
-MeshSelector::MeshSelector() : FadaMesh::MeshSelectorInterface()
+MeshSelector::MeshSelector() : Alat::InterfaceBase()
 {}
-MeshSelector::MeshSelector( const MeshSelector& meshselector) : FadaMesh::MeshSelectorInterface(meshselector)
+MeshSelector::MeshSelector( const MeshSelector& meshselector) : Alat::InterfaceBase(meshselector)
 {
   assert(0);
 }
 
 MeshSelector& MeshSelector::operator=( const MeshSelector& meshselector)
 {
-  FadaMesh::MeshSelectorInterface::operator=(meshselector);
+  Alat::InterfaceBase::operator=(meshselector);
   assert(0);
   return *this;
 }

@@ -25,7 +25,7 @@ VisitorSolverManagerMultiLevel::VisitorSolverManagerMultiLevel(SolverManager* so
   _chronometer.enrol("matrixVectorProduct", true);
   _chronometer.enrol("smooth", true);
   _chronometer.enrol("transfer", true);
-  _chronometer.enrol("matrixVectorProductCoupling", true);
+  // _chronometer.enrol("matrixVectorProductCoupling", true);
 }
 
 VisitorSolverManagerMultiLevel::VisitorSolverManagerMultiLevel( const VisitorSolverManagerMultiLevel& visitorsolvermanagermultilevel) : VisitorMultigridInterface(visitorsolvermanagermultilevel), _solvermanager(visitorsolvermanagermultilevel._solvermanager), _nlevelsignore(visitorsolvermanagermultilevel._nlevelsignore), _maxlevel(visitorsolvermanagermultilevel._maxlevel), _chronometer(visitorsolvermanagermultilevel._chronometer), _linearsolvers(visitorsolvermanagermultilevel._linearsolvers), _variables(visitorsolvermanagermultilevel._variables)

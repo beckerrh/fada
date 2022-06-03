@@ -2,4 +2,4 @@
 #                              Load variables from file
 # ==============================================================================
 
-include(${Fada_INSTALLDIR}/cmake/CMakeCacheForExecutable.cmake)
+include(${Fada_INSTALL_PREFIX}/cmake/CMakeCacheForExecutable.cmake)

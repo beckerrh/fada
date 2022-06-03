@@ -1,7 +1,7 @@
 #ifndef __Integrators_MeshSelector_h
 #define __Integrators_MeshSelector_h
 
-#include  "FadaMesh/meshselectorinterface.h"
+#include  "Alat/interfacebase.h"
 
 /*--------------------------------------------------------------------------*/
 
@@ -15,10 +15,14 @@ namespace Fada
 }
 namespace Integrators
 {
-  class MeshSelector : public FadaMesh::MeshSelectorInterface
+  class MeshSelector : public Alat::InterfaceBase
   {
 private:
 protected:
+  std::string getInterfaceName() const
+  {
+    return "MeshSelector";
+  }
 public:
     ~MeshSelector();
     MeshSelector();

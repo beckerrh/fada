@@ -278,7 +278,7 @@ void VisitorSolverManagerOneLevel::vectorEqualOnDomain(int idomain, Alat::GhostV
   getVector(idomain, gp)->equal( getVector(idomain, gq) );
 }
 
-void VisitorSolverManagerOneLevel::matrixVectorProductCoupling(int idomain, const Alat::GhostMatrix& ghostmatrix, Alat::GhostVector& u, const Alat::GhostVector& f, double d) const
-{
-  getSolverManager()->matrixVectorProductCoupling(idomain, _level, ghostmatrix, u, f, d);
-}
+// void VisitorSolverManagerOneLevel::matrixVectorProductCoupling(int idomain, const Alat::GhostMatrix& ghostmatrix, Alat::GhostVector& u, const Alat::GhostVector& f, double d) const
+// {
+//   getSolverManager()->matrixVectorProductCoupling(idomain, _level, ghostmatrix, u, f, d);
+// }

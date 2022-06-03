@@ -38,17 +38,7 @@
 using namespace Fada;
 
 /*--------------------------------------------------------------------------*/
-SolverManager::~SolverManager()
-{
-  // for(int i = 0; i < _domainsorters.size(); i++)
-  // {
-  //   if(_domainsorters[i])
-  //   {
-  //     delete _domainsorters[i];
-  //     _domainsorters[i] = NULL;
-  //   }
-  // }
-}
+SolverManager::~SolverManager(){}
 
 SolverManager::SolverManager() : Alat::InterfaceBase(), _chronometer("SolverManager"), _time(0.0)
 {
@@ -100,11 +90,7 @@ void SolverManager::printChronometer(std::string filename) const
 std::ostream& SolverManager::printLoopInformation(std::ostream& os) const
 {
   os << "|>~~~ SolverManager\n";
-  // os << "|>~~~ N DomainSolvers CouplingSolvers: " << getNDomainSolvers() << " " << getNCouplingSolvers() << "\n";
   os << "|>~~~ \"linearsolver\"=" << _linearsolver << " ";
-  // os << "\"preconditioner\"=" << _preconditioner << " ";
-  // os << "|>~~~ ModelManager=";
-  // getModelManager()->printLoopInformation(os);
   os << "|>~~~ LinearSolvers:\n";
   for(GhostLinearSolverAgent::const_iterator p = _ghost_linear_solver_agent.begin(); p != _ghost_linear_solver_agent.end(); p++)
   {
@@ -123,18 +109,8 @@ std::ostream& SolverManager::printLoopInformation(std::ostream& os) const
   {
     os << p->first  << "\n";
   }
-
-
   _model->printLoopInformation(os);
   getDomainSolver(0)->printLoopInformation(os);
-
-  // const Fada::ModelInterface::IndicesOfModelMap& indicesofdomainmodelmap = _model->getIndicesOfDomainModelMap();
-  // os << "\n>=====================DomainSolvers:=====================<\n";
-  // for(Fada::ModelInterface::IndicesOfModelMap::const_iterator p = indicesofdomainmodelmap.begin(); p != indicesofdomainmodelmap.end(); p++)
-  // {
-  //   os << "\t>=====================" << p->first << ": " << p->second << "=====================<\n";
-  //   getDomainSolver( *p->second.begin() )->printLoopInformation(os);
-  // }
   return os;
 }
 
@@ -148,14 +124,6 @@ void SolverManager::printSolverChronometer(std::ostream& os) const
 {
   Fada::chronometer_traits<Fada::DomainSolver>::print(os);
 }
-
-// /*--------------------------------------------------------------------------*/
-// void SolverManager::setDomainsOfCoupling(Alat::Vector<Alat::FixArray<2, int> >& domainsofcoupling, Alat::SparsityPattern& _domainneighbours, Alat::Map<Alat::IntPair, int>& _couplingofdomains) const
-// {
-//   domainsofcoupling.set_size(0);
-//   Alat::SparsityPatternSoft domainneighboursoft(1);
-//   _domainneighbours.set_size(domainneighboursoft);
-// }
 
 /*--------------------------------------------------------------------------*/
 Fada::DomainSolverInterface* SolverManager::newDomainSolver(const FadaMesh::MeshInterface* mesh) const
@@ -171,7 +139,6 @@ void SolverManager::basicInit(Fada::ModelInterface* model, const FadaMesh::MeshC
   _chronometer.start("BasicInit");
   _looptype = looptype;
   _model = model;
-  // _application=application;
   assert(meshcomposition);
   _meshcomposition = meshcomposition;
   _parameterfile = parameterfile;
@@ -179,11 +146,7 @@ void SolverManager::basicInit(Fada::ModelInterface* model, const FadaMesh::MeshC
   Alat::DataFormatHandler dataformathandler;
   dataformathandler.insert("linearsolver", &_linearsolver, "direct");
   dataformathandler.insert("ncellsdirect", &_ncellsdirect, 200);
-  // dataformathandler.insert("domainsort", &_domainsort, "none");
   Alat::FileScanner filescanner(dataformathandler, parameterfile, "SolverManager", 0);
-
-
-
   int ndomains = meshcomposition->getNDomains();
   assert(ndomains==1);
   _nlevels = meshcomposition->getMesh(0)->getNLevels();
@@ -202,52 +165,17 @@ void SolverManager::basicInit(Fada::ModelInterface* model, const FadaMesh::MeshC
   {
     meshcomposition->getMesh(i)->setResolution(0);
   }
-
-  // setDomainsOfCoupling(_domainsofcoupling, _domainneighbours, _couplingofdomains);
-  // std::cerr<<"SolverManager::basicInit() _domainsofcoupling "<<_domainsofcoupling<<'\n';
-
-  // for(int i = 0; i < meshcomposition->getNCouplingMeshes(); i++)
-  // {
-  //   // meshcomposition->getCouplingMesh(i)->setNLevels(nlevelsmax);
-  //   meshcomposition->getCouplingMesh(i)->computeCouplingSideInformation(_nlevels);
-  // }
   _domainsolvers.set_size(ndomains);
-  // int ncouplingsolvers = _domainsofcoupling.size();
-  // _couplingsolvers.set_size( ncouplingsolvers );
-
   for(int i = 0; i < ndomains; i++)
   {
     getDomainSolverPointer(i) = newDomainSolver( getMeshComposition()->getMesh(i) );
     getDomainSolver(i)->defineIntegratorsAndVariables( _model, getMeshComposition()->getMesh(i) );
   }
-  // for(int i = 0; i < getNCouplingSolvers(); i++)
-  // {
-  //   getCouplingSolverPointer(i) = newCouplingSolver( getMeshComposition()->getCouplingMesh(i) );
-  //   int il = getLeftSolverIndexOfCouplingSolver(i);
-  //   int ir = getRightSolverIndexOfCouplingSolver(i);
-  //   assert(ir >= 0);
-  //   getCouplingSolver(i)->getSolverPointerLeft() = getDomainSolver( il );
-  //   getCouplingSolver(i)->getSolverPointerRight() = getDomainSolver( ir );
-  //   Fada::ModelInterface* model = _model->getCouplingModel(i);
-  //   assert(model);
-  //   getCouplingSolver(i)->defineIntegratorsAndVariables(getDomainSolver( il ), getDomainSolver( ir ), model);
-  // }
   for(int i = 0; i < getNDomainSolvers(); i++)
   {
     getDomainSolver(i)->basicInit( i, _model, getMeshComposition()->getMesh(i), getIoManager(), looptype, getParameterFile() );
   }
-
-  // for(int i = 0; i < getNCouplingSolvers(); i++)
-  // {
-  //   Fada::ModelInterface* model = _model->getCouplingModel(i);
-  //   getCouplingSolver(i)->basicInit( -i, model, getMeshComposition()->getCouplingMesh(i), getIoManager(), looptype, getParameterFile() );
-  // }
-
   _initDomainsOfVar();
-
-
-
-
   _ppvarswithoutfem.clear();
   for(int i = 0; i < getNDomainSolvers(); i++)
   {
@@ -261,8 +189,6 @@ void SolverManager::basicInit(Fada::ModelInterface* model, const FadaMesh::MeshC
       }
     }
   }
-
-
   _onlydirectsolvers = true;
   if(_linearsolver != "direct")
   {
@@ -284,8 +210,6 @@ void SolverManager::basicInit(Fada::ModelInterface* model, const FadaMesh::MeshC
       }
     }
   }
-
-
   _chronometer.stop("BasicInit");
   // std::cerr << "SolverManager::basicInit() FIN\n";
 }
@@ -305,45 +229,7 @@ void SolverManager::_initDomainsOfVar()
       _variables.insert(varname);
     }
   }
-  //create empty vector
-  // for(Alat::StringSet::const_iterator p = _variables.begin(); p != _variables.end(); p++)
-  // {
-  //   _couplingsofvar[*p] = Alat::IntSet();
-  // }
-  // for(Alat::Map<std::string, Alat::IntSet>::const_iterator p = _domainsofvar.begin(); p != _domainsofvar.end(); p++)
-  // {
-  //   std::string varname = p->first;
-  //   for(int i = 0; i < _domainsofcoupling.size(); i++)
-  //   {
-  //     int domL = _domainsofcoupling[i][0];
-  //     int domR = _domainsofcoupling[i][1];
-  //     if( ( p->second.find(domL) != p->second.end() )&& ( p->second.find(domR) != p->second.end() ) )
-  //     {
-  //       _couplingsofvar[varname].insert(i);
-  //     }
-  //   }
-  // }
 }
-
-// const Alat::Map<std::string, Alat::IntSet>& SolverManager::getDomainsOfVar() const
-// {
-//   return _domainsofvar;
-// }
-//
-// const Alat::IntSet& SolverManager::getDomainsOfVar(std::string varname) const
-// {
-//   return _domainsofvar[varname];
-// }
-
-// const Alat::Map<std::string, Alat::IntSet>& SolverManager::getCouplingsOfVar() const
-// {
-//   return _couplingsofvar;
-// }
-//
-// const Alat::IntSet& SolverManager::getCouplingsOfVar(std::string varname) const
-// {
-//   return _couplingsofvar[varname];
-// }
 
 /*--------------------------------------------------------------------------*/
 void SolverManager::addLinearDomainSolvers(const Alat::GhostLinearSolver& linearsolver)
@@ -361,7 +247,6 @@ void SolverManager::_reInitSansSolvers()
   // std::cerr << "@@@@@@@@  SolverManager::reInit( DEBUT _nlevelsignore " << _nlevelsignore << "\n";
   // std::cerr << "MultiBlockSolverManager::reInit( BEGIN\n";
   _chronometer.start("Memory");
-  // const GhostVectorAgent& GVA = _ghost_vector_agent;
 
   if(not _onlydirectsolvers)
   {
@@ -394,7 +279,6 @@ void SolverManager::_reInitSansSolvers()
       getDomainSolver(i)->registerVector(p->first);
     }
   }
-
   _chronometer.stop("Memory");
   // std::cerr << "MultiBlockSolverManager::reInit( END\n";
   // std::cerr << "@@@@@@@@  SolverManager::reInit( FIN _nlevelsignore " << _nlevelsignore << "\n";
@@ -408,16 +292,6 @@ void SolverManager::reInit()
   {
     getDomainSolver(i)->reInit();
   }
-  // for(int i = 0; i < getNCouplingSolvers(); i++)
-  // {
-  //   getCouplingSolver(i)->reInit();
-  // }
-  // if( getNDomainSolvers() == 1 )
-  // {
-  //   _domainspermutation.set_size(1);
-  //   _domainspermutation[0].set_size(1);
-  //   _domainspermutation[0][0] = 0;
-  // }
 }
 
 /*--------------------------------------------------------------------------*/
@@ -479,11 +353,6 @@ void SolverManager::reInitMatrixAndLinearSolver()
   }
   // std::cerr << "MultiBlockSolverManager::reInit( BEGIN\n";
   _chronometer.start("Memory");
-  // for(GhostLinearSolverAgent::iterator p = _ghost_linear_solver_agent.begin(); p != _ghost_linear_solver_agent.end(); p++)
-  // {
-  //   std::cerr << "SolverManager::reInitMatrixAndLinearSolver() linearsolver="<<p->first << "\n";
-  // }
-  // assert(0);
   for(GhostLinearSolverAgent::iterator p = _ghost_linear_solver_agent.begin(); p != _ghost_linear_solver_agent.end(); p++)
   {
     p->second = newLinearSolver(p->first);
@@ -494,19 +363,11 @@ void SolverManager::reInitMatrixAndLinearSolver()
     {
       getDomainSolver(i)->registerMatrix(p->first);
     }
-    // for(int i = 0; i < getNCouplingSolvers(); i++)
-    // {
-    //   getCouplingSolver(i)->registerMatrix(p->first);
-    // }
   }
   for(int i = 0; i < getNDomainSolvers(); i++)
   {
     getDomainSolver(i)->reInitMatrices();
   }
-  // for(int i = 0; i < getNCouplingSolvers(); i++)
-  // {
-  //   getCouplingSolver(i)->reInitMatrices();
-  // }
   for(GhostLinearSolverAgent::iterator p = _ghost_linear_solver_agent.begin(); p != _ghost_linear_solver_agent.end(); p++)
   {
     p->second->reInit();
@@ -516,18 +377,7 @@ void SolverManager::reInitMatrixAndLinearSolver()
     getDomainSolver(i)->reInitLinearSolvers();
   }
   _chronometer.stop("Memory");
-  // std::cerr << "MultiBlockSolverManager::reInit( END\n";
 }
-
-//
-// /*--------------------------------------------------------------------------*/
-// void SolverManager::reInitInterpolation()
-// {
-//   for(int i = 0; i < getNDomainSolvers(); i++)
-//   {
-//     getDomainSolver(i)->reInitInterpolation();
-//   }
-// }
 
 /*--------------------------------------------------------------------------*/
 void SolverManager::reInitVectorForInterpolation(Alat::GhostVector& u) const
@@ -549,70 +399,51 @@ void SolverManager::restartLinearSolver(AlatEnums::residualstatus& status, Alat:
 void SolverManager::constructLinearSolver(Alat::GhostLinearSolver& linearsolver, const Alat::GhostVector& u)
 {
   _chronometer.start("ConstructLinearSolver");
-  // constructVectorOfDomains(u);
-
-  // std::cerr << "SolverManager::constructLinearSolver() _domainSolversOfSolver="<<_domainSolversOfSolver<<"\n";
-
   getLinearSolver(linearsolver)->compute();
   getLinearSolver(linearsolver)->restart();
-  // double tstart, tend, tdiff;
-  // int nprocs=omp_get_num_procs();
-  // omp_set_num_threads(nprocs);
-  // #pragma omp parallel private (tstart,tend)
-  // #pragma omp reduce(max:tdiff)
   {
-    // tstart=omp_get_wtime();
-    // #pragma omp for
-// #ifndef  NOOPENMP
-// #pragma omp parallel for
-// #endif
     for(int i = 0; i < getNDomainSolvers(); i++)
     {
       getDomainSolver(i)->constructMultigridTransfer( linearsolver.getMatrix() );
       for(GhostLinearSolverSet::iterator p = _domainSolversOfSolver.begin(); p != _domainSolversOfSolver.end(); p++)
       {
-        // std::cerr << "SolverManager::constructLinearSolver() *p="<<*p<<"\n";
         getDomainSolver(i)->constructLinearSolver(*p);
       }
     }
-    // tend=omp_get_wtime();
-    // tdiff=tend-tstart;
   }
-  // std::cerr<<"Time SolverManager::constructLinearSolver "<<tdiff<<"  "<<nprocs<<'\n';
-
   _chronometer.stop("ConstructLinearSolver");
 }
 
-/*--------------------------------------------------------------------------*/
-void SolverManager::matrixVectorProductCoupling(int i, int level, const Alat::GhostMatrix& A, Alat::GhostVector& y, const Alat::GhostVector& x, double d) const
-{
-  return;
-  assert(0);
-//   for(int pos = _domainneighbours.rowstart(i); pos < _domainneighbours.rowstop(i); pos++)
-//   {
-//     int j = _domainneighbours.col(pos);
-//     if(i == j)
-//     {
-//       continue;
-//     }
-// // #ifdef  CLANG
-// //     std::pair<int, int> domains = std::make_pair<int, int>( std::min(i, j), fmax(i, j) );
-// // #else
-// //     std::pair<int, int> domains = std::make_pair( std::min(i, j), fmax(i, j) );
-// // #endif
-//     Alat::IntPair domains = Alat::makePair( std::min(i, j), std::max(i, j) );
-//     int ic = _couplingofdomains[domains];
-//     int il = _domainsofcoupling[ic][0];
-//     if(il == i)
-//     {
-//       getCouplingSolver(ic)->matrixVectorProductLeft(level, A, y, x, d);
-//     }
-//     else
-//     {
-//       getCouplingSolver(ic)->matrixVectorProductRight(level, A, y, x, d);
-//     }
-//   }
-}
+// /*--------------------------------------------------------------------------*/
+// void SolverManager::matrixVectorProductCoupling(int i, int level, const Alat::GhostMatrix& A, Alat::GhostVector& y, const Alat::GhostVector& x, double d) const
+// {
+//   return;
+//   assert(0);
+// //   for(int pos = _domainneighbours.rowstart(i); pos < _domainneighbours.rowstop(i); pos++)
+// //   {
+// //     int j = _domainneighbours.col(pos);
+// //     if(i == j)
+// //     {
+// //       continue;
+// //     }
+// // // #ifdef  CLANG
+// // //     std::pair<int, int> domains = std::make_pair<int, int>( std::min(i, j), fmax(i, j) );
+// // // #else
+// // //     std::pair<int, int> domains = std::make_pair( std::min(i, j), fmax(i, j) );
+// // // #endif
+// //     Alat::IntPair domains = Alat::makePair( std::min(i, j), std::max(i, j) );
+// //     int ic = _couplingofdomains[domains];
+// //     int il = _domainsofcoupling[ic][0];
+// //     if(il == i)
+// //     {
+// //       getCouplingSolver(ic)->matrixVectorProductLeft(level, A, y, x, d);
+// //     }
+// //     else
+// //     {
+// //       getCouplingSolver(ic)->matrixVectorProductRight(level, A, y, x, d);
+// //     }
+// //   }
+// }
 
 /*--------------------------------------------------------------------------*/
 void SolverManager::setVariableVectorToAll(Alat::GhostVector& u, const Alat::GhostVector& ui) const
@@ -644,30 +475,9 @@ void SolverManager::matrixVectorProduct(const Alat::GhostMatrix& A, Alat::GhostV
   {
     getDomainSolver(i)->matrixVectorProduct(level, A, y, x, d);
   }
-  // for(int i = 0; i < getNCouplingSolvers(); i++)
-  // {
-  //   getCouplingSolver(i)->matrixVectorProduct(level, A, y, x, d);
-  // }
 }
 
-// /*--------------------------------------------------------------------------*/
-//
-// int SolverManager::getLeftSolverIndexOfCouplingSolver(int i) const
-// {
-//   //  return _domainsofcoupling[i][0];
-//   return _model->getLeftDomain(i);
-// }
-//
-// /*--------------------------------------------------------------------------*/
-//
-// int SolverManager::getRightSolverIndexOfCouplingSolver(int i) const
-// {
-//   //  return _domainsofcoupling[i][1];
-//   return _model->getRightDomain(i);
-// }
-
 /*---------------------------------------------------------*/
-
 void SolverManager::readUnknownVariables(Alat::GhostVector& v, int number)
 {
   _chronometer.start("InputOutput");
@@ -875,10 +685,6 @@ void SolverManager::_writePostProcessScalars(const Alat::Map<std::string, Alat::
 void SolverManager::writePostProcessVariablesDynamic(const Alat::GhostVector& v, int number) const
 {
   _chronometer.start("InputOutput");
-  // for(int i = 0; i < getNDomainSolvers(); i++)
-  // {
-  //   getDomainSolver(i)->writePostProcessVariables(v, number);
-  // }
   std::string filename = getIoManager()->getFileNameOut(Alat::IoManager::PostProcess, "ScalarsDynamic.data");
   std::ofstream file;
   if(number == 0)
@@ -1065,10 +871,6 @@ void SolverManager::computePostProcessVector(Alat::SystemVector& vectorallvars, 
       {
         varvector(icomp, 0) = sqrt( varvector(icomp, 0) );
       }
-      // else if( ( type == "US" ) || ( type == "OS" ) )
-      // {
-      //   varvector(icomp, 0) = fabs( varvector(icomp, 0) );
-      // }
     }
   }
 }
@@ -1104,9 +906,6 @@ void SolverManager::setVectorToAllVariables( Alat::GhostVector& guall, const Ala
 /*--------------------------------------------------------------------------*/
 void SolverManager::vectorZero(Alat::GhostVector& f) const
 {
-// #ifndef  NOOPENMP
-// #pragma omp parallel for
-// #endif
   for(int i = 0; i < getNDomainSolvers(); i++)
   {
     getDomainSolver(i)->vectorZero(f);
@@ -1117,9 +916,6 @@ void SolverManager::vectorZero(Alat::GhostVector& f) const
 
 void SolverManager::vectorAdd(Alat::GhostVector& y, double s, const Alat::GhostVector& x) const
 {
-// #ifndef  NOOPENMP
-// #pragma omp parallel for
-// #endif
   for(int i = 0; i < getNDomainSolvers(); i++)
   {
     getDomainSolver(i)->vectorAdd(y, s, x);
@@ -1130,9 +926,6 @@ void SolverManager::vectorAdd(Alat::GhostVector& y, double s, const Alat::GhostV
 
 void SolverManager::vectorEqual(Alat::GhostVector& y, const Alat::GhostVector& x) const
 {
-// #ifndef  NOOPENMP
-// #pragma omp parallel for
-// #endif
   for(int i = 0; i < getNDomainSolvers(); i++)
   {
     getDomainSolver(i)->vectorEqual(y, x);
@@ -1144,9 +937,6 @@ void SolverManager::vectorNormPerVariable(Alat::StringDoubleMap& rnorm, const Al
 {
   _initStringDoubleMapForVectors(rnorm);
   int level = 0;
-// #ifndef  NOOPENMP
-// #pragma omp parallel for
-// #endif
   for(int i = 0; i < getNDomainSolvers(); i++)
   {
     getDomainSolver(i)->vectorScalarProductPerVariables(level, rnorm, r, r);
@@ -1161,26 +951,12 @@ void SolverManager::vectorNormPerVariable(Alat::StringDoubleMap& rnorm, const Al
 double SolverManager::vectorNorm(const Alat::GhostVector& y) const
 {
   return sqrt( scalarProduct(y, y) );
-//   double norm = 0.0;
-// #ifndef  NOOPENMP
-// #pragma omp parallel for
-// #endif
-//   for(int i = 0; i < getNDomainSolvers(); i++)
-//   {
-//     double d = getDomainSolver(i)->vectorNorm(y);
-//     std::cerr << "i="<< i << " d="<<d <<"\n";
-//     norm += d*d;
-//   }
-//   return sqrt(norm);
 }
 
 /*--------------------------------------------------------------------------*/
 double SolverManager::scalarProduct(const Alat::GhostVector& x, const Alat::GhostVector& y) const
 {
   double ps = 0.0;
-// #ifndef  NOOPENMP
-// #pragma omp parallel for
-// #endif
   for(int i = 0; i < getNDomainSolvers(); i++)
   {
     ps += getDomainSolver(i)->vectorScalarProduct(x, y);
@@ -1192,26 +968,16 @@ double SolverManager::scalarProduct(const Alat::GhostVector& x, const Alat::Ghos
 
 void SolverManager::matrixZero(Alat::GhostMatrix& A) const
 {
-// #ifndef  NOOPENMP
-// #pragma omp parallel for
-// #endif
   for(int i = 0; i < getNDomainSolvers(); i++)
   {
     getDomainSolver(i)->matrixZero(A);
   }
-  // for(int i = 0; i < getNCouplingSolvers(); i++)
-  // {
-  //   getCouplingSolver(i)->matrixZero(A);
-  // }
 }
 
 /*--------------------------------------------------------------------------*/
 void SolverManager::constructRightHandSide(AlatEnums::residualstatus& status, Alat::GhostVector& f) const
 {
   _chronometer.start("Rhs");
-// #ifndef  NOOPENMP
-// #pragma omp parallel for
-// #endif
   for(int i = 0; i < getNDomainSolvers(); i++)
   {
     getDomainSolver(i)->constructRightHandSide(status, f);
@@ -1225,21 +991,10 @@ void SolverManager::constructForm(AlatEnums::residualstatus& status, Alat::Ghost
 {
   _chronometer.start("Form");
   status = AlatEnums::ResidualStatusOk;
-// #ifndef  NOOPENMP
-// #pragma omp parallel for
-// #endif
   for(int i = 0; i < getNDomainSolvers(); i++)
   {
     getDomainSolver(i)->constructForm(status, f, u);
   }
-  // for(int i = 0; i < getNCouplingSolvers(); i++)
-  // {
-  //   getCouplingSolver(i)->constructForm(status, f, u);
-  // }
-
-// #ifndef  NOOPENMP
-// #pragma omp parallel for
-// #endif
   for(int i = 0; i < getNDomainSolvers(); i++)
   {
     getDomainSolver(i)->strongDirichletVectorZero(f);
@@ -1251,20 +1006,10 @@ void SolverManager::constructForm(AlatEnums::residualstatus& status, Alat::Ghost
 void SolverManager::computeLinearization(AlatEnums::residualstatus& status, Alat::GhostVector& f, const Alat::GhostVector& u, const Alat::GhostVector& du) const
 {
   _chronometer.start("Linearization");
-// #ifndef  NOOPENMP
-// #pragma omp parallel for
-// #endif
   for(int i = 0; i < getNDomainSolvers(); i++)
   {
     getDomainSolver(i)->computeLinearization(status, f, u, du);
   }
-  // for(int i = 0; i < getNCouplingSolvers(); i++)
-  // {
-  //   getCouplingSolver(i)->computeLinearization(status, f, u, du);
-  // }
-// #ifndef  NOOPENMP
-// #pragma omp parallel for
-// #endif
   for(int i = 0; i < getNDomainSolvers(); i++)
   {
     getDomainSolver(i)->strongDirichletVectorZero(f);
@@ -1277,26 +1022,16 @@ void SolverManager::integrateTimeRhs(AlatEnums::residualstatus& status, Alat::Gh
 {
   // std::cerr << "SolverManager::integrateTimeRhs() d="<<d<<"\n";
   _chronometer.start("Rhs");
-// #ifndef  NOOPENMP
-// #pragma omp parallel for
-// #endif
   for(int i = 0; i < getNDomainSolvers(); i++)
   {
     getDomainSolver(i)->integrateTimeRhs(status, f, u, bdf, d);
   }
-  // for(int i = 0; i < getNCouplingSolvers(); i++)
-  // {
-  //   getCouplingSolver(i)->integrateTimeRhs(status, f, u, bdf, d);
-  // }
   _chronometer.stop("Rhs");
 }
 
 /*--------------------------------------------------------------------------*/
 void SolverManager::initSolution(Alat::GhostVector& u)
 {
-// #ifndef  NOOPENMP
-// #pragma omp parallel for
-// #endif
   for(int i = 0; i < getNDomainSolvers(); i++)
   {
     getDomainSolver(i)->initSolution(u);
@@ -1309,29 +1044,12 @@ void SolverManager::constructJacobianMatrix(AlatEnums::residualstatus& status, A
   // std::cerr << "SolverManager::constructJacobianMatrix()\n";
   _chronometer.start("ConstructMatrix");
   double tstart, tend, tdiff;
-  // int nprocs=omp_get_num_procs();
-  // #pragma omp parallel private (tstart,tend)
-  // #pragma omp reduce(max:tdiff)
   {
-    // tstart=omp_get_wtime();
-    // #pragma omp for
-// #ifndef  NOOPENMP
-// #pragma omp parallel for
-// #endif
     for(int i = 0; i < getNDomainSolvers(); i++)
     {
       getDomainSolver(i)->constructJacobianMatrix(status, A, u);
     }
-    // tend=omp_get_wtime();
-    // tdiff=tend-tstart;
   }
-  // std::cerr<<"Time SolverManager::constructJacobianMatrix "<<tdiff<<"  "<<nprocs<<" "<<getNDomainSolvers()<<'\n';
-
-  // for(int i = 0; i < getNCouplingSolvers(); i++)
-  // {
-  //   getCouplingSolver(i)->constructJacobianMatrix(status, A, u);
-  //   getCouplingSolver(i)->distributeJacobianMatrix(A);
-  // }
   for(int i = 0; i < getNDomainSolvers(); i++)
   {
     getDomainSolver(i)->strongDirichletMatrix(A);
@@ -1344,17 +1062,10 @@ void SolverManager::postProcess(AlatEnums::residualstatus& status, Alat::GhostVe
 {
   _chronometer.start("PostProcess");
   vectorZero(f);
-// #ifndef  NOOPENMP
-// #pragma omp parallel for
-// #endif
   for(int i = 0; i < getNDomainSolvers(); i++)
   {
     getDomainSolver(i)->postProcess(status, f, u, uold, level);
   }
-  // for(int i = 0; i < getNCouplingSolvers(); i++)
-  // {
-  //   getCouplingSolver(i)->postProcess(status, f, u, uold, level);
-  // }
   _chronometer.stop("PostProcess");
 }
 
@@ -1362,9 +1073,6 @@ void SolverManager::postProcess(AlatEnums::residualstatus& status, Alat::GhostVe
 void SolverManager::integrateInTimePostProcess(Alat::GhostVector& ptime, const Alat::GhostVector& p) const
 {
   _chronometer.start("PostProcess");
-// #ifndef  NOOPENMP
-// #pragma omp parallel for
-// #endif
   for(int i = 0; i < getNDomainSolvers(); i++)
   {
     getDomainSolver(i)->integrateInTimePostProcess(ptime, p);
@@ -1375,9 +1083,6 @@ void SolverManager::integrateInTimePostProcess(Alat::GhostVector& ptime, const A
 /*---------------------------------------------------------*/
 void SolverManager::setMeshDecomposition(const FadaMesh::MeshCompositionInterface* meshcomposition)
 {
-// #ifndef  NOOPENMP
-// #pragma omp parallel for
-// #endif
   for(int i = 0; i < getNDomainSolvers(); i++)
   {
     getDomainSolver(i)->setMesh( meshcomposition->getMesh(i) );
@@ -1387,29 +1092,16 @@ void SolverManager::setMeshDecomposition(const FadaMesh::MeshCompositionInterfac
 /*--------------------------------------------------------------------------*/
 void SolverManager::interpolateSolution(Alat::GhostVector& ufine, const Alat::GhostVector& ucoarse) const
 {
-// #ifndef  NOOPENMP
-// #pragma omp parallel for
-// #endif
   for(int i = 0; i < getNDomainSolvers(); i++)
   {
     getDomainSolver(i)->interpolateSolution(ufine, ucoarse);
   }
 }
 
-//
-// /*--------------------------------------------------------------------------*/
-// void SolverManager::projectSolution( Alat::GhostVector& u, const Alat::GhostVector& f) const
-// {
-//   assert(0);
-// }
-
 /*--------------------------------------------------------------------------*/
 void SolverManager::strongDirichletVectorSolution(Alat::GhostVector& u) const
 {
   int level = 0;
-// #ifndef  NOOPENMP
-// #pragma omp parallel for
-// #endif
   for(int i = 0; i < getNDomainSolvers(); i++)
   {
     getDomainSolver(i)->strongDirichletVectorSolution(u);
@@ -1419,9 +1111,6 @@ void SolverManager::strongDirichletVectorSolution(Alat::GhostVector& u) const
 /*--------------------------------------------------------------------------*/
 void SolverManager::newtonProject(Alat::GhostVector& gu) const
 {
-// #ifndef  NOOPENMP
-// #pragma omp parallel for
-// #endif
   for(int i = 0; i < getNDomainSolvers(); i++)
   {
     getDomainSolver(i)->newtonProject(gu);
@@ -1431,20 +1120,11 @@ void SolverManager::newtonProject(Alat::GhostVector& gu) const
 /*--------------------------------------------------------------------------*/
 void SolverManager::beforeTimestep(Alat::GhostVector& gu) const
 {
-// #ifndef  NOOPENMP
-// #pragma omp parallel for
-// #endif
   for(int i = 0; i < getNDomainSolvers(); i++)
   {
     getDomainSolver(i)->beforeTimestep(gu);
   }
 }
-
-// /*---------------------------------------------------------*/
-// const Alat::IntVector& SolverManager::getDomainsPermutation(int iteration) const
-// {
-//   return _domainspermutation[iteration%_domainspermutation.size()];
-// }
 
 /*---------------------------------------------------------*/
 void SolverManager::_initStringDoubleMapForVectors(Alat::StringDoubleMap& map) const
@@ -1460,9 +1140,6 @@ void SolverManager::_initStringDoubleMapForVectors(Alat::StringDoubleMap& map) c
 void SolverManager::computeNormSquared(AlatEnums::residualstatus& status, Alat::StringDoubleMap& norms, const Alat::GhostVector& u, const Alat::GhostVector& du) const
 {
   norms.zeros();
-// #ifndef  NOOPENMP
-// #pragma omp parallel for
-// #endif
   for(int i = 0; i < getNDomainSolvers(); i++)
   {
     getDomainSolver(i)->computeNormSquared(status, norms, u, du);
@@ -1489,28 +1166,6 @@ double SolverManager::computeTimeEstimator(const Alat::GhostVector& u, const Ala
     max = fmax( max, sqrt(p->second)/sqrt(norm[p->first]) );
   }
   return max;
-
-  // #ifndef  NOOPENMP
-  // #pragma omp parallel for
-  // #endif
-  // for(int i = 0; i < getNDomainSolvers(); i++)
-  // {
-  //   getDomainSolver(i)->computeTimeEstimator(status, delta_norm, u, h1);
-  // }
-  //
-  // // std::cerr << "SolverManager::computeEstimatorMap delta_norm="<<delta_norm<<"\n";
-  // // if(type != "max")
-  // // {
-  // //   _error_string("computeTimeEstimator", "unknown type", type);
-  // // }
-  // double max = 0.0;
-  // for(Alat::StringDoubleMap::iterator p = delta_norm.begin(); p != delta_norm.end(); p++)
-  // {
-  //   // std::cerr << "computeTimeEstimator() " << p->first << " " << sqrt(p->second) << "\n";
-  //   max = fmax( max, sqrt(p->second) );
-  // }
-  // std::cerr << "SolverManager::computeTimeEstimator() h1/max="<< vectorNorm(h1)/max <<"\n";
-  // return max;
 }
 
 /*---------------------------------------------------------*/
@@ -1562,11 +1217,6 @@ int SolverManager::getNDomainSolvers() const
 {
   return _domainsolvers.size();
 }
-
-// int SolverManager::getNCouplingSolvers() const
-// {
-//   return _couplingsolvers.size();
-// }
 
 void SolverManager::registerVector(const Alat::GhostVector& v)
 {
@@ -1622,10 +1272,6 @@ void SolverManager::setTimeInfo(const Fada::TimeData& timedata, double masscoefi
   {
     getDomainSolver(i)->setTimeInfo(timedata, masscoefimplicit);
   }
-  // for(int i = 0; i < getNCouplingSolvers(); i++)
-  // {
-  //   getCouplingSolver(i)->setTimeInfo(timedata, masscoefimplicit);
-  // }
 }
 
 void SolverManager::setTimeScheme(std::string time_discretization)
@@ -1634,10 +1280,6 @@ void SolverManager::setTimeScheme(std::string time_discretization)
   {
     getDomainSolver(i)->setTimeScheme(time_discretization);
   }
-  // for(int i = 0; i < getNCouplingSolvers(); i++)
-  // {
-  //   getCouplingSolver(i)->setTimeScheme(time_discretization);
-  // }
 }
 
 /*--------------------------------------------------------------------------*/
@@ -1652,13 +1294,6 @@ int SolverManager::linearSolve(AlatEnums::iterationstatus& status, const Alat::G
   {
     getDomainSolver(i)->getMesh()->setResolution(0);
   }
-  // for(int i = 0; i < getNCouplingSolvers(); i++)
-  // {
-  //   getCouplingSolver(i)->getMesh()->setResolution(0);
-  // }
-  //
-  // linearsolver->getVisitor()->postProcess( u);
-  //
   _chronometer.stop("LinearSolve");
   // std::cerr << "SolverManager::linearSolve() linearsolver="<<getLinearSolver(linearsolver)->getName()<<"\n";
   return getLinearSolver(linearsolver)->getNumberOfIterations();

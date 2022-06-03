@@ -206,7 +206,7 @@ void IterativeSolverVisitorInterface::vectorEqualOnDomain(int idomain, Alat::Gho
   _notWritten("vectorEqualOnDomain");
 }
 
-void IterativeSolverVisitorInterface::matrixVectorProductCoupling(int i, const Alat::GhostMatrix& ghostmatrix, Alat::GhostVector& u, const Alat::GhostVector& f, double d) const
-{
-  _notWritten("matrixVectorProductCoupling");
-}
+// void IterativeSolverVisitorInterface::matrixVectorProductCoupling(int i, const Alat::GhostMatrix& ghostmatrix, Alat::GhostVector& u, const Alat::GhostVector& f, double d) const
+// {
+//   _notWritten("matrixVectorProductCoupling");
+// }

@@ -170,10 +170,6 @@ void SingleMeshComposition::writeH5(std::string filename) const
     std::stringstream ss;
     ss<< std::setfill('0') << std::setw(4) << idomain;
     blockfilename += "_block_"+ss.str()+".h5";
-    // const H5std_string h5filename(blockfilename);
-    // H5::H5File file( h5filename, H5F_ACC_TRUNC );
-    // _mesh->writeH5(file);
-    // file.close();
     _mesh->writeH5(blockfilename);
   }
 }

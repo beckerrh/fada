@@ -50,7 +50,6 @@ MESSAGE(STATUS "CMAKE_INSTALL_PREFIX: ${CMAKE_INSTALL_PREFIX}")
 set(CacheForExecutable ${CMAKE_INSTALL_PREFIX}/cmake/CMakeCacheForExecutable.cmake)
 file(WRITE ${CacheForExecutable} "")
 
-# get_cmake_property(Vars VARIABLES)
 set(Vars
 ARMADILLO_FOUND
 ARMADILLO_INCLUDE_DIRS
@@ -64,7 +63,6 @@ UMFPACK_LIBRARIES
 HDF5_LIBRARIES
 )
 
-
 set(Fada_EXTERNAL_LIBRARIES
 	${ARMADILLO_LIBRARY}
   ${BLAS_LIBRARIES}
@@ -73,13 +71,8 @@ set(Fada_EXTERNAL_LIBRARIES
 	${UMFPACK_LIBRARIES}
 	${HDF5_LIBRARIES}
 )
-
-
-foreach(Var ${Vars})
-  # message(STATUS " Var: ${Var} ${${Var}}")
-  # if(${Var})
-  #   string(REPLACE "\\" "\\\\" ${Var} ${${Var}})
-  # endif()
-  # message(STATUS " Var: ${Var} ${${Var}}")
-  file(APPEND ${CacheForExecutable} "set(${Var} \"${${Var}}\")\n")
-endforeach()
+set(Fada_EXTERNAL_INCLUDE
+  ${ARMADILLO_INCLUDE_DIRS}
+)
+file(APPEND ${CacheForExecutable} "set(Fada_EXTERNAL_LIBRARIES \"${Fada_EXTERNAL_LIBRARIES}\")\n")
+file(APPEND ${CacheForExecutable} "set(Fada_EXTERNAL_INCLUDE \"${Fada_EXTERNAL_INCLUDE}\")\n")

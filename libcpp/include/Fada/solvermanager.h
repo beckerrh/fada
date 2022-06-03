@@ -134,7 +134,7 @@ public:
     void writePostProcessVariables(const Alat::GhostVector& v, int number = -1) const;
     void writePostProcessVariablesDynamic(const Alat::GhostVector& v, int number) const;
     void setLavrentievParameter(double parameter) const;
-    void matrixVectorProductCoupling(int i, int level, const Alat::GhostMatrix& A, Alat::GhostVector& y, const Alat::GhostVector& x, double d) const;
+    // void matrixVectorProductCoupling(int i, int level, const Alat::GhostMatrix& A, Alat::GhostVector& y, const Alat::GhostVector& x, double d) const;
     void matrixVectorProduct(const Alat::GhostMatrix& A, Alat::GhostVector& y, const Alat::GhostVector& x, double d) const;
 
     void vectorZero(Alat::GhostVector& f) const;
