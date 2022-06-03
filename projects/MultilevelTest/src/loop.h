@@ -19,7 +19,7 @@ public:
   Loop* clone() const;
   FadaEnums::looptype getType() const;
   void run();
-  void basicInit(Fada::ModelManagerInterface* modelmanager, Fada::SolverManager* solvermanager, const std::string& rundirectory, const Alat::ParameterFile* parameterfile);
+  void basicInit(Fada::ModelInterface* model, Fada::SolverManager* solvermanager, const std::string& rundirectory, const Alat::ParameterFile* parameterfile);
 };
 
 /*--------------------------------------------------------------------------*/

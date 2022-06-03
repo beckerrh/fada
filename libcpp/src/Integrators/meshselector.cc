@@ -1,4 +1,4 @@
-#include  "Fada/modelmanagerinterface.h"
+#include  "Fada/modelinterface.h"
 #include  "Integrators/meshselector.h"
 #include  "FadaMesh/singlemeshcomposition.h"
 #include  "FadaMesh/singlemultilevelmeshcomposition.h"

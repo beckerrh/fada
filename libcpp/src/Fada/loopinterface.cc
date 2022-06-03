@@ -1,6 +1,6 @@
 #include  "Alat/ghostmatrix.h"
 #include  "Fada/loopinterface.h"
-#include  "Fada/modelmanagerinterface.h"
+#include  "Fada/modelinterface.h"
 #include  <cassert>
 
 using namespace Fada;
@@ -52,7 +52,7 @@ void LoopInterface::linearSolve(AlatEnums::iterationstatus& status, Alat::GhostM
 
 /*--------------------------------------------------------------------------*/
 
-void LoopInterface::basicInit(ModelManagerInterface* modelmanager, SolverManager* solvermanager, const std::string& rundirectory, const Alat::ParameterFile* parameterfile)
+void LoopInterface::basicInit(Fada::ModelInterface* model, SolverManager* solvermanager, const std::string& rundirectory, const Alat::ParameterFile* parameterfile)
 {
   _notWritten("basicInit");
 }

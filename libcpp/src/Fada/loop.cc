@@ -53,7 +53,7 @@ Loop& Loop::operator=( const Loop& loop)
 }
 
 /*---------------------------------------------------------*/
-void Loop::basicInit(ModelManagerInterface* modelmanager, SolverManager* solvermanager, const std::string& rundirectory, const Alat::ParameterFile* parameterfile)
+void Loop::basicInit(Fada::ModelInterface* model, SolverManager* solvermanager, const std::string& rundirectory, const Alat::ParameterFile* parameterfile)
 {
   _solvermanager=solvermanager;
   // std::cerr << "Loop::basicInit() DEBUT\n";
@@ -88,7 +88,7 @@ void Loop::basicInit(ModelManagerInterface* modelmanager, SolverManager* solverm
   getSolverManager()->registerVector(_data);
   getSolverManager()->registerVector(_postprocess);
 
-  getSolverManager()->basicInit(modelmanager, getMeshComposition(), getIoManager(), getType(), parameterfile);
+  getSolverManager()->basicInit(model, getMeshComposition(), getIoManager(), getType(), parameterfile);
 
   std::string filename = getIoManager().getDirectoryName(Alat::IoManager::RunInfo)+"/LoopInformation";
   std::ofstream file;

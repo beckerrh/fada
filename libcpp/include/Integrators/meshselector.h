@@ -11,7 +11,7 @@ namespace FadaMesh
 }
 namespace Fada
 {
-  class ModelManagerInterface;
+  class ModelInterface;
 }
 namespace Integrators
 {

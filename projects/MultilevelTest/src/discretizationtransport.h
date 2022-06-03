@@ -14,7 +14,7 @@ namespace Alat
 namespace Fada
 {
   class DirichletInterface;
-  class DomainModelInterface;
+  class ModelInterface;
   class FemInterface;
   class IntegrationFormulaInterface;
   class MeshInterface;
@@ -44,7 +44,7 @@ public:
 class DiscretizationTransport : public Fada::UnStructuredIntegrationLoop
 {
 protected:
-  const Fada::DomainModelInterface* _model;
+  const Fada::ModelInterface* _model;
   const FadaMesh::MultiLevelMesh* _mmesh;
   Alat::Vector<DiscretizationData> _discdata;
 

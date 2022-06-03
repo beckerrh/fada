@@ -36,7 +36,7 @@ protected:
     GhostMatrixAgent _ghost_matrix_agent;
     GhostLinearSolverAgent _ghost_linear_solver_agent;
     GhostVectorAgent _ghost_vector_agent;
-    DomainModelInterface* _model;
+    Fada::ModelInterface* _model;
     DofManagerAllVariables _dof_manager;
     mutable FemManagerInterface* _femmanager;
     mutable FemManagerInterface* _femmanagerR;
@@ -54,9 +54,9 @@ protected:
     void reInitVectorForInterpolation(Alat::GhostVector& u) const;
     BoundaryManager* getBoundaryManager();
     VariableManager* getVariableManager();
-    DomainModelInterface*& getModelPointer();
-    const DomainModelInterface* getModel() const;
-    DomainModelInterface* getModel();
+    Fada::ModelInterface*& getModelPointer();
+    const Fada::ModelInterface* getModel() const;
+    Fada::ModelInterface* getModel();
 
     DofManagerAllVariables* getDofManagerAllVariables();
     const DofInformationInterface* getDofInformationOfVariable(const Fada::VariableInterface* var) const;
@@ -107,7 +107,7 @@ public:
 
     static void initChronometer();
     static void printChronometer(std::ostream& os);
-    void basicInit(int index, Fada::DomainModelInterface* model, const FadaMesh::MeshInterface* mesh, const Alat::IoManager* io_manager, FadaEnums::looptype looptype, const Alat::ParameterFile* parameterfile = NULL);
+    void basicInit(int index, Fada::ModelInterface* model, const FadaMesh::MeshInterface* mesh, const Alat::IoManager* io_manager, FadaEnums::looptype looptype, const Alat::ParameterFile* parameterfile = NULL);
     void reInit();
     void reInitForInterpolation(const FadaMesh::MeshInterface* mesh);
     void reInitMatrixAndLinearSolver();
@@ -205,7 +205,7 @@ public:
     void constructLinearSolver(const Alat::GhostLinearSolver& linearsolver);
     void constructMultigridTransfer(const Alat::GhostMatrix& ghostmatrix);
     void addPostProcessVariable(Fada::VariableInterface* variable);
-    void defineIntegratorsAndVariables(Fada::DomainModelInterface* model, const FadaMesh::MeshInterface* mesh);
+    void defineIntegratorsAndVariables(Fada::ModelInterface* model, const FadaMesh::MeshInterface* mesh);
 
     void setVariableVectorToAll(Alat::GhostVector& u, const Alat::GhostVector& ui) const;
     void setVariableVectorFromAll(Alat::GhostVector& ui, const Alat::GhostVector& u) const;

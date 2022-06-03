@@ -12,7 +12,7 @@ namespace Alat
 }
 namespace Fada
 {
-  class DomainModelInterface;
+  class ModelInterface;
   class LoopInterface;
 }
 namespace Integrators
@@ -25,7 +25,7 @@ protected:
 
     Fada::SolverManager* newSolverManager(std::string meshtype) const;
     Fada::LoopInterface* newLoop(std::string loopname) const;
-    Fada::ModelManagerInterface* newModelManager() const;
+    Fada::ModelInterface* newModel() const;
 
 public:
     ~Main();

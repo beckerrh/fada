@@ -190,11 +190,11 @@ std::ostream& IterativeSolverVisitorInterface::printLoopInformation(std::ostream
 //   _notWritten("matrixVectorProduct(Alat::SystemVector*)");
 // }
 
-/*-------------------------------------------------------------*/
-const Alat::IntVector& IterativeSolverVisitorInterface::getDomainsPermutation(int iteration) const
-{
-  _notWritten("getDomainsPermutation");
-}
+// /*-------------------------------------------------------------*/
+// const Alat::IntVector& IterativeSolverVisitorInterface::getDomainsPermutation(int iteration) const
+// {
+//   _notWritten("getDomainsPermutation");
+// }
 
 void IterativeSolverVisitorInterface::solveOnDomain(int idomain, const Alat::GhostLinearSolver& linearsolverdomain, const Alat::GhostMatrix& ghostmatrix, Alat::GhostVector& u, const Alat::GhostVector& f) const
 {

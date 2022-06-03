@@ -3,7 +3,6 @@
 #include  "Alat/map.h"
 #include  "Fada/directsolver.h"
 #include  "Fada/linearsolversolvermanager.h"
-#include  "Fada/linearsolversolvermanagerAV.h"
 #include  <cassert>
 #include  <sstream>
 

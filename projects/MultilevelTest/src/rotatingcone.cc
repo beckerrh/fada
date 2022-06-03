@@ -1,4 +1,4 @@
-#include  "Fada/domainmodelinterface.h"
+#include  "Fada/modelinterface.h"
 #include  "Fada/constantfunction.h"
 #include  "Fada/datafunctionvector.h"
 #include  "FadaMesh/meshinterface.h"

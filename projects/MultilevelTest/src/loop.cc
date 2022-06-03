@@ -41,9 +41,9 @@ FadaEnums::looptype Loop::getType() const
 }
 
 /*---------------------------------------------------------*/
-void Loop::basicInit(Fada::ModelManagerInterface* modelmanager, Fada::SolverManager* solvermanager, const std::string& rundirectory, const Alat::ParameterFile* parameterfile)
+void Loop::basicInit(Fada::ModelInterface* model, Fada::SolverManager* solvermanager, const std::string& rundirectory, const Alat::ParameterFile* parameterfile)
 {
-  Fada::Loop::basicInit(modelmanager, solvermanager, rundirectory, parameterfile);
+  Fada::Loop::basicInit(model, solvermanager, rundirectory, parameterfile);
   _help.setLevel(-1);
   getSolverManager()->registerVector(_help);
   getSolverManager()->reInit();

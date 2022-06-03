@@ -1,10 +1,10 @@
 #ifndef ___Model_h
 #define ___Model_h
 
-#include  "Fada/domainmodel.h"
+#include  "Fada/model.h"
 
 /*--------------------------------------------------------------------------*/
-class Model : public Fada::DomainModel
+class Model : public Fada::Model
 {
 protected:
   mutable bool _dg;

@@ -1,7 +1,7 @@
 #include  "Fada/constantfunction.h"
 #include  "Fada/datafunctionvector.h"
 #include  "Fada/dirichletwithexactsolution.h"
-#include  "Fada/domainmodelinterface.h"
+#include  "Fada/modelinterface.h"
 #include  "Fada/integratormanager.h"
 #include  "FadaMesh/meshinterface.h"
 #include  "Fada/problemdata.h"

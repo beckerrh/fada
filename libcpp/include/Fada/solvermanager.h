@@ -26,7 +26,7 @@ namespace Fada
   class DofManagerAllVariables;
   class DomainSolverInterface;
   class SparsityPatternWithRowIndexSoft;
-  class ModelManagerInterface;
+  class ModelInterface;
   class ModelInterface;
 
   class SolverManager : public Alat::InterfaceBase
@@ -34,7 +34,7 @@ namespace Fada
 protected:
     bool _onlydirectsolvers;
     FadaEnums::looptype _looptype;
-    ModelManagerInterface* _modelmanager;
+    Fada::ModelInterface* _model;
     const Alat::ParameterFile* _parameterfile;
     mutable const FadaMesh::MeshCompositionInterface* _meshcomposition;
     const Alat::IoManager* _io_manager;
@@ -44,40 +44,40 @@ protected:
     GhostVectorAgent _ghost_vector_agent;
     double _time, _deltat;
 
-    void setDomainsOfCoupling(Alat::Vector<Alat::FixArray<2, int> >& domainsofcoupling, Alat::SparsityPattern& _domainneighbours, Alat::Map<Alat::IntPair, int>& _couplingofdomains) const;
+    // void setDomainsOfCoupling(Alat::Vector<Alat::FixArray<2, int> >& domainsofcoupling, Alat::SparsityPattern& _domainneighbours, Alat::Map<Alat::IntPair, int>& _couplingofdomains) const;
     void initSolverChronometer() const;
     void printSolverChronometer(std::ostream& os) const;
 
     Fada::DomainSolverInterface* newDomainSolver(const FadaMesh::MeshInterface* mesh) const;
 
     // gestion des solvers
-    Alat::IntVector _vectorOfCouplings;
-    mutable Alat::Vector<Alat::IntVector> _domainspermutation;
+    // Alat::IntVector _vectorOfCouplings;
+    // mutable Alat::Vector<Alat::IntVector> _domainspermutation;
     Alat::Vector<DomainSolverInterface*> _domainsolvers;
-    Alat::Map<std::string, Alat::IntSet> _domainsofvar, _couplingsofvar;
+    // Alat::Map<std::string, Alat::IntSet> _domainsofvar;
     Alat::StringSet _variables;
 
     void _initDomainsOfVar();
     void _writePostProcessScalars(const Alat::Map<std::string, Alat::IntSet>& ppvarswithoutfem, const Alat::SystemVector& vectorallvars, std::ofstream& file, std::string first_column="t") const;
     void _writePostProcessScalarsHeader(const Alat::Map<std::string, Alat::IntSet>& ppvarswithoutfem, std::ofstream& file, std::string first_column="t") const;
 
-    Alat::Vector<Alat::FixArray<2, int> > _domainsofcoupling;
+    // Alat::Vector<Alat::FixArray<2, int> > _domainsofcoupling;
     mutable Alat::Vector<bool> _sortcriterion;
 
     typedef Alat::Set<Alat::Pair<int, int> > SortedCouplingIndices;
     Alat::SparsityPattern _domainneighbours;
     Alat::Map<Alat::IntPair, int> _couplingofdomains;
 
-    Alat::Vector<Alat::SorterInterface*> _domainsorters;
-    std::string _linearsolver, _domainsort;
+    // Alat::Vector<Alat::SorterInterface*> _domainsorters;
+    std::string _linearsolver;
     int _nlevels, _ncellsdirect;
     Alat::Map<std::string, Alat::IntSet> _ppvarswithoutfem;
     typedef Alat::Set<Alat::GhostLinearSolver> GhostLinearSolverSet;
     GhostLinearSolverSet _domainSolversOfSolver;
 
     mutable Fada::Chronometer _chronometer;
-    int getLeftSolverIndexOfCouplingSolver(int i) const;
-    int getRightSolverIndexOfCouplingSolver(int i) const;
+    // int getLeftSolverIndexOfCouplingSolver(int i) const;
+    // int getRightSolverIndexOfCouplingSolver(int i) const;
     const Alat::ParameterFile* getParameterFile() const;
     const FadaMesh::MeshCompositionInterface* getMeshComposition() const;
     DomainSolverInterface*& getDomainSolverPointer(int i);
@@ -93,7 +93,7 @@ public:
     std::string getName() const;
     std::string getInterfaceName() const {return "_not_expected_";}
 
-    void basicInit(Fada::ModelManagerInterface* modelmanager, const FadaMesh::MeshCompositionInterface* meshcomposition, const Alat::IoManager& io_manager, FadaEnums::looptype looptype, const Alat::ParameterFile* parameterfile = NULL);
+    void basicInit(Fada::ModelInterface* model, const FadaMesh::MeshCompositionInterface* meshcomposition, const Alat::IoManager& io_manager, FadaEnums::looptype looptype, const Alat::ParameterFile* parameterfile = NULL);
     void reInit();
     void reInitMatrixAndLinearSolver();
 
@@ -105,10 +105,10 @@ public:
     const Alat::LinearSolverInterface* getLinearSolver(const Alat::GhostLinearSolver& v) const;
     Alat::LinearSolverInterface* getLinearSolver(const Alat::GhostLinearSolver& v);
 
-    const Alat::Map<std::string, Alat::IntSet>& getDomainsOfVar() const;
-    const Alat::IntSet& getDomainsOfVar(std::string varname) const;
-    const Alat::Map<std::string, Alat::IntSet>& getCouplingsOfVar() const;
-    const Alat::IntSet& getCouplingsOfVar(std::string varname) const;
+    // const Alat::Map<std::string, Alat::IntSet>& getDomainsOfVar() const;
+    // const Alat::IntSet& getDomainsOfVar(std::string varname) const;
+    // const Alat::Map<std::string, Alat::IntSet>& getCouplingsOfVar() const;
+    // const Alat::IntSet& getCouplingsOfVar(std::string varname) const;
 
     void addLinearDomainSolvers(const Alat::GhostLinearSolver& linearsolver);
 
@@ -164,7 +164,7 @@ public:
     void computeNormSquared(AlatEnums::residualstatus& status, Alat::StringDoubleMap& norms, const Alat::GhostVector& u, const Alat::GhostVector& du) const;
 
     int linearSolve(AlatEnums::iterationstatus& status, const Alat::GhostMatrix& A, const Alat::GhostLinearSolver& linearsolver, Alat::GhostVector& u, const Alat::GhostVector& f) const;
-    const Alat::IntVector& getDomainsPermutation(int iteration) const;
+    // const Alat::IntVector& getDomainsPermutation(int iteration) const;
     double computeTimeEstimator(const Alat::GhostVector& u, const Alat::GhostVector& prev, Alat::GhostVector& h1, Alat::GhostVector& h2) const;
     void restartLinearSolver(AlatEnums::residualstatus& status, Alat::GhostMatrix& A, Alat::GhostLinearSolver& linearsolver, const Alat::GhostVector& gu);
     void setVectorFromAllVariables( Alat::GhostVector& gu, const Alat::GhostVector& guall) const;

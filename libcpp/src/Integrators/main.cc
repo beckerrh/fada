@@ -6,7 +6,7 @@
 #include  "Fada/linearloop.h"
 #include  "FadaMesh/meshcompositioninterface.h"
 #include  "Fada/modelinterface.h"
-#include  "Fada/modelmanagerinterface.h"
+#include  "Fada/modelinterface.h"
 #include  "Alat/parameterfile.h"
 #include  "Fada/postprocessloop.h"
 #include  "Fada/staticloop.h"
@@ -161,9 +161,9 @@ Fada::LoopInterface* Main::newLoop(std::string loopname) const
 }
 
 /*--------------------------------------------------------------------------*/
-Fada::ModelManagerInterface* Main::newModelManager() const
+Fada::ModelInterface* Main::newModel() const
 {
-  _notWritten("newModelManager");
+  _notWritten("newModel");
 }
 
 /*--------------------------------------------------------------------------*/
@@ -191,19 +191,19 @@ void Main::run()
     assert(loop->getRefinedMeshComposition());
   }
 
-  Fada::ModelManagerInterface* modelmanager = newModelManager();
-  modelmanager->basicInit(_parameterfile, loop->getMeshComposition(), loop->getType());
+  Fada::ModelInterface* model = newModel();
+  model->basicInit(_parameterfile, loop->getMeshComposition()->getMesh(0), loop->getType());
 
-  loop->basicInit(modelmanager, solvermanager, _rundirectory, _parameterfile);
+  loop->basicInit(model, solvermanager, _rundirectory, _parameterfile);
   loop->run();
   if(loop)
   {
     delete loop;
     loop = NULL;
   }
-  if(modelmanager)
+  if(model)
   {
-    delete modelmanager;
-    modelmanager = NULL;
+    delete model;
+    model = NULL;
   }
 }

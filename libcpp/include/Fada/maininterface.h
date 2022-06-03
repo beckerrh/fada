@@ -8,7 +8,7 @@
 namespace Fada
 {
   class LoopInterface;
-  class ModelManagerInterface;
+  class ModelInterface;
   class SolverManager;
 
   class MainInterface : public Alat::InterfaceBase
@@ -18,7 +18,7 @@ protected:
 
     virtual Fada::SolverManager* newSolverManager(std::string meshtype) const = 0;
     virtual Fada::LoopInterface* newLoop(std::string loopname) const = 0;
-    virtual Fada::ModelManagerInterface* newModelManager() const = 0;
+    virtual Fada::ModelInterface* newModel() const = 0;
 
 public:
     ~MainInterface();

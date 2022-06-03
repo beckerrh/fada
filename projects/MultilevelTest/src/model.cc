@@ -20,11 +20,11 @@ Model::~Model()
 {
 }
 
-Model::Model(): Fada::DomainModel(), _dg(false)
+Model::Model(): Fada::Model(), _dg(false)
 {
 }
 
-Model::Model( const Model& model): Fada::DomainModel(model)
+Model::Model( const Model& model): Fada::Model(model)
 {
   assert(0);
   _dg = model._dg;
@@ -33,7 +33,7 @@ Model::Model( const Model& model): Fada::DomainModel(model)
 
 Model& Model::operator=( const Model& model)
 {
-  Fada::DomainModel::operator=(model);
+  Fada::Model::operator=(model);
   assert(0);
   _dg = model._dg;
   return *this;

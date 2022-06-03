@@ -43,10 +43,10 @@ FadaEnums::looptype LinearLoop::getType() const
 }
 
 /*---------------------------------------------------------*/
-void LinearLoop::basicInit(ModelManagerInterface* modelmanager, SolverManager* solvermanager, const std::string& rundirectory, const Alat::ParameterFile* parameterfile)
+void LinearLoop::basicInit(Fada::ModelInterface* model, SolverManager* solvermanager, const std::string& rundirectory, const Alat::ParameterFile* parameterfile)
 {
   // std::cerr << "@@@ LinearLoop::basicInit() BEGIN\n";
-  Loop::basicInit(modelmanager, solvermanager, rundirectory, parameterfile);
+  Loop::basicInit(model, solvermanager, rundirectory, parameterfile);
   getChronometer().start("basicInit");
   if(_vectortype=="ml")
   {

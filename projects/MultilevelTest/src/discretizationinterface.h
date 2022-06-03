@@ -7,7 +7,7 @@
 
 namespace Fada
 {
-  class DomainModelInterface;
+  class ModelInterface;
 }
 namespace Alat
 {
@@ -30,7 +30,7 @@ public:
   std::string getName() const;
   DiscretizationInterface* clone() const;
   
-  virtual void setMesh(const FadaMesh::MultiLevelMesh* mmesh, const Fada::DomainModelInterface* model)=0;
+  virtual void setMesh(const FadaMesh::MultiLevelMesh* mmesh, const Fada::ModelInterface* model)=0;
 
   void basicInit(const Fada::DomainSolverInterface* solver);
   void computeLinearization(AlatEnums::residualstatus& status, Alat::VectorInterface* f, const Alat::VectorInterface* u, const Alat::VectorInterface* du, const Alat::VectorInterface* uold, const Alat::VectorInterface* uveryold) const;

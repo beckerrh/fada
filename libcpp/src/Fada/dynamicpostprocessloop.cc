@@ -36,14 +36,14 @@ DynamicPostProcessLoop* DynamicPostProcessLoop::clone() const
 }
 
 /*--------------------------------------------------------------------------*/
-void DynamicPostProcessLoop::basicInit(ModelManagerInterface* modelmanager, SolverManager* solvermanager, const std::string& rundirectory, const Alat::ParameterFile* parameterfile)
+void DynamicPostProcessLoop::basicInit(Fada::ModelInterface* model, SolverManager* solvermanager, const std::string& rundirectory, const Alat::ParameterFile* parameterfile)
 {
   solvermanager->registerVector(_uold);
   solvermanager->registerVector(_postprocesstimeintegral);
   Alat::DataFormatHandler dataformathandler;
   dataformathandler.insert("postprocessincrement", &_postprocessincrement, 1);
   Alat::FileScanner filescanner(dataformathandler, parameterfile, "Loop", 0);
-  PostProcessLoop::basicInit(modelmanager, solvermanager, rundirectory, parameterfile);
+  PostProcessLoop::basicInit(model, solvermanager, rundirectory, parameterfile);
   std::string filenametimeinfo = getIoManager().getFileNameOut(Alat::IoManager::RunInfo, "DynamicLoopInfo");
   std::ifstream filetimeinfo( filenametimeinfo.c_str() );
   if( not filetimeinfo.is_open() )

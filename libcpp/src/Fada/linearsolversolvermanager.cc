@@ -209,7 +209,6 @@ void LinearSolverSolverManager::solveApproximate(AlatEnums::iterationstatus& sta
 void LinearSolverSolverManager::readParameters(const Alat::ParameterFile* parameterfile, std::string blockname)
 {
   Alat::DataFormatHandler dataformathandler;
-  dataformathandler.insert("smoother", &_smoother, "domaindecomposition_jacobi");
   dataformathandler.insert("smootheriteration", &_smootheriteration, "richardson");
   dataformathandler.insert("coarsesolver", &_coarsesolver, "direct");
   dataformathandler.insert("integration", &_integration, false);
@@ -261,14 +260,7 @@ void LinearSolverSolverManager::basicInit(const Alat::ParameterFile* parameterfi
       // std::cerr << "LinearSolverSolverManager::basicInit() _variables="<<_variables<<" level="<<level<<"\n";
       iterativesolverwp->newVisitorPointer() = new Fada::VisitorSolverManagerOneLevel(_solvermanager, level, _variables, _integration);
 
-      Alat::StringVector bouts = Alat::Tokenize(_smoother, "_");
-      int nbouts = bouts.size();
-      if(nbouts != 2)
-      {
-        _error_string("basicInit", "smoother="+_smoother+" read in Block "+ blockname);
-      }
-      assert(bouts[1]=="jacobi");
-      iterativesolverwp->newPreconditionerPointer() = new Fada::DomainDecomposition(bouts[1], level, _solvermanager, _ghostmatrix, _domainlinearsolver);
+      iterativesolverwp->newPreconditionerPointer() = new Fada::DomainDecomposition(level, _solvermanager, _ghostmatrix, _domainlinearsolver);
       iterativesolverwp->basicInit( parameterfile, blockname );
 
       _linearsolvers.getLinearSolverPointer(level) = iterativesolverwp;

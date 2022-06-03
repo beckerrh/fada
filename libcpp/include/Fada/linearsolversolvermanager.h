@@ -21,7 +21,7 @@ namespace Fada
   {
 protected:
     bool _basicinitcalled, _integration;
-    std::string _coarsesolver, _smoother, _smootheriteration, _dirname, _blockname;
+    std::string _coarsesolver, _smootheriteration, _dirname, _blockname;
     const Alat::GhostLinearSolver _domainlinearsolver;
     const Alat::GhostMatrix _ghostmatrix;
     Fada::SolverManager* _solvermanager;

@@ -5,7 +5,7 @@
 #include  "Fada/femcgp12d.h"
 #include  "Fada/integrationformulaline.h"
 #include  "Fada/datainterface.h"
-#include  "Fada/domainmodelinterface.h"
+#include  "Fada/modelinterface.h"
 #include  "Fada/domainsolverinterface.h"
 #include  "Fada/integrationformulatriangle.h"
 #include  "Alat/systemmatrixinterface.h"

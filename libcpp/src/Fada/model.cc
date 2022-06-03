@@ -113,6 +113,7 @@ void Model::basicInit(const Alat::ParameterFile* parameterfile, const FadaMesh::
   assert(_mesh);
   // _time = 0.;
   _looptype = looptype;
+
   addStringsAndParameters(parameterfile, mesh);
 
   getStringParamaters().addModelNameAndId(getName(), _modelid);
@@ -124,6 +125,8 @@ void Model::basicInit(const Alat::ParameterFile* parameterfile, const FadaMesh::
   getStringParamatersOfLoop().basicInit( getParameterFile() );
 
   Alat::DataFormatHandler dataformathandler;
+  std::string matrixstoragestring;
+  dataformathandler.insert("matrixstorage", &matrixstoragestring, "none");
   dataformathandler.insert("applicationname", &_applicationname, "none");
   dataformathandler.insert("scaling", &_scaling, "application");
   Alat::FileScanner filescanner(dataformathandler, getParameterFile(), "Model_"+getName(), 0);
@@ -141,6 +144,26 @@ void Model::basicInit(const Alat::ParameterFile* parameterfile, const FadaMesh::
   else if(_scaling=="none")
   {
     _error_string("basicInit", "_scaling is", _scaling);
+  }
+  if(matrixstoragestring=="none")
+  {
+    _error_string("basicInit", "please give \"matrixstorage\" in block \" Model_" + getName()+"\"");
+  }
+  Alat::StringVector matrixstoragevector = Alat::Tokenize(matrixstoragestring, "|");
+  for(int ii = 0; ii < matrixstoragevector.size(); ii++)
+  {
+    Alat::StringVector matrixstoragetype = Alat::Tokenize(matrixstoragevector[ii], ":");
+    Alat::StringVector matrixstoragevariable = Alat::Tokenize(matrixstoragetype[0], "-");
+    assert(matrixstoragevariable.size() == 2);
+    if(matrixstoragetype.size() == 1)
+    {
+      _matrixstorage[Alat::makePair(matrixstoragevariable[0], matrixstoragevariable[1])] = "default";
+    }
+    else
+    {
+      assert(matrixstoragetype.size() == 2);
+      _matrixstorage[Alat::makePair(matrixstoragevariable[0], matrixstoragevariable[1])] = matrixstoragetype[1];
+    }
   }
 }
 
@@ -534,4 +557,16 @@ std::string Model::determineFemType(std::string varname) const
     exit(1);
   }
   return femtype;
+}
+/*--------------------------------------------------------------------------*/
+std::string Model::matrixcoupling(const std::string& variableout, const std::string& variablein) const
+{
+  if(_matrixstorage.find(Alat::makePair(variableout, variablein))!=_matrixstorage.end())
+  {
+    return _matrixstorage[Alat::makePair(variableout, variablein)];
+  }
+  else
+  {
+    return "none";
+  }
 }

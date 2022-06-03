@@ -1,7 +1,7 @@
 #include  "Fada/applicationinterface.h"
 #include  "FadaMesh/boundaryinfo.h"
 #include  "Fada/boundarymanager.h"
-#include  "Fada/domainmodelinterface.h"
+#include  "Fada/modelinterface.h"
 #include  "Alat/filescanner.h"
 #include  "Alat/intvector.h"
 #include  "Alat/tokenize.h"
@@ -143,7 +143,7 @@ void BoundaryManager::setData(const BoundaryConditionToVariables& boundarycondit
 }
 
 /*--------------------------------------------------------------------------*/
-void BoundaryManager::basicInit(const Alat::ParameterFile* parameterfile, const Fada::DomainModelInterface* model)
+void BoundaryManager::basicInit(const Alat::ParameterFile* parameterfile, const Fada::ModelInterface* model)
 {
   Alat::DataFormatHandler dataformathandler;
   std::string strongdirichlet, strongnormaldirichlet;

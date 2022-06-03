@@ -11,7 +11,7 @@
 #include  "Fada/dofinformationinterface.h"
 #include  "Fada/dofinformationwithoutfem.h"
 #include  "Fada/domainintegrationloopinterface.h"
-#include  "Fada/domainmodelinterface.h"
+#include  "Fada/modelinterface.h"
 #include  "Fada/domainsolver.h"
 #include  "Fada/feminterface.h"
 #include  "Fada/femmanager.h"
@@ -213,7 +213,7 @@ void DomainSolver::addPostProcessVariable(Fada::VariableInterface* variable)
 }
 
 /*---------------------------------------------------------*/
-void DomainSolver::defineIntegratorsAndVariables(Fada::DomainModelInterface* model, const FadaMesh::MeshInterface* mesh)
+void DomainSolver::defineIntegratorsAndVariables(Fada::ModelInterface* model, const FadaMesh::MeshInterface* mesh)
 {
   _model = model;
   getModel()->defineVariables( getVariableManager() );
@@ -277,7 +277,7 @@ Fada::MultiLevelTransferSingleFemInterface* DomainSolver::newMultiLevelTransferS
 }
 
 /*---------------------------------------------------------*/
-void DomainSolver::basicInit(int index, Fada::DomainModelInterface* model, const FadaMesh::MeshInterface* mesh, const Alat::IoManager* io_manager, FadaEnums::looptype looptype, const Alat::ParameterFile* parameterfile)
+void DomainSolver::basicInit(int index, Fada::ModelInterface* model, const FadaMesh::MeshInterface* mesh, const Alat::IoManager* io_manager, FadaEnums::looptype looptype, const Alat::ParameterFile* parameterfile)
 {
   _chronometer.start("basicInit");
   Solver::basicInit(index, model, mesh, io_manager, looptype, parameterfile);
@@ -1764,17 +1764,17 @@ void DomainSolver::writeVariablesInfo() const
 }
 
 /*--------------------------------------------------------------------------*/
-DomainModelInterface*& DomainSolver::getModelPointer()
+Fada::ModelInterface*& DomainSolver::getModelPointer()
 {
   return _model;
 }
 
-const DomainModelInterface* DomainSolver::getModel() const
+const Fada::ModelInterface* DomainSolver::getModel() const
 {
   return _model;
 }
 
-DomainModelInterface* DomainSolver::getModel()
+Fada::ModelInterface* DomainSolver::getModel()
 {
   return _model;
 }

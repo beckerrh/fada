@@ -26,7 +26,7 @@ namespace FadaMesh
 }
 namespace Fada
 { 
-  class ModelManagerInterface;
+  class ModelInterface;
   class SolverManager;
 
   class LoopInterface : public Alat::InterfaceBase
@@ -40,7 +40,7 @@ public:
     LoopInterface( const LoopInterface& loop);
     LoopInterface& operator=( const LoopInterface& loop);
 
-    virtual void basicInit(ModelManagerInterface* modelmanager, SolverManager* solvermanager, const std::string& rundirectory, const Alat::ParameterFile* parameterfile = NULL);
+    virtual void basicInit(Fada::ModelInterface* model, SolverManager* solvermanager, const std::string& rundirectory, const Alat::ParameterFile* parameterfile = NULL);
     virtual FadaEnums::looptype getType() const = 0;
     virtual std::string getRunDir() const = 0;
     virtual SolverManager* getSolverManager() = 0;

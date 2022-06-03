@@ -2,6 +2,7 @@
 #define __Fada_Model_h
 
 #include  "Alat/map.h"
+#include  "Alat/pair.h"
 #include  "applicationinterface.h"
 #include  "boundarymanager.h"
 #include  "functionalmap.h"
@@ -35,6 +36,7 @@ protected:
     int _modelid;
     FadaEnums::looptype _looptype;
     Alat::StringDoubleVectorMap _variablesscales;
+    Alat::Map<Alat::StringPair, std::string> _matrixstorage;
 
     void addString(std::string key, std::string value = "");
     void addStringOfLoop(std::string key, std::string value = "");
@@ -99,6 +101,7 @@ public:
     FunctionalMap* getFunctionals();
     const FunctionalMap* getFunctionals() const;
     std::ostream& printLoopInformation(std::ostream& os) const;
+    std::string matrixcoupling(const std::string& variableout, const std::string& variablsin) const;
   };
 }
 

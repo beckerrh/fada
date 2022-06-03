@@ -1,6 +1,6 @@
 #include  "domainsolver.h"
 #include  "FadaMesh/meshinterface.h"
-#include  "Fada/domainmodelinterface.h"
+#include  "Fada/modelinterface.h"
 #include  "Fada/unstructuredintegrationloop.h"
 #include  "Fada/multilevelvector.h"
 // #include  "Fada/multigridtransferinterface.h"

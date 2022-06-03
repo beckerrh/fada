@@ -1,6 +1,6 @@
 #include  "Alat/assemblevector.h"
 #include  "Alat/iomanager.h"
-#include  "Fada/domainmodelinterface.h"
+#include  "Fada/modelinterface.h"
 #include  "Fada/domainsolverinterface.h"
 #include  "Fada/femmanagerinterface.h"
 #include  "Fada/integrator.h"
@@ -72,7 +72,7 @@ void Integrator::basicInit(const Fada::SolverInterface* solver)
   _solver = dynamic_cast<const Fada::DomainSolverInterface*>( solver );
   assert(_solver);
   _varinfo->basicInit( _solver->getVariableManager(),  _solver->getFemManager() );
-  _model = dynamic_cast<const Fada::DomainModelInterface*>( _solver->getModel() );
+  _model = dynamic_cast<const Fada::ModelInterface*>( _solver->getModel() );
   assert(_model);
 }
 

@@ -129,10 +129,10 @@ const Alat::SystemVector* VisitorSolverManagerOneLevel::getDomainVector(int idom
   return getDomainSolver(idomain)->getVector(_level, u);
 }
 
-const Alat::IntVector& VisitorSolverManagerOneLevel::getDomainsPermutation(int iteration) const
-{
-  return getSolverManager()->getDomainsPermutation(iteration);
-}
+// const Alat::IntVector& VisitorSolverManagerOneLevel::getDomainsPermutation(int iteration) const
+// {
+//   return getSolverManager()->getDomainsPermutation(iteration);
+// }
 
 /*--------------------------------------------------------------------------*/
 

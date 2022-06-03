@@ -51,7 +51,7 @@ public:
 
     void setLinearizationPoint(const Alat::GhostVector& linearizationpoint);
     void matrixVectorProduct(const Alat::GhostMatrix& A, Alat::GhostVector& r, const Alat::GhostVector& u, double d) const;
-    const Alat::IntVector& getDomainsPermutation(int iteration) const;
+    // const Alat::IntVector& getDomainsPermutation(int iteration) const;
     void vectorEqual(Alat::GhostVector& r, const Alat::GhostVector& f) const;
     void vectorZero(Alat::GhostVector& v) const;
     void vectorAdd(Alat::GhostVector& p, double d, const Alat::GhostVector& q) const;

@@ -7,7 +7,6 @@
 #include  "Fada/domainsolver.h"
 #include  "Fada/integratormanager.h"
 #include  "Fada/modelinterface.h"
-#include  "Fada/modelmanagerinterface.h"
 #include  "Fada/multilevelvector.h"
 #include  "Fada/preconditionersolvermanagerallvariables.h"
 #include  "Fada/solvermanager.h"
@@ -35,21 +34,20 @@
 #endif
 #include  "Fada/directsolver.h"
 #include  "Fada/iterativesolverselector.h"
-#include  "Fada/linearsolversolvermanagerAV.h"
 
 using namespace Fada;
 
 /*--------------------------------------------------------------------------*/
 SolverManager::~SolverManager()
 {
-  for(int i = 0; i < _domainsorters.size(); i++)
-  {
-    if(_domainsorters[i])
-    {
-      delete _domainsorters[i];
-      _domainsorters[i] = NULL;
-    }
-  }
+  // for(int i = 0; i < _domainsorters.size(); i++)
+  // {
+  //   if(_domainsorters[i])
+  //   {
+  //     delete _domainsorters[i];
+  //     _domainsorters[i] = NULL;
+  //   }
+  // }
 }
 
 SolverManager::SolverManager() : Alat::InterfaceBase(), _chronometer("SolverManager"), _time(0.0)
@@ -127,15 +125,16 @@ std::ostream& SolverManager::printLoopInformation(std::ostream& os) const
   }
 
 
-  _modelmanager->printLoopInformation(os);
+  _model->printLoopInformation(os);
+  getDomainSolver(0)->printLoopInformation(os);
 
-  const ModelManagerInterface::IndicesOfModelMap& indicesofdomainmodelmap = _modelmanager->getIndicesOfDomainModelMap();
-  os << "\n>=====================DomainSolvers:=====================<\n";
-  for(ModelManagerInterface::IndicesOfModelMap::const_iterator p = indicesofdomainmodelmap.begin(); p != indicesofdomainmodelmap.end(); p++)
-  {
-    os << "\t>=====================" << p->first << ": " << p->second << "=====================<\n";
-    getDomainSolver( *p->second.begin() )->printLoopInformation(os);
-  }
+  // const Fada::ModelInterface::IndicesOfModelMap& indicesofdomainmodelmap = _model->getIndicesOfDomainModelMap();
+  // os << "\n>=====================DomainSolvers:=====================<\n";
+  // for(Fada::ModelInterface::IndicesOfModelMap::const_iterator p = indicesofdomainmodelmap.begin(); p != indicesofdomainmodelmap.end(); p++)
+  // {
+  //   os << "\t>=====================" << p->first << ": " << p->second << "=====================<\n";
+  //   getDomainSolver( *p->second.begin() )->printLoopInformation(os);
+  // }
   return os;
 }
 
@@ -150,13 +149,13 @@ void SolverManager::printSolverChronometer(std::ostream& os) const
   Fada::chronometer_traits<Fada::DomainSolver>::print(os);
 }
 
-/*--------------------------------------------------------------------------*/
-void SolverManager::setDomainsOfCoupling(Alat::Vector<Alat::FixArray<2, int> >& domainsofcoupling, Alat::SparsityPattern& _domainneighbours, Alat::Map<Alat::IntPair, int>& _couplingofdomains) const
-{
-  domainsofcoupling.set_size(0);
-  Alat::SparsityPatternSoft domainneighboursoft(1);
-  _domainneighbours.set_size(domainneighboursoft);
-}
+// /*--------------------------------------------------------------------------*/
+// void SolverManager::setDomainsOfCoupling(Alat::Vector<Alat::FixArray<2, int> >& domainsofcoupling, Alat::SparsityPattern& _domainneighbours, Alat::Map<Alat::IntPair, int>& _couplingofdomains) const
+// {
+//   domainsofcoupling.set_size(0);
+//   Alat::SparsityPatternSoft domainneighboursoft(1);
+//   _domainneighbours.set_size(domainneighboursoft);
+// }
 
 /*--------------------------------------------------------------------------*/
 Fada::DomainSolverInterface* SolverManager::newDomainSolver(const FadaMesh::MeshInterface* mesh) const
@@ -165,13 +164,13 @@ Fada::DomainSolverInterface* SolverManager::newDomainSolver(const FadaMesh::Mesh
 }
 
 /*---------------------------------------------------------*/
-void SolverManager::basicInit(Fada::ModelManagerInterface* modelmanager, const FadaMesh::MeshCompositionInterface* meshcomposition, const Alat::IoManager& io_manager, FadaEnums::looptype looptype, const Alat::ParameterFile* parameterfile)
+void SolverManager::basicInit(Fada::ModelInterface* model, const FadaMesh::MeshCompositionInterface* meshcomposition, const Alat::IoManager& io_manager, FadaEnums::looptype looptype, const Alat::ParameterFile* parameterfile)
 {
   // std::cerr << "SolverManager::basicInit() DEBUT\n";
   initSolverChronometer();
   _chronometer.start("BasicInit");
   _looptype = looptype;
-  _modelmanager = modelmanager;
+  _model = model;
   // _application=application;
   assert(meshcomposition);
   _meshcomposition = meshcomposition;
@@ -180,12 +179,13 @@ void SolverManager::basicInit(Fada::ModelManagerInterface* modelmanager, const F
   Alat::DataFormatHandler dataformathandler;
   dataformathandler.insert("linearsolver", &_linearsolver, "direct");
   dataformathandler.insert("ncellsdirect", &_ncellsdirect, 200);
-  dataformathandler.insert("domainsort", &_domainsort, "none");
+  // dataformathandler.insert("domainsort", &_domainsort, "none");
   Alat::FileScanner filescanner(dataformathandler, parameterfile, "SolverManager", 0);
 
 
 
   int ndomains = meshcomposition->getNDomains();
+  assert(ndomains==1);
   _nlevels = meshcomposition->getMesh(0)->getNLevels();
   int ncells = 0;
   for(int idomain = 0; idomain < ndomains; idomain++)
@@ -203,7 +203,7 @@ void SolverManager::basicInit(Fada::ModelManagerInterface* modelmanager, const F
     meshcomposition->getMesh(i)->setResolution(0);
   }
 
-  setDomainsOfCoupling(_domainsofcoupling, _domainneighbours, _couplingofdomains);
+  // setDomainsOfCoupling(_domainsofcoupling, _domainneighbours, _couplingofdomains);
   // std::cerr<<"SolverManager::basicInit() _domainsofcoupling "<<_domainsofcoupling<<'\n';
 
   // for(int i = 0; i < meshcomposition->getNCouplingMeshes(); i++)
@@ -212,13 +212,13 @@ void SolverManager::basicInit(Fada::ModelManagerInterface* modelmanager, const F
   //   meshcomposition->getCouplingMesh(i)->computeCouplingSideInformation(_nlevels);
   // }
   _domainsolvers.set_size(ndomains);
-  int ncouplingsolvers = _domainsofcoupling.size();
+  // int ncouplingsolvers = _domainsofcoupling.size();
   // _couplingsolvers.set_size( ncouplingsolvers );
 
   for(int i = 0; i < ndomains; i++)
   {
     getDomainSolverPointer(i) = newDomainSolver( getMeshComposition()->getMesh(i) );
-    getDomainSolver(i)->defineIntegratorsAndVariables( _modelmanager->getDomainModel(i), getMeshComposition()->getMesh(i) );
+    getDomainSolver(i)->defineIntegratorsAndVariables( _model, getMeshComposition()->getMesh(i) );
   }
   // for(int i = 0; i < getNCouplingSolvers(); i++)
   // {
@@ -228,18 +228,18 @@ void SolverManager::basicInit(Fada::ModelManagerInterface* modelmanager, const F
   //   assert(ir >= 0);
   //   getCouplingSolver(i)->getSolverPointerLeft() = getDomainSolver( il );
   //   getCouplingSolver(i)->getSolverPointerRight() = getDomainSolver( ir );
-  //   Fada::ModelInterface* model = _modelmanager->getCouplingModel(i);
+  //   Fada::ModelInterface* model = _model->getCouplingModel(i);
   //   assert(model);
   //   getCouplingSolver(i)->defineIntegratorsAndVariables(getDomainSolver( il ), getDomainSolver( ir ), model);
   // }
   for(int i = 0; i < getNDomainSolvers(); i++)
   {
-    getDomainSolver(i)->basicInit( i, _modelmanager->getDomainModel(i), getMeshComposition()->getMesh(i), getIoManager(), looptype, getParameterFile() );
+    getDomainSolver(i)->basicInit( i, _model, getMeshComposition()->getMesh(i), getIoManager(), looptype, getParameterFile() );
   }
 
   // for(int i = 0; i < getNCouplingSolvers(); i++)
   // {
-  //   Fada::ModelInterface* model = _modelmanager->getCouplingModel(i);
+  //   Fada::ModelInterface* model = _model->getCouplingModel(i);
   //   getCouplingSolver(i)->basicInit( -i, model, getMeshComposition()->getCouplingMesh(i), getIoManager(), looptype, getParameterFile() );
   // }
 
@@ -301,49 +301,49 @@ void SolverManager::_initDomainsOfVar()
     for(VariablesMap::const_iterator p = unknowns.begin(); p != unknowns.end(); p++)
     {
       std::string varname = p->second->getVarName();
-      _domainsofvar[varname].insert(i);
+      // _domainsofvar[varname].insert(i);
       _variables.insert(varname);
     }
   }
   //create empty vector
-  for(Alat::StringSet::const_iterator p = _variables.begin(); p != _variables.end(); p++)
-  {
-    _couplingsofvar[*p] = Alat::IntSet();
-  }
-  for(Alat::Map<std::string, Alat::IntSet>::const_iterator p = _domainsofvar.begin(); p != _domainsofvar.end(); p++)
-  {
-    std::string varname = p->first;
-    for(int i = 0; i < _domainsofcoupling.size(); i++)
-    {
-      int domL = _domainsofcoupling[i][0];
-      int domR = _domainsofcoupling[i][1];
-      if( ( p->second.find(domL) != p->second.end() )&& ( p->second.find(domR) != p->second.end() ) )
-      {
-        _couplingsofvar[varname].insert(i);
-      }
-    }
-  }
+  // for(Alat::StringSet::const_iterator p = _variables.begin(); p != _variables.end(); p++)
+  // {
+  //   _couplingsofvar[*p] = Alat::IntSet();
+  // }
+  // for(Alat::Map<std::string, Alat::IntSet>::const_iterator p = _domainsofvar.begin(); p != _domainsofvar.end(); p++)
+  // {
+  //   std::string varname = p->first;
+  //   for(int i = 0; i < _domainsofcoupling.size(); i++)
+  //   {
+  //     int domL = _domainsofcoupling[i][0];
+  //     int domR = _domainsofcoupling[i][1];
+  //     if( ( p->second.find(domL) != p->second.end() )&& ( p->second.find(domR) != p->second.end() ) )
+  //     {
+  //       _couplingsofvar[varname].insert(i);
+  //     }
+  //   }
+  // }
 }
 
-const Alat::Map<std::string, Alat::IntSet>& SolverManager::getDomainsOfVar() const
-{
-  return _domainsofvar;
-}
+// const Alat::Map<std::string, Alat::IntSet>& SolverManager::getDomainsOfVar() const
+// {
+//   return _domainsofvar;
+// }
+//
+// const Alat::IntSet& SolverManager::getDomainsOfVar(std::string varname) const
+// {
+//   return _domainsofvar[varname];
+// }
 
-const Alat::IntSet& SolverManager::getDomainsOfVar(std::string varname) const
-{
-  return _domainsofvar[varname];
-}
-
-const Alat::Map<std::string, Alat::IntSet>& SolverManager::getCouplingsOfVar() const
-{
-  return _couplingsofvar;
-}
-
-const Alat::IntSet& SolverManager::getCouplingsOfVar(std::string varname) const
-{
-  return _couplingsofvar[varname];
-}
+// const Alat::Map<std::string, Alat::IntSet>& SolverManager::getCouplingsOfVar() const
+// {
+//   return _couplingsofvar;
+// }
+//
+// const Alat::IntSet& SolverManager::getCouplingsOfVar(std::string varname) const
+// {
+//   return _couplingsofvar[varname];
+// }
 
 /*--------------------------------------------------------------------------*/
 void SolverManager::addLinearDomainSolvers(const Alat::GhostLinearSolver& linearsolver)
@@ -412,12 +412,12 @@ void SolverManager::reInit()
   // {
   //   getCouplingSolver(i)->reInit();
   // }
-  if( getNDomainSolvers() == 1 )
-  {
-    _domainspermutation.set_size(1);
-    _domainspermutation[0].set_size(1);
-    _domainspermutation[0][0] = 0;
-  }
+  // if( getNDomainSolvers() == 1 )
+  // {
+  //   _domainspermutation.set_size(1);
+  //   _domainspermutation[0].set_size(1);
+  //   _domainspermutation[0][0] = 0;
+  // }
 }
 
 /*--------------------------------------------------------------------------*/
@@ -650,21 +650,21 @@ void SolverManager::matrixVectorProduct(const Alat::GhostMatrix& A, Alat::GhostV
   // }
 }
 
-/*--------------------------------------------------------------------------*/
-
-int SolverManager::getLeftSolverIndexOfCouplingSolver(int i) const
-{
-  //  return _domainsofcoupling[i][0];
-  return _modelmanager->getLeftDomain(i);
-}
-
-/*--------------------------------------------------------------------------*/
-
-int SolverManager::getRightSolverIndexOfCouplingSolver(int i) const
-{
-  //  return _domainsofcoupling[i][1];
-  return _modelmanager->getRightDomain(i);
-}
+// /*--------------------------------------------------------------------------*/
+//
+// int SolverManager::getLeftSolverIndexOfCouplingSolver(int i) const
+// {
+//   //  return _domainsofcoupling[i][0];
+//   return _model->getLeftDomain(i);
+// }
+//
+// /*--------------------------------------------------------------------------*/
+//
+// int SolverManager::getRightSolverIndexOfCouplingSolver(int i) const
+// {
+//   //  return _domainsofcoupling[i][1];
+//   return _model->getRightDomain(i);
+// }
 
 /*---------------------------------------------------------*/
 
@@ -1440,11 +1440,11 @@ void SolverManager::beforeTimestep(Alat::GhostVector& gu) const
   }
 }
 
-/*---------------------------------------------------------*/
-const Alat::IntVector& SolverManager::getDomainsPermutation(int iteration) const
-{
-  return _domainspermutation[iteration%_domainspermutation.size()];
-}
+// /*---------------------------------------------------------*/
+// const Alat::IntVector& SolverManager::getDomainsPermutation(int iteration) const
+// {
+//   return _domainspermutation[iteration%_domainspermutation.size()];
+// }
 
 /*---------------------------------------------------------*/
 void SolverManager::_initStringDoubleMapForVectors(Alat::StringDoubleMap& map) const

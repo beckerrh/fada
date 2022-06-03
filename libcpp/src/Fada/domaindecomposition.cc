@@ -15,7 +15,7 @@ using namespace Fada;
 DomainDecomposition::~DomainDecomposition()
 {}
 
-DomainDecomposition::DomainDecomposition(std::string type, int level, Fada::SolverManager* solvermanager, const Alat::GhostMatrix& ghostmatrix, const Alat::GhostLinearSolver& linearsolverdomain) : Alat::Preconditioner(), _type(type), _level(level), _solvermanager(solvermanager), _ghostmatrix(ghostmatrix), _linearsolverdomain(linearsolverdomain)
+DomainDecomposition::DomainDecomposition(int level, Fada::SolverManager* solvermanager, const Alat::GhostMatrix& ghostmatrix, const Alat::GhostLinearSolver& linearsolverdomain) : Alat::Preconditioner(), _level(level), _solvermanager(solvermanager), _ghostmatrix(ghostmatrix), _linearsolverdomain(linearsolverdomain)
 {}
 
 DomainDecomposition::DomainDecomposition( const DomainDecomposition& preconditionerdomaindecomposition) : _linearsolverdomain(preconditionerdomaindecomposition._linearsolverdomain)
@@ -59,41 +59,18 @@ void DomainDecomposition::computePreconditioner()
 
 /*--------------------------------------------------------------------------*/
 void DomainDecomposition::setsmoothtype(std::string smoothtype)
-{
-  // assert(0);
-  // _smoothtype = smoothtype;
-  // Fada::VisitorSolverManagerOneLevel* visitor = dynamic_cast<Fada::VisitorSolverManagerOneLevel*>( getVisitor() );
-  // assert(visitor);
-  // visitor->setsmoothtype(_linearsolverdomain, smoothtype);
-}
+{}
 
 /*--------------------------------------------------------------------------*/
 void DomainDecomposition::solveApproximate(AlatEnums::iterationstatus& status, const Alat::GhostMatrix& A, Alat::GhostVector& u, const Alat::GhostVector& f, int iteration) const
 {
-  const Alat::IntVector& permutation = getVisitor()->getDomainsPermutation(iteration);
- Alat::GhostVector& w = getMemory(1);
-
-  // std::cerr << "permutation="<<permutation<<"\n";
-
- // std::cerr << "DomainDecomposition::solveApproximate() u="<<u << " f="<<f<< " visitor " << getVisitor()->getName() <<  "\n";
+  // const Alat::IntVector& permutation = getVisitor()->getDomainsPermutation(iteration);
 
   Alat::GhostVector& v = getMemory(0);
-  if(_type == "jacobi")
-  {
     Alat::GhostVector& w = getMemory(1);
-    for(int i = 0; i < permutation.size(); i++)
-    {
-      getVisitor()->solveOnDomain(i, _linearsolverdomain, _ghostmatrix, u, f);
-    }
     // for(int i = 0; i < permutation.size(); i++)
     // {
-    //   getVisitor()->vectorEqualOnDomain(i, w, f);
-    //   getVisitor()->matrixVectorProductCoupling(i, A, w, v, -1.0);
-    //   getVisitor()->solveOnDomain(i, _linearsolverdomain, _ghostmatrix, u, w);
+    //   getVisitor()->solveOnDomain(i, _linearsolverdomain, _ghostmatrix, u, f);
     // }
-  }
-  else
-  {
-    assert(0);
-  }
+    getVisitor()->solveOnDomain(0, _linearsolverdomain, _ghostmatrix, u, f);
 }

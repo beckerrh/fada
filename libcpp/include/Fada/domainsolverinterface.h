@@ -29,7 +29,7 @@ namespace Fada
 {
   class BoundaryManager;
   class DomainIntegrationLoopInterface;
-  class DomainModelInterface;
+  class ModelInterface;
   class FemInterface;
   class MultiLevelTransferAllVariablesInterface;
   class MultiLevelTransferSingleFemInterface;
@@ -48,7 +48,7 @@ public:
     DomainSolverInterface& operator=( const DomainSolverInterface& domainsolverinterface);
     std::string getName() const;
 
-    virtual void basicInit(int index, Fada::DomainModelInterface* model, const FadaMesh::MeshInterface* mesh, const Alat::IoManager* io_manager, FadaEnums::looptype looptype, const Alat::ParameterFile* parameterfile = NULL) = 0;
+    virtual void basicInit(int index, Fada::ModelInterface* model, const FadaMesh::MeshInterface* mesh, const Alat::IoManager* io_manager, FadaEnums::looptype looptype, const Alat::ParameterFile* parameterfile = NULL) = 0;
 
     virtual void registerVector(const Alat::GhostVector& v) = 0;
     virtual void registerLinearSolver(const Alat::GhostLinearSolver& v) = 0;
@@ -67,7 +67,7 @@ public:
     virtual const VariableManager* getVariableManager() const = 0;
     virtual const FemManagerInterface* getFemManager() const = 0;
     virtual const FemManagerInterface* getFemManagerRight() const = 0;
-    virtual const DomainModelInterface* getModel() const = 0;
+    virtual const Fada::ModelInterface* getModel() const = 0;
     virtual const DofManagerAllVariables* getDofManagerAllVariables() const = 0;
     virtual const BoundaryManager* getBoundaryManager() const = 0;
     virtual void initSolution(Alat::GhostVector& u) = 0;
@@ -121,7 +121,7 @@ public:
     virtual void setVectorFromAllVariables( Alat::GhostVector& gu, const Alat::GhostVector& guall) const = 0;
     virtual void setVectorToAllVariables( Alat::GhostVector& guall, const Alat::GhostVector& gu) const = 0;
     virtual void addPostProcessVariable(Fada::VariableInterface* variable) = 0;
-    virtual void defineIntegratorsAndVariables(Fada::DomainModelInterface* model, const FadaMesh::MeshInterface* mesh) = 0;
+    virtual void defineIntegratorsAndVariables(Fada::ModelInterface* model, const FadaMesh::MeshInterface* mesh) = 0;
 
     virtual void setVariableVectorToAll(Alat::GhostVector& u, const Alat::GhostVector& ui) const=0;
     virtual void setVariableVectorFromAll(Alat::GhostVector& ui, const Alat::GhostVector& u) const=0;

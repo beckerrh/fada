@@ -15,7 +15,7 @@ public:
     Transport();
     Transport( const Transport& model);
     Transport& operator=( const Transport& model);
-    Fada::DomainModelInterface* clone() const;
+    Fada::ModelInterface* clone() const;
     std::string getName() const;
 
     void addStringsAndParameters(const Alat::ParameterFile* parameter_file, const FadaMesh::MeshInterface* mesh);

@@ -70,6 +70,7 @@ public:
     virtual FadaEnums::looptype getLoopType() const = 0;
     virtual const FadaMesh::MeshInterface* getMesh() const = 0;
     virtual const Fada::DataInterface* getData(const std::string& name) const=0;
+    virtual std::string matrixcoupling(const std::string& variableout, const std::string& variablsin) const=0;
 
     virtual Fada::DomainIntegrationLoopInterface* newDiscretization() const;
   };

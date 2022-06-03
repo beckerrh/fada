@@ -23,7 +23,7 @@ ConvectionDiffusionReaction& ConvectionDiffusionReaction::operator=( const Conve
   assert(0);
   return *this;
 }
-Fada::DomainModelInterface* ConvectionDiffusionReaction::clone() const
+Fada::ModelInterface* ConvectionDiffusionReaction::clone() const
 {
   return new ConvectionDiffusionReaction(*this);
 }

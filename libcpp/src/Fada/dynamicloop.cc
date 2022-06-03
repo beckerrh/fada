@@ -62,7 +62,7 @@ TimeData& DynamicLoop::getTimeData()
 }
 
 /*---------------------------------------------------------*/
-void DynamicLoop::basicInit(ModelManagerInterface* modelmanager, SolverManager* solvermanager, const std::string& rundirectory, const Alat::ParameterFile* parameterfile)
+void DynamicLoop::basicInit(Fada::ModelInterface* model, SolverManager* solvermanager, const std::string& rundirectory, const Alat::ParameterFile* parameterfile)
 {
   getChronometer().start("basicInit");
   std::string time_discretization, timesteppilot;
@@ -115,7 +115,7 @@ void DynamicLoop::basicInit(ModelManagerInterface* modelmanager, SolverManager* 
 
   getChronometer().stop("basicInit");
   solvermanager->registerVector(_postprocesstimeintegral);
-  StaticLoop::basicInit(modelmanager, solvermanager, rundirectory, parameterfile);
+  StaticLoop::basicInit(model, solvermanager, rundirectory, parameterfile);
   getChronometer().start("basicInit");
   _timescheme->basicInit(this);
   _timesteppilot._criterianame = timesteppilot;

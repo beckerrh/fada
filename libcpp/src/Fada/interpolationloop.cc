@@ -53,10 +53,10 @@ const FadaMesh::MeshCompositionInterface* InterpolationLoop::getRefinedMeshCompo
 }
 
 /*--------------------------------------------------------------------------*/
-void InterpolationLoop::basicInit(ModelManagerInterface* modelmanager, SolverManager* solvermanager, const std::string& rundirectory, const Alat::ParameterFile* parameterfile)
+void InterpolationLoop::basicInit(Fada::ModelInterface* model, SolverManager* solvermanager, const std::string& rundirectory, const Alat::ParameterFile* parameterfile)
 {
   // std::cerr << "InterpolationLoop::basicInit() DEBUT\n";
-  Loop::basicInit(modelmanager, solvermanager, rundirectory, parameterfile);
+  Loop::basicInit(model, solvermanager, rundirectory, parameterfile);
 
   if(getMeshComposition() == NULL)
   {

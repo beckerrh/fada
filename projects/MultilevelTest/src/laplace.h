@@ -15,7 +15,7 @@ public:
     Laplace();
     Laplace( const Laplace& model);
     Laplace& operator=( const Laplace& model);
-    Fada::DomainModelInterface* clone() const;
+    Fada::ModelInterface* clone() const;
     std::string getName() const;
 
     Fada::DomainIntegrationLoopInterface* newDiscretization() const;

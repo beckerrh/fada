@@ -39,10 +39,10 @@ PostProcessLoop* PostProcessLoop::clone() const
 }
 
 /*--------------------------------------------------------------------------*/
-void PostProcessLoop::basicInit(ModelManagerInterface* modelmanager, SolverManager* solvermanager, const std::string& rundirectory, const Alat::ParameterFile* parameterfile)
+void PostProcessLoop::basicInit(Fada::ModelInterface* model, SolverManager* solvermanager, const std::string& rundirectory, const Alat::ParameterFile* parameterfile)
 {
   // solvermanager->registerVector(_postprocess);
-  Loop::basicInit(modelmanager, solvermanager, rundirectory, parameterfile);
+  Loop::basicInit(model, solvermanager, rundirectory, parameterfile);
   solvermanager->reInit();
   getIoManager().setReadUnknownVariables(true);
   // printLoopInformation(std::cout);

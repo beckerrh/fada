@@ -29,7 +29,7 @@ Transport& Transport::operator=( const Transport& model)
   assert(0);
   return *this;
 }
-Fada::DomainModelInterface* Transport::clone() const
+Fada::ModelInterface* Transport::clone() const
 {
   return new Transport(*this);
 }

@@ -23,7 +23,7 @@ Laplace& Laplace::operator=( const Laplace& model)
   assert(0);
   return *this;
 }
-Fada::DomainModelInterface* Laplace::clone() const
+Fada::ModelInterface* Laplace::clone() const
 {
   return new Laplace(*this);
 }

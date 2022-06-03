@@ -1,7 +1,10 @@
+#include  "Alat/filescanner.h"
 #include  "Integrators/main.h"
-#include  "modelmanager.h"
 #include  "solvermanager.h"
 #include  "loop.h"
+#include  "convectiondiffusionreaction.h"
+#include  "laplace.h"
+#include  "transport.h"
 
 
 /*--------------------------------------------------------------------------*/
@@ -12,9 +15,28 @@ protected:
   {
     return new SolverManager();
   }
-  Fada::ModelManagerInterface* newModelManager() const
+  Fada::ModelInterface* newModel() const
   {
-    return new ModelManager();
+    Alat::DataFormatHandler dataformathandler;
+    std::string modelname;
+    dataformathandler.insert("model", &modelname, "none");
+    Alat::FileScanner FS(dataformathandler, getParameterFile(), "ModelManager", 0);
+    if(modelname == "ConvectionDiffusionReaction")
+    {
+      return new ConvectionDiffusionReaction();
+    }
+    else if(modelname == "Laplace")
+    {
+      return new Laplace();
+    }
+    else if(modelname == "Transport")
+    {
+      return new Transport();
+    }
+    else
+    {
+      _error_string("newModel", "unknown model", modelname);
+    }
   }
   Fada::LoopInterface * 	newLoop (std::string loopname) const
   {

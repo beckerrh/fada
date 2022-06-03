@@ -10,7 +10,7 @@
 #include  "Alat/systemmatrixinterface.h"
 #include  "Alat/variablevector.h"
 #include  "Fada/domainsolverinterface.h"
-#include  "Fada/domainmodelinterface.h"
+#include  "Fada/modelinterface.h"
 #include  "FadaMesh/boundaryinfo.h"
 #include  "Fada/dirichletinterface.h"
 #include  "Alat/variablematrix.h"

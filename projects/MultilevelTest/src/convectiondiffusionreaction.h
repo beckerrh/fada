@@ -11,7 +11,7 @@
 
 namespace Fada
 {
-  class DomainModelInterface;
+  class ModelInterface;
 }
 
   class ConvectionDiffusionReaction : public virtual Model
@@ -21,7 +21,7 @@ public:
     ConvectionDiffusionReaction();
     ConvectionDiffusionReaction( const ConvectionDiffusionReaction& model);
     ConvectionDiffusionReaction& operator=( const ConvectionDiffusionReaction& model);
-    Fada::DomainModelInterface* clone() const;
+    Fada::ModelInterface* clone() const;
     std::string getName() const;
 
     void addStringsAndParameters(const Alat::ParameterFile* parameter_file, const FadaMesh::MeshInterface* mesh);

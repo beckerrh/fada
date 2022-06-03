@@ -51,7 +51,7 @@ FadaEnums::looptype StaticLoop::getType() const
 
 /*---------------------------------------------------------*/
 
-void StaticLoop::basicInit(ModelManagerInterface* modelmanager, SolverManager* solvermanager, const std::string& rundirectory, const Alat::ParameterFile* parameterfile)
+void StaticLoop::basicInit(Fada::ModelInterface* model, SolverManager* solvermanager, const std::string& rundirectory, const Alat::ParameterFile* parameterfile)
 {
   getChronometer().start("basicInit");
   Alat::DataFormatHandler dataformathandler;
@@ -92,7 +92,7 @@ void StaticLoop::basicInit(ModelManagerInterface* modelmanager, SolverManager* s
   _nlsolver->basicInit(parameterfile, "NonlinearSolver");
 
   getChronometer().stop("basicInit");
-  LinearLoop::basicInit( modelmanager, solvermanager, rundirectory, parameterfile);
+  LinearLoop::basicInit( model, solvermanager, rundirectory, parameterfile);
 }
 
 /*---------------------------------------------------------*/

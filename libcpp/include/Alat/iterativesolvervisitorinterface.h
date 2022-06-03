@@ -48,7 +48,7 @@ public:
 
     virtual void postProcess(Alat::GhostVector& u) const;
 
-    virtual const Alat::IntVector& getDomainsPermutation(int iteration) const;
+    // virtual const Alat::IntVector& getDomainsPermutation(int iteration) const;
     virtual void solveOnDomain(int idomain, const Alat::GhostLinearSolver& linearsolverdomain, const Alat::GhostMatrix& ghostmatrix, Alat::GhostVector& u, const Alat::GhostVector& f) const;
     virtual void vectorEqualOnDomain(int idomain, Alat::GhostVector& u, const Alat::GhostVector& f) const;
     virtual void matrixVectorProductCoupling(int i, const Alat::GhostMatrix& ghostmatrix, Alat::GhostVector& u, const Alat::GhostVector& f, double d) const;

@@ -68,7 +68,7 @@ void MeshCompositionInterface::writeMeshInfo(std::string filename) const
 
 // /*--------------------------------------------------------------------------*/
 //
-// void MeshCompositionInterface::initCouplingGrids(const Alat::DoubleVectorModelManagerInterface* _modelmanager)
+// void MeshCompositionInterface::initCouplingGrids(const Alat::DoubleVectorFada::ModelInterface* _model)
 // {
 // _notWritten("initCouplingGrids");
 // }

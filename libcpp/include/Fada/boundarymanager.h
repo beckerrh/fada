@@ -19,7 +19,7 @@ namespace FadaMesh
 namespace Fada
 {
   class ApplicationInterface;
-  class DomainModelInterface;
+  class ModelInterface;
   class VariablesMap;
   class BoundaryManager : Alat::InterfaceBase
   {
@@ -41,7 +41,7 @@ public:
     BoundaryManager(const BoundaryManager& boundarymanager);
     BoundaryManager& operator=(const BoundaryManager& boundarymanager);
 
-    void basicInit(const Alat::ParameterFile* parameterfile, const Fada::DomainModelInterface* model);
+    void basicInit(const Alat::ParameterFile* parameterfile, const Fada::ModelInterface* model);
     std::ostream& writeBoundaryConditions(std::ostream& os) const;
     std::string getName() const;
     std::string getInterfaceName() const;

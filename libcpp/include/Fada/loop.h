@@ -33,7 +33,7 @@ public:
     std::string getName() const;
     static int _debuglevel;
 
-    void basicInit(ModelManagerInterface* modelmanager, SolverManager* solvermanager, const std::string& rundirectory, const Alat::ParameterFile* parameterfile = NULL);
+    void basicInit(Fada::ModelInterface* model, SolverManager* solvermanager, const std::string& rundirectory, const Alat::ParameterFile* parameterfile = NULL);
     std::ostream& printLoopInformation(std::ostream& os) const;
     void initializeSolution(Alat::GhostVector& u, TimeData& timedata);
     void initializeSolution(Alat::GhostVector& u);

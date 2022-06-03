@@ -8,7 +8,7 @@
 namespace FadaMesh
 {
   class MeshInterface;
-  class ModelManagerInterface;
+  class ModelInterface;
 
   class MeshCompositionInterface : public Alat::InterfaceBase
   {
@@ -27,7 +27,7 @@ public:
     virtual int getDimension() const=0;
     virtual std::string getInfo() const = 0;
     virtual void writeMeshInfo(std::string filename) const;
-    // virtual void initCouplingGrids(const Alat::DoubleVectorModelManagerInterface* _modelmanager);
+    // virtual void initCouplingGrids(const Alat::DoubleVectorFada::ModelInterface* _model);
     virtual void constructFadaMesh(const std::string& meshname);
     virtual void read(const std::string& basefilename) = 0;
     virtual void write(const std::string& basefilename, std::string datatype = "binary") const = 0;
