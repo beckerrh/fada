@@ -19,7 +19,7 @@ namespace Alat
 }
 namespace Fada
 {
-  class SolverManagerInterface;
+  class SolverManager;
 
   class PreconditionerSolverManagerAllvariables : public Alat::Preconditioner
   {
@@ -27,13 +27,13 @@ protected:
     Alat::Vector<Alat::StringVector> _variablenams;
     Alat::StringVector _solvernames;
     const Alat::GhostMatrix _ghostmatrix;
-    Fada::SolverManagerInterface* _solvermanager;
+    Fada::SolverManager* _solvermanager;
     Alat::Vector<Alat::LinearSolverInterface*> _linearsolvers;
     mutable Alat::Vector<Alat::GhostVector> _memory;
 
 public:
     ~PreconditionerSolverManagerAllvariables();
-    PreconditionerSolverManagerAllvariables(const Alat::Map<Alat::StringVector, std::string>& solvernames, const Alat::GhostMatrix& ghostmatrix,  Fada::SolverManagerInterface* solvermanager);
+    PreconditionerSolverManagerAllvariables(const Alat::Map<Alat::StringVector, std::string>& solvernames, const Alat::GhostMatrix& ghostmatrix,  Fada::SolverManager* solvermanager);
     PreconditionerSolverManagerAllvariables( const PreconditionerSolverManagerAllvariables& preconditionersolvermanagerallvariables);
     PreconditionerSolverManagerAllvariables& operator=( const PreconditionerSolverManagerAllvariables& preconditionersolvermanagerallvariables);
     std::string getName() const;

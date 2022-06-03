@@ -1,6 +1,8 @@
 #ifndef __Fada_SolverManager_h
 #define __Fada_SolverManager_h
 
+#include  "Alat/interfacebase.h"
+#include  "Alat/iomanager.h"
 #include  "Alat/fixarray.h"
 #include  "Alat/pair.h"
 #include  "Alat/vector.h"
@@ -8,9 +10,9 @@
 #include  "ghostlinearsolveragent.h"
 #include  "ghostmatrixagent.h"
 #include  "ghostvectoragent.h"
-#include  "solvermanagerinterface.h"
 #include  "Alat/sparsitypatternwithrowindex.h"
 #include  "variablemanager.h"
+#include  "FadaMesh/meshcompositioninterface.h"
 
 /*--------------------------------------------------------------------------*/
 
@@ -27,7 +29,7 @@ namespace Fada
   class ModelManagerInterface;
   class ModelInterface;
 
-  class SolverManager : public SolverManagerInterface
+  class SolverManager : public Alat::InterfaceBase
   {
 protected:
     bool _onlydirectsolvers;
@@ -46,7 +48,6 @@ protected:
     void initSolverChronometer() const;
     void printSolverChronometer(std::ostream& os) const;
 
-    void smoothInterface(int level, int idomain, Alat::GhostVector& u) const;
     Fada::DomainSolverInterface* newDomainSolver(const FadaMesh::MeshInterface* mesh) const;
 
     // gestion des solvers
@@ -90,6 +91,7 @@ public:
     SolverManager( const SolverManager& solvermanager);
     SolverManager& operator=( const SolverManager& solvermanager);
     std::string getName() const;
+    std::string getInterfaceName() const {return "_not_expected_";}
 
     void basicInit(Fada::ModelManagerInterface* modelmanager, const FadaMesh::MeshCompositionInterface* meshcomposition, const Alat::IoManager& io_manager, FadaEnums::looptype looptype, const Alat::ParameterFile* parameterfile = NULL);
     void reInit();

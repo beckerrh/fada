@@ -7,19 +7,19 @@
 
 namespace Fada
 {
-  class SolverManagerInterface;
+  class SolverManager;
 
   class VisitorSolverManagerNonlinear : public Alat::NonlinearSolverVisitorInterface
   {
 protected:
-    SolverManagerInterface* _solvermanager;
-    const SolverManagerInterface* getSolverManager() const;
-    SolverManagerInterface* getSolverManager();
+    SolverManager* _solvermanager;
+    const SolverManager* getSolverManager() const;
+    SolverManager* getSolverManager();
     int _level;
 
 public:
     ~VisitorSolverManagerNonlinear();
-    VisitorSolverManagerNonlinear(SolverManagerInterface* solvermanager, int level=0);
+    VisitorSolverManagerNonlinear(SolverManager* solvermanager, int level=0);
     VisitorSolverManagerNonlinear( const VisitorSolverManagerNonlinear& visitorsolvermanagernonlinear);
     VisitorSolverManagerNonlinear& operator=( const VisitorSolverManagerNonlinear& visitorsolvermanagernonlinear);
     std::string getName() const;

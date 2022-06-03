@@ -6,7 +6,7 @@
 #include  "Fada/integrationformulainterface.h"
 #include  "Alat/node.h"
 #include  "Fada/righthandsideinterface.h"
-#include  "Alat/systemvectorinterface.h"
+#include  "Alat/systemvector.h"
 #include  "Alat/systemmatrixinterface.h"
 #include  "Alat/variablevector.h"
 #include  "Fada/domainsolverinterface.h"
@@ -106,7 +106,7 @@ void DiscretizationSupg::computePatchDiff(const FadaMesh::MeshInterface* mesh, D
 }
 
 /*--------------------------------------------------------------------------*/
-void DiscretizationSupg::rightHandSideCells(AlatEnums::residualstatus& status, Alat::SystemVectorInterface* fs, const FadaMesh::MeshInterface* mesh, const DiscretizationData& discdata) const
+void DiscretizationSupg::rightHandSideCells(AlatEnums::residualstatus& status, Alat::SystemVector* fs, const FadaMesh::MeshInterface* mesh, const DiscretizationData& discdata) const
 {
   Fada::FemInterface* fem = discdata.fem;
   const arma::cube& downwindcoef = discdata.downwindcoef;
@@ -172,7 +172,7 @@ void DiscretizationSupg::_computePatchGrads(int iN, PatchData& pdata, const Alat
 }
 
 /*--------------------------------------------------------------------------*/
-void DiscretizationSupg::formCells(AlatEnums::residualstatus& status, Alat::SystemVectorInterface* fs, const Alat::SystemVectorInterface* us, const FadaMesh::MeshInterface* mesh, const DiscretizationData& discdata) const
+void DiscretizationSupg::formCells(AlatEnums::residualstatus& status, Alat::SystemVector* fs, const Alat::SystemVector* us, const FadaMesh::MeshInterface* mesh, const DiscretizationData& discdata) const
 {
   Fada::FemInterface* fem = discdata.fem;
   const arma::cube& downwindcoef = discdata.downwindcoef;
@@ -305,7 +305,7 @@ void DiscretizationSupg::matrixSparsityPattern(const std::string& varnamei, cons
 }
  
 /*--------------------------------------------------------------------------*/
-void DiscretizationSupg::matrixCells(AlatEnums::residualstatus& status, Alat::SystemMatrixInterface* As, const Alat::SystemVectorInterface* us, const FadaMesh::MeshInterface* mesh, const DiscretizationData& discdata) const
+void DiscretizationSupg::matrixCells(AlatEnums::residualstatus& status, Alat::SystemMatrixInterface* As, const Alat::SystemVector* us, const FadaMesh::MeshInterface* mesh, const DiscretizationData& discdata) const
 {
   Fada::FemInterface* fem = discdata.fem;
   const arma::cube& downwindcoef = discdata.downwindcoef;
@@ -460,7 +460,7 @@ void DiscretizationSupg::matrixCells(AlatEnums::residualstatus& status, Alat::Sy
 }      
 
 /*--------------------------------------------------------------------------*/
-void DiscretizationSupg::rightHandSideBoundarySides(AlatEnums::residualstatus& status, Alat::SystemVectorInterface* fs, const FadaMesh::MeshInterface* mesh, const DiscretizationData& discdata) const
+void DiscretizationSupg::rightHandSideBoundarySides(AlatEnums::residualstatus& status, Alat::SystemVector* fs, const FadaMesh::MeshInterface* mesh, const DiscretizationData& discdata) const
 {
   Alat::VariableVector* fv = dynamic_cast<Alat::VariableVector*>(fs->getVector(_variablenames[0]));
   assert(fv);
@@ -592,7 +592,7 @@ void DiscretizationSupg::rightHandSideBoundarySides(AlatEnums::residualstatus& s
   }
 }
 /*--------------------------------------------------------------------------*/
-void DiscretizationSupg::formBoundarySides(AlatEnums::residualstatus& status, Alat::SystemVectorInterface* fs, const Alat::SystemVectorInterface* us, const FadaMesh::MeshInterface* mesh, const DiscretizationData& discdata) const
+void DiscretizationSupg::formBoundarySides(AlatEnums::residualstatus& status, Alat::SystemVector* fs, const Alat::SystemVector* us, const FadaMesh::MeshInterface* mesh, const DiscretizationData& discdata) const
 {
   Alat::VariableVector* fv = dynamic_cast<Alat::VariableVector*>(fs->getVector(_variablenames[0]));
   assert(fv);
@@ -686,7 +686,7 @@ void DiscretizationSupg::formBoundarySides(AlatEnums::residualstatus& status, Al
   // std::cerr  << "\n";
 } 
 /*--------------------------------------------------------------------------*/
-void DiscretizationSupg::matrixBoundarySides(AlatEnums::residualstatus& status, Alat::SystemMatrixInterface* As, const Alat::SystemVectorInterface* us, const FadaMesh::MeshInterface* mesh, const DiscretizationData& discdata) const
+void DiscretizationSupg::matrixBoundarySides(AlatEnums::residualstatus& status, Alat::SystemMatrixInterface* As, const Alat::SystemVector* us, const FadaMesh::MeshInterface* mesh, const DiscretizationData& discdata) const
 {
   Alat::VariableMatrix* Av = dynamic_cast<Alat::VariableMatrix*>(As->getMatrix(_variablenames[0], _variablenames[0]));
   assert(Av);

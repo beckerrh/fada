@@ -7,10 +7,9 @@
 
 namespace FadaMesh
 {
-  class CouplingMeshInterface;
   class MeshInterface;
   class ModelManagerInterface;
-  
+
   class MeshCompositionInterface : public Alat::InterfaceBase
   {
 private:
@@ -36,7 +35,6 @@ public:
     virtual int getNCouplingMeshes() const=0;
     virtual const FadaMesh::MeshInterface* getMesh(int i) const=0;
     virtual void writeH5(std::string filename) const=0;
-    virtual const FadaMesh::CouplingMeshInterface* getCouplingMesh(int i) const=0;
     virtual const FadaMesh::MeshInterface* getMacroMesh() const;
     virtual int getNCells() const=0;
 

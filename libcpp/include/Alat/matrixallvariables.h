@@ -33,7 +33,7 @@ public:
 
     void zeros();
     std::ostream& write(std::ostream& os) const;
-    void matrixVectorProduct(Alat::SystemVectorInterface* out, const Alat::SystemVectorInterface* in, double d = 1.0) const;
+    void matrixVectorProduct(Alat::SystemVector* out, const Alat::SystemVector* in, double d = 1.0) const;
     void addMatrix(const SystemMatrixInterface* sparsematrix, double d = 1.0);
   };
   std::ostream& operator<<(std::ostream& s, const MatrixAllVariables& v);

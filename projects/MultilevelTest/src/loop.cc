@@ -1,6 +1,6 @@
 #include  "loop.h"
 #include  "solvermanager.h"
-#include  "Fada/solvermanagerinterface.h"
+#include  "Fada/solvermanager.h"
 #include  "FadaMesh/meshcompositioninterface.h"
 #include  <cassert>
 #include  <fstream>
@@ -41,7 +41,7 @@ FadaEnums::looptype Loop::getType() const
 }
 
 /*---------------------------------------------------------*/
-void Loop::basicInit(Fada::ModelManagerInterface* modelmanager, Fada::SolverManagerInterface* solvermanager, const std::string& rundirectory, const Alat::ParameterFile* parameterfile)
+void Loop::basicInit(Fada::ModelManagerInterface* modelmanager, Fada::SolverManager* solvermanager, const std::string& rundirectory, const Alat::ParameterFile* parameterfile)
 {
   Fada::Loop::basicInit(modelmanager, solvermanager, rundirectory, parameterfile);
   _help.setLevel(-1);

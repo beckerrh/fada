@@ -3,7 +3,6 @@
 #include  "Alat/preconditionerwithsorting.h"
 #include  "Alat/variablematrixinterface.h"
 #include  "Alat/tokenize.h"
-#include  "Fada/domaindecompositionsmoother.h"
 #include  "Alat/gaussseidelpreconditioner.h"
 #include  "Alat/ilupreconditioner.h"
 #include  "Alat/iluvariablematrix.h"
@@ -97,7 +96,7 @@ Alat::PreconditionerInterface* PreconditionerSelector::newPreconditioner(std::st
   }
   else
   {
-      preconditioner = _newPreconditionerUnStructured(bouts, matrix, level, nlevels, dimension);
+    assert(0);
   }
 
   Alat::PreconditionerWithSorting* preconditionerwithsorting = dynamic_cast<Alat::PreconditionerWithSorting*>( preconditioner );
@@ -123,47 +122,6 @@ Alat::PreconditionerInterface* PreconditionerSelector::newPreconditioner(std::st
   if(preconditioner == NULL)
   {
     _error_string( "newPreconditioner", "unknown preconditioner", name + " for matrix " + matrix->getName() );
-  }
-  return preconditioner;
-}
-
-/*--------------------------------------------------------------------------*/
-Alat::PreconditionerInterface* PreconditionerSelector::_newPreconditionerUnStructured(const Alat::StringVector& bouts, const Alat::VariableMatrixInterface* matrix, int level, int nlevels, int dimension) const
-{
-  Alat::PreconditionerInterface* preconditioner = NULL;
-
-  int ncomp = matrix->getNComponents();
-  assert( ncomp == matrix->getMComponents() );
-  if(bouts[0] == "dd")
-  {
-    int npatch = 100;
-    if(bouts.size() >= 2)
-    {
-      Alat::StringVector petitsbouts = Alat::Tokenize(bouts[1], ";");
-      // std::cerr << "petitsbouts="<<petitsbouts<<"\n";
-      int npetitsbouts = petitsbouts.size();
-      if(npetitsbouts == 2)
-      {
-        if(petitsbouts[1] == "i")
-        {
-          npatch = atoi( petitsbouts[0].c_str() )*( 2<< ( nlevels-1-level ) );
-        }
-        else if(petitsbouts[1] == "d")
-        {
-          npatch = atoi( petitsbouts[0].c_str() )*( 2<< level );
-        }
-        else
-        {
-          assert(0);
-        }
-      }
-      else
-      {
-        npatch = atoi( bouts[1].c_str() );
-      }
-    }
-    std::cerr << "npatch="<<npatch<<"\n";
-    preconditioner = new Fada::DomainDecompositionSmoother(matrix, npatch);
   }
   return preconditioner;
 }

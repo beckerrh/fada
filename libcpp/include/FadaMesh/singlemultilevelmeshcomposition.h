@@ -30,7 +30,6 @@ public:
     int getNDomains() const;
     int getNCouplingMeshes() const;
     const FadaMesh::MeshInterface* getMesh(int i) const;
-    const FadaMesh::CouplingMeshInterface* getCouplingMesh(int i) const;
     void writeMeshInfo(std::string filename) const;
     void writeH5(std::string filename) const;
     int getNCells() const;

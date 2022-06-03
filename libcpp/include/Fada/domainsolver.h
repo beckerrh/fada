@@ -49,8 +49,8 @@ protected:
     MultiLevelTransferAllVariablesInterface* _multileveltransferallvariables;
 
     void strongDirichletMatrix(int level, Alat::MatrixAllVariables* matrix) const;
-    void strongDirichletVectorZero(int level, Alat::SystemVectorInterface* f) const;
-    void strongDirichletVectorSolution(int level, Alat::SystemVectorInterface* f) const;
+    void strongDirichletVectorZero(int level, Alat::SystemVector* f) const;
+    void strongDirichletVectorSolution(int level, Alat::SystemVector* f) const;
     void reInitVectorForInterpolation(Alat::GhostVector& u) const;
     BoundaryManager* getBoundaryManager();
     VariableManager* getVariableManager();
@@ -62,10 +62,10 @@ protected:
     const DofInformationInterface* getDofInformationOfVariable(const Fada::VariableInterface* var) const;
     FemManagerInterface* getFemManager();
     Alat::VectorInterface* newVector(const Alat::GhostVector& v);
-    Alat::SystemVectorInterface* newLevelVector(const Alat::GhostVector& v) const;
+    Alat::SystemVector* newLevelVector(const Alat::GhostVector& v) const;
     Alat::SystemMatrixInterface* newLevelMatrix(int level, const Alat::GhostMatrix& gmatrix) const;
     void reInitVector(Alat::VectorInterface* v, const Alat::GhostVector& gv);
-    void reInitLevelVector(int level, Alat::SystemVectorInterface* v, const Alat::GhostVector& gv) const;
+    void reInitLevelVector(int level, Alat::SystemVector* v, const Alat::GhostVector& gv) const;
     void reInitLevelMatrix(int level, Alat::SystemMatrixInterface* A, const Alat::GhostMatrix& gmatrix) const;
 
     void reInitMatrices();
@@ -92,8 +92,8 @@ protected:
 
     void _interpolateP1(Alat::VariableVectorInterface* unew, const Alat::VariableVectorInterface* uold) const;
     void interpolateOneVariable(const DofInformationInterface* dofinformation, Alat::VariableVectorInterface* unew, const Alat::VariableVectorInterface* uold) const;
-    void _writeUnknownVariables(Alat::SystemVectorInterface* h, const Alat::SystemVectorInterface* vs, std::string filename) const;
-    void _readUnknownVariables(Alat::SystemVectorInterface* v, std::string filename);
+    void _writeUnknownVariables(Alat::SystemVector* h, const Alat::SystemVector* vs, std::string filename) const;
+    void _readUnknownVariables(Alat::SystemVector* v, std::string filename);
     Fada::MultiLevelTransferAllVariablesInterface* newMultiLevelTransferAllVariables();
     Fada::MultiLevelTransferSingleFemInterface* newMultiLevelTransferSingleFem(const Fada::FemInterface* fem) const;
 
@@ -136,8 +136,8 @@ public:
     //new
     const Alat::VariableMatrixInterface* getMatrix(int level, const Alat::GhostMatrix& ghostmatrix, std::string outvar, std::string invar) const;
     Alat::VariableMatrixInterface* getMatrix(int level, Alat::GhostMatrix& ghostmatrix, std::string outvar, std::string invar) const;
-    Alat::SystemVectorInterface* getVector(int level, Alat::GhostVector& ghostvector) const;
-    const Alat::SystemVectorInterface* getVector(int level, const Alat::GhostVector& ghostvector) const;
+    Alat::SystemVector* getVector(int level, Alat::GhostVector& ghostvector) const;
+    const Alat::SystemVector* getVector(int level, const Alat::GhostVector& ghostvector) const;
     const Alat::MatrixInterface* getMatrix(const Alat::GhostMatrix& ghostmatrix) const;
     Alat::MatrixInterface* getMatrix(Alat::GhostMatrix& ghostmatrix) const;
     const Alat::SystemMatrixInterface* getMatrix(int level, const Alat::GhostMatrix& ghostmatrix) const;

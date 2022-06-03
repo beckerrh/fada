@@ -7,7 +7,7 @@
 #include  "Alat/variablevector.h"
 #include  "Alat/systemvector.h"
 #include  "Fada/dofinformationinterface.h"
-#include  "Alat/systemvectorinterface.h"
+#include  "Alat/systemvector.h"
 #include  "FadaMesh/multilevelmesh.h"
 #include  "FadaMesh/quadtotri.h"
 #include  "FadaMesh/quadrilateralmesh.h"
@@ -73,8 +73,8 @@ void DomainSolver::interpolateSolution( Alat::GhostVector& unew, const Alat::Gho
   int level=0;
   getMesh()->setResolution(level);
   vectorZero(unew);
-  Alat::SystemVectorInterface* unewall = NULL;
-  const Alat::SystemVectorInterface* uoldall = NULL;
+  Alat::SystemVector* unewall = NULL;
+  const Alat::SystemVector* uoldall = NULL;
   Fada::MultiLevelVector* unewmg = dynamic_cast< Fada::MultiLevelVector*>( getVector(unew) );
   if(unewmg)
   {
@@ -114,7 +114,7 @@ void DomainSolver::interpolateSolution( Alat::GhostVector& unew, const Alat::Gho
   }
 }
 /*--------------------------------------------------------------------------*/
-void DomainSolver::project( const FadaMesh::MeshInterface* coarsemesh, const FadaMesh::MeshInterface* finemesh, Alat::SystemVectorInterface* ucoarse, const Alat::SystemVectorInterface* ufine) const
+void DomainSolver::project( const FadaMesh::MeshInterface* coarsemesh, const FadaMesh::MeshInterface* finemesh, Alat::SystemVector* ucoarse, const Alat::SystemVector* ufine) const
 {
   const FadaMesh::QuadToTri* quadtotrifine = dynamic_cast<const FadaMesh::QuadToTri*>(finemesh);
   assert(quadtotrifine);

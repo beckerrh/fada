@@ -7,12 +7,12 @@
 /*--------------------------------------------------------------------------*/
 namespace Alat
 {
-  class SystemVectorInterface;
+  class SystemVector;
   class VariableVectorInterface;
 }
 namespace Fada
 {
-  class MultiLevelVector : public Alat::Vector<Alat::SystemVectorInterface*>, public Alat::VectorInterface
+  class MultiLevelVector : public Alat::Vector<Alat::SystemVector*>, public Alat::VectorInterface
   {
 public:
     ~MultiLevelVector();
@@ -22,9 +22,9 @@ public:
     std::string getName() const;
     MultiLevelVector* clone() const;
 
-    const Alat::SystemVectorInterface* getVector(int level) const;
-   Alat::SystemVectorInterface* getVector(int level);
-    Alat::SystemVectorInterface*& getVectorPointer(int level);
+    const Alat::SystemVector* getVector(int level) const;
+   Alat::SystemVector* getVector(int level);
+    Alat::SystemVector*& getVectorPointer(int level);
 
     int nlevels() const;
     void set_size(int nlevels);

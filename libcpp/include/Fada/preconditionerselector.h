@@ -16,7 +16,6 @@ namespace Fada
   {
 protected:
     std::string getInterfaceName() const;
-    Alat::PreconditionerInterface* _newPreconditionerUnStructured(const Alat::StringVector& bouts, const Alat::VariableMatrixInterface* matrix, int level, int nlevels, int dimension) const;
 
 public:
     ~PreconditionerSelector();

@@ -19,7 +19,7 @@ namespace Fada
   class MatrixAllVariables;
   class SystemAssembleMatrix;
   class SystemAssembleVector;
-  class SystemVectorInterface;
+  class SystemVector;
   class VariableInterface;
   class VariableManager;
   class VectorInterface;
@@ -40,15 +40,15 @@ public:
 
     void basicInit(const DofManagerAllVariables* dofmanagerallvariables_left, const VariableManager* variable_manager_left, const DofManagerAllVariables* dofmanagerallvariables_right, const VariableManager* variable_manager_right, const Alat::StringDoubleVectorMap& scalings_left, const Alat::StringDoubleVectorMap& scalings_right);
     void initLocalVectors(Fada::LocalVectors& localvectorsleft, Fada::LocalVectors& localvectorsright, const LocalGlobal::VectorMap& vectormapL, const LocalGlobal::VectorMap& vectormapR) const;
-    void extractAll(Fada::LocalVectors& localvectors_left, Fada::LocalVectors& localvectorsR, const LocalGlobal::VectorMap& vectormapL, const Alat::SystemVectorInterface* datavectorL, const LocalGlobal::VectorMap& vectormapR, const Alat::SystemVectorInterface* datavectorR, const Alat::IntVector& indicesnodesleft, const Alat::IntVector& indicesnodesright) const;
+    void extractAll(Fada::LocalVectors& localvectors_left, Fada::LocalVectors& localvectorsR, const LocalGlobal::VectorMap& vectormapL, const Alat::SystemVector* datavectorL, const LocalGlobal::VectorMap& vectormapR, const Alat::SystemVector* datavectorR, const Alat::IntVector& indicesnodesleft, const Alat::IntVector& indicesnodesright) const;
 
     void initLocalOutput(Alat::SystemAssembleVector& flocL, Alat::SystemAssembleVector& flocR) const;
     void initLocalPostProcess(Alat::SystemAssembleVector& flocL, Alat::SystemAssembleVector& flocR) const;
     void initLocalMatrices(Alat::SystemAssembleMatrix& AlocLL, Alat::SystemAssembleMatrix& AlocLR, Alat::SystemAssembleMatrix& AlocRL, Alat::SystemAssembleMatrix& AlocRR) const;
 
-    void assembleVector(Alat::SystemVectorInterface* favL, Alat::SystemVectorInterface* favR, const Alat::SystemAssembleVector& flocL, const Alat::SystemAssembleVector& flocR, const Alat::IntVector& indicesnodesleft, const Alat::IntVector& indicesnodesright, const Alat::StringSet& variablesL, const Alat::StringSet& variablesR, double d) const;
+    void assembleVector(Alat::SystemVector* favL, Alat::SystemVector* favR, const Alat::SystemAssembleVector& flocL, const Alat::SystemAssembleVector& flocR, const Alat::IntVector& indicesnodesleft, const Alat::IntVector& indicesnodesright, const Alat::StringSet& variablesL, const Alat::StringSet& variablesR, double d) const;
 
-    void assembleVectorPostProcess(Alat::SystemVectorInterface* vL, Alat::SystemVectorInterface* vR, const Alat::SystemAssembleVector& flocL, const Alat::SystemAssembleVector& flocR, int iKL, int iKR, const Fada::VariableManager* variablemanagerL, const Fada::VariableManager* variablemanagerR, const Alat::StringSet& variablesL, const Alat::StringSet& variablesR, double d) const;
+    void assembleVectorPostProcess(Alat::SystemVector* vL, Alat::SystemVector* vR, const Alat::SystemAssembleVector& flocL, const Alat::SystemAssembleVector& flocR, int iKL, int iKR, const Fada::VariableManager* variablemanagerL, const Fada::VariableManager* variablemanagerR, const Alat::StringSet& variablesL, const Alat::StringSet& variablesR, double d) const;
   };
 }
 

@@ -109,7 +109,7 @@ void Main::readParameterFile(int argc, char** argv)
 }
 
 /*--------------------------------------------------------------------------*/
-Fada::SolverManagerInterface* Main::newSolverManager(std::string meshtype) const
+Fada::SolverManager* Main::newSolverManager(std::string meshtype) const
 {
   if(meshtype == "unstructured" or meshtype == "unstructured_multilevel")
   {
@@ -169,7 +169,7 @@ Fada::ModelManagerInterface* Main::newModelManager() const
 /*--------------------------------------------------------------------------*/
 void Main::run()
 {
-  Fada::SolverManagerInterface* solvermanager = newSolverManager( getMeshType() );
+  Fada::SolverManager* solvermanager = newSolverManager( getMeshType() );
   assert(solvermanager);
 
   Fada::LoopInterface* loop = newLoop(_loopname);

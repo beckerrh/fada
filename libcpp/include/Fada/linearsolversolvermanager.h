@@ -24,7 +24,7 @@ protected:
     std::string _coarsesolver, _smoother, _smootheriteration, _dirname, _blockname;
     const Alat::GhostLinearSolver _domainlinearsolver;
     const Alat::GhostMatrix _ghostmatrix;
-    Fada::SolverManagerInterface* _solvermanager;
+    Fada::SolverManager* _solvermanager;
     Fada::Multigrid _multigrid;
     mutable Fada::LinearSolverVector _linearsolvers;
     mutable Fada::Chronometer _chronometer;
@@ -35,7 +35,7 @@ protected:
 
 public:
     ~LinearSolverSolverManager();
-    LinearSolverSolverManager(const Alat::StringVector& variables, int nlevels, const Alat::GhostLinearSolver& domainlinearsolver, Fada::SolverManagerInterface* solvermanager);
+    LinearSolverSolverManager(const Alat::StringVector& variables, int nlevels, const Alat::GhostLinearSolver& domainlinearsolver, Fada::SolverManager* solvermanager);
     LinearSolverSolverManager( const LinearSolverSolverManager& multilevellinearsolver);
     LinearSolverSolverManager& operator=( const LinearSolverSolverManager& multilevellinearsolver);
     std::string getName() const;

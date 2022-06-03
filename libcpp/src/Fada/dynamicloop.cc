@@ -4,7 +4,7 @@
 #include  "Alat/iterationinfo.h"
 #include  "FadaMesh/meshcompositioninterface.h"
 #include  "Alat/nonlinearsolverinterface.h"
-#include  "Fada/solvermanagerinterface.h"
+#include  "Fada/solvermanager.h"
 #include  "Fada/timeschemebdf.h"
 #include  "Fada/timeschemecranknicolson.h"
 #include  "Fada/timesteppilot.h"
@@ -62,7 +62,7 @@ TimeData& DynamicLoop::getTimeData()
 }
 
 /*---------------------------------------------------------*/
-void DynamicLoop::basicInit(ModelManagerInterface* modelmanager, SolverManagerInterface* solvermanager, const std::string& rundirectory, const Alat::ParameterFile* parameterfile)
+void DynamicLoop::basicInit(ModelManagerInterface* modelmanager, SolverManager* solvermanager, const std::string& rundirectory, const Alat::ParameterFile* parameterfile)
 {
   getChronometer().start("basicInit");
   std::string time_discretization, timesteppilot;

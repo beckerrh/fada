@@ -2,12 +2,12 @@
 #include  "Alat/filescanner.h"
 #include  "Alat/iomanager.h"
 #include  "Alat/iterativesolverwithpreconditioner.h"
-#include  "Fada/domaindecomposition.h"
-#include  "Fada/solvermanagerinterface.h"
+#include  "Fada/solvermanager.h"
 #include  "Fada/visitorsolvermanagermultilevel.h"
 #include  "Fada/visitorsolvermanageronelevel.h"
 #include  "Alat/tokenize.h"
 #include  "Fada/directsolver.h"
+#include  "Fada/domaindecomposition.h"
 #include  "Fada/iterativesolverselector.h"
 #include  "Fada/linearsolversolvermanager.h"
 #include  <cassert>
@@ -28,7 +28,7 @@ LinearSolverSolverManager::~LinearSolverSolverManager()
   }
 }
 
-LinearSolverSolverManager::LinearSolverSolverManager(const Alat::StringVector& variables, int nlevels, const Alat::GhostLinearSolver& domainlinearsolver,  Fada::SolverManagerInterface* solvermanager) :  Alat::LinearSolverInterface(), Alat::PreconditionerInterface(), _variables(variables), _domainlinearsolver(domainlinearsolver), _ghostmatrix( domainlinearsolver.getMatrix() ), _solvermanager(solvermanager), _basicinitcalled(false), _multigrid( _solvermanager->getIoManager()->getDirectoryName(Alat::IoManager::RunInfo) )
+LinearSolverSolverManager::LinearSolverSolverManager(const Alat::StringVector& variables, int nlevels, const Alat::GhostLinearSolver& domainlinearsolver,  Fada::SolverManager* solvermanager) :  Alat::LinearSolverInterface(), Alat::PreconditionerInterface(), _variables(variables), _domainlinearsolver(domainlinearsolver), _ghostmatrix( domainlinearsolver.getMatrix() ), _solvermanager(solvermanager), _basicinitcalled(false), _multigrid( _solvermanager->getIoManager()->getDirectoryName(Alat::IoManager::RunInfo) )
 {
   _dirname = _solvermanager->getIoManager()->getDirectoryName(Alat::IoManager::RunInfo);
   _linearsolvers.set_size(nlevels);
@@ -76,7 +76,7 @@ std::ostream& LinearSolverSolverManager::printLoopInformation(std::ostream& os) 
   os <<"\n";
   for(int level = 0; level < getNLevels(); level++)
   {
-    os << "\tlevel="<<level<<" "; 
+    os << "\tlevel="<<level<<" ";
     _linearsolvers.getLinearSolver(level)->getName();
     os << "\n";
   }
@@ -209,7 +209,7 @@ void LinearSolverSolverManager::solveApproximate(AlatEnums::iterationstatus& sta
 void LinearSolverSolverManager::readParameters(const Alat::ParameterFile* parameterfile, std::string blockname)
 {
   Alat::DataFormatHandler dataformathandler;
-  dataformathandler.insert("smoother", &_smoother, "domaindecomposition_gs");
+  dataformathandler.insert("smoother", &_smoother, "domaindecomposition_jacobi");
   dataformathandler.insert("smootheriteration", &_smootheriteration, "richardson");
   dataformathandler.insert("coarsesolver", &_coarsesolver, "direct");
   dataformathandler.insert("integration", &_integration, false);
@@ -267,7 +267,7 @@ void LinearSolverSolverManager::basicInit(const Alat::ParameterFile* parameterfi
       {
         _error_string("basicInit", "smoother="+_smoother+" read in Block "+ blockname);
       }
-
+      assert(bouts[1]=="jacobi");
       iterativesolverwp->newPreconditionerPointer() = new Fada::DomainDecomposition(bouts[1], level, _solvermanager, _ghostmatrix, _domainlinearsolver);
       iterativesolverwp->basicInit( parameterfile, blockname );
 

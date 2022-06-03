@@ -18,7 +18,7 @@ namespace Alat
   class MatrixInterface;
   class VectorInterface;
   class SysetmMatrixInterface;
-  class SystemVectorInterface;
+  class SystemVector;
 }
 namespace Fada
 {
@@ -35,7 +35,7 @@ protected:
     const Fada::VariableManager* _variablemanager;
     const Fada::DofManagerAllVariables* _dofmanagerallvariables;
     const Fada::DomainSolverInterface* _solver;
-    mutable const Alat::SystemVectorInterface* _datavector;
+    mutable const Alat::SystemVector* _datavector;
     const Alat::VectorInterface* _data;
 
     // mutable Alat::SystemAssembleMatrix _AlocLL, _AlocLR, _AlocRL, _AlocRR;
@@ -49,9 +49,9 @@ protected:
 
     const Fada::DomainSolverInterface* getSolver() const;
     const Fada::VariableManager* getVariableManager() const;
-    void _fillVectorMap(Fada::LocalGlobal::VectorMap& vectormap, FadaEnums::term term, const Alat::SystemVectorInterface* u, const Alat::SystemVectorInterface* uold, const Alat::SystemVectorInterface* uveryold) const;
+    void _fillVectorMap(Fada::LocalGlobal::VectorMap& vectormap, FadaEnums::term term, const Alat::SystemVector* u, const Alat::SystemVector* uold, const Alat::SystemVector* uveryold) const;
 
-    void constructJacobianMatrix(int level, AlatEnums::residualstatus& status, Alat::SystemMatrixInterface* A, const Alat::SystemVectorInterface* u, const Alat::SystemVectorInterface* uold, const Alat::SystemVectorInterface* uveryold) const;
+    void constructJacobianMatrix(int level, AlatEnums::residualstatus& status, Alat::SystemMatrixInterface* A, const Alat::SystemVector* u, const Alat::SystemVector* uold, const Alat::SystemVector* uveryold) const;
 
 public:
     ~DomainIntegrationLoop();

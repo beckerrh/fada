@@ -2,7 +2,7 @@
 #include  "Fada/loop.h"
 #include  "FadaMesh/meshcompositioninterface.h"
 #include  "Fada/solver.h"
-#include  "Fada/solvermanagerinterface.h"
+#include  "Fada/solvermanager.h"
 #include  "Fada/timedata.h"
 #include  "Alat/userandsysteminfo.h"
 #include  <fstream>
@@ -53,7 +53,7 @@ Loop& Loop::operator=( const Loop& loop)
 }
 
 /*---------------------------------------------------------*/
-void Loop::basicInit(ModelManagerInterface* modelmanager, SolverManagerInterface* solvermanager, const std::string& rundirectory, const Alat::ParameterFile* parameterfile)
+void Loop::basicInit(ModelManagerInterface* modelmanager, SolverManager* solvermanager, const std::string& rundirectory, const Alat::ParameterFile* parameterfile)
 {
   _solvermanager=solvermanager;
   // std::cerr << "Loop::basicInit() DEBUT\n";
@@ -178,12 +178,12 @@ std::string Loop::getName() const
   return "Loop";
 }
 
-const SolverManagerInterface* Loop::getSolverManager() const
+const SolverManager* Loop::getSolverManager() const
 {
   return _solvermanager;
 }
 
-SolverManagerInterface* Loop::getSolverManager()
+SolverManager* Loop::getSolverManager()
 {
   return _solvermanager;
 }

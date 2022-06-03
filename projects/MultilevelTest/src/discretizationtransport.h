@@ -76,16 +76,16 @@ public:
   void constructRightHandSide(AlatEnums::residualstatus& status, Alat::VectorInterface* f) const;
   void constructJacobianMatrix(AlatEnums::residualstatus& status, Alat::MatrixInterface* A, const Alat::VectorInterface* u, const Alat::VectorInterface* uold=NULL, const Alat::VectorInterface* uveryold=NULL) const;
   void constructForm(AlatEnums::residualstatus& status, Alat::VectorInterface* f, const Alat::VectorInterface* u, const Alat::VectorInterface* uold, const Alat::VectorInterface* uveryold) const;  
-  void constructJacobianMatrix(int level, AlatEnums::residualstatus& status, Alat::SystemMatrixInterface* A, const Alat::SystemVectorInterface* u, const Alat::SystemVectorInterface* uold, const Alat::SystemVectorInterface* uveryold) const;
+  void constructJacobianMatrix(int level, AlatEnums::residualstatus& status, Alat::SystemMatrixInterface* A, const Alat::SystemVector* u, const Alat::SystemVector* uold, const Alat::SystemVector* uveryold) const;
   
   virtual void matrixSparsityPattern(const std::string& varnamei, const std::string& varnamej, Alat::SparsityPatternSoft& sparsitypatternsoft, const FadaMesh::MeshInterface* mesh, const DiscretizationData& discdata) const=0;
 
-  virtual void rightHandSideCells(AlatEnums::residualstatus& status, Alat::SystemVectorInterface* fs, const FadaMesh::MeshInterface* mesh, const DiscretizationData& discdata) const=0; 
-  virtual void rightHandSideBoundarySides(AlatEnums::residualstatus& status, Alat::SystemVectorInterface* fs, const FadaMesh::MeshInterface* mesh, const DiscretizationData& discdata) const=0; 
-  virtual void formCells(AlatEnums::residualstatus& status, Alat::SystemVectorInterface* fs, const Alat::SystemVectorInterface* us, const FadaMesh::MeshInterface* mesh, const DiscretizationData& discdata) const=0; 
-  virtual void formBoundarySides(AlatEnums::residualstatus& status, Alat::SystemVectorInterface* fs, const Alat::SystemVectorInterface* us, const FadaMesh::MeshInterface* mesh, const DiscretizationData& discdata) const=0; 
-  virtual void matrixCells(AlatEnums::residualstatus& status, Alat::SystemMatrixInterface* As, const Alat::SystemVectorInterface* us, const FadaMesh::MeshInterface* mesh, const DiscretizationData& discdata) const=0; 
-  virtual void matrixBoundarySides(AlatEnums::residualstatus& status, Alat::SystemMatrixInterface* As, const Alat::SystemVectorInterface* us, const FadaMesh::MeshInterface* mesh, const DiscretizationData& discdata) const=0; 
+  virtual void rightHandSideCells(AlatEnums::residualstatus& status, Alat::SystemVector* fs, const FadaMesh::MeshInterface* mesh, const DiscretizationData& discdata) const=0; 
+  virtual void rightHandSideBoundarySides(AlatEnums::residualstatus& status, Alat::SystemVector* fs, const FadaMesh::MeshInterface* mesh, const DiscretizationData& discdata) const=0; 
+  virtual void formCells(AlatEnums::residualstatus& status, Alat::SystemVector* fs, const Alat::SystemVector* us, const FadaMesh::MeshInterface* mesh, const DiscretizationData& discdata) const=0; 
+  virtual void formBoundarySides(AlatEnums::residualstatus& status, Alat::SystemVector* fs, const Alat::SystemVector* us, const FadaMesh::MeshInterface* mesh, const DiscretizationData& discdata) const=0; 
+  virtual void matrixCells(AlatEnums::residualstatus& status, Alat::SystemMatrixInterface* As, const Alat::SystemVector* us, const FadaMesh::MeshInterface* mesh, const DiscretizationData& discdata) const=0; 
+  virtual void matrixBoundarySides(AlatEnums::residualstatus& status, Alat::SystemMatrixInterface* As, const Alat::SystemVector* us, const FadaMesh::MeshInterface* mesh, const DiscretizationData& discdata) const=0; 
   
 };
 

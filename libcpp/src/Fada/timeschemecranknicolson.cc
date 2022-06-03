@@ -1,4 +1,4 @@
-#include  "Fada/solvermanagerinterface.h"
+#include  "Fada/solvermanager.h"
 #include  "Fada/timedata.h"
 #include  "Fada/timeschemecranknicolson.h"
 #include  "Alat/vector.h"

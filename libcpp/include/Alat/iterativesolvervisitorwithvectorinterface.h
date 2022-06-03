@@ -13,7 +13,7 @@ namespace Alat
 {
   class VariableMatrixInterface;
   class VariableVectorInterface;
-  class SystemVectorInterface;
+  class SystemVector;
 
   class IterativeSolverVisitorWithVectorInterface : public Alat::IterativeSolverVisitorInterface
   {
@@ -25,8 +25,8 @@ public:
     std::string getName() const;
     IterativeSolverVisitorWithVectorInterface* clone() const; 
     
-    virtual Alat::SystemVectorInterface* getVector(Alat::GhostVector& u) const=0;
-    virtual const Alat::SystemVectorInterface* getVector(const Alat::GhostVector& u) const=0;
+    virtual Alat::SystemVector* getVector(Alat::GhostVector& u) const=0;
+    virtual const Alat::SystemVector* getVector(const Alat::GhostVector& u) const=0;
   };
 }
 

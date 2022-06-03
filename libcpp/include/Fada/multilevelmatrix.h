@@ -9,7 +9,7 @@
 namespace Alat
 {
   class SystemMatrixInterface;
-  class SystemVectorInterface;
+  class SystemVector;
 }
 namespace Fada
 {
@@ -32,7 +32,7 @@ public:
     int nlevels() const;
     void zeros();
     std::ostream& write(std::ostream& os) const;
-    void matrixVectorProduct(int level, Alat::SystemVectorInterface* f, const Alat::SystemVectorInterface* u, double d = 1.0) const;
+    void matrixVectorProduct(int level, Alat::SystemVector* f, const Alat::SystemVector* u, double d = 1.0) const;
     void matrixVectorProduct(Fada::MultiLevelVector* f, const Fada::MultiLevelVector* u, double d = 1.0) const;
   };
   std::ostream& operator<<(std::ostream& s, const MultiLevelMatrix& A);

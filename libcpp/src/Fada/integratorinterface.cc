@@ -43,9 +43,9 @@ void IntegratorInterface::beforeIntegration(const Fada::LocalVectors& localvecto
 
 void IntegratorInterface::beforeIntegration(const Fada::LocalVectors& localvectors) const
 {}
-void IntegratorInterface::beforeIntegrationLoop(const FadaEnums::term& term, const FadaEnums::domain& domain, const Fada::LocalGlobal& localglobal, Fada::LocalVectors& localvectors, Fada::LocalVectors& localvectorsR, const Fada::LocalGlobal::VectorMap& vectormap, const Alat::SystemVectorInterface* datavector) const
+void IntegratorInterface::beforeIntegrationLoop(const FadaEnums::term& term, const FadaEnums::domain& domain, const Fada::LocalGlobal& localglobal, Fada::LocalVectors& localvectors, Fada::LocalVectors& localvectorsR, const Fada::LocalGlobal::VectorMap& vectormap, const Alat::SystemVector* datavector) const
 {}
-void IntegratorInterface::afterIntegrationLoop(const FadaEnums::term& term, const FadaEnums::domain& domain, Alat::SystemVectorInterface* ouput) const
+void IntegratorInterface::afterIntegrationLoop(const FadaEnums::term& term, const FadaEnums::domain& domain, Alat::SystemVector* ouput) const
 {}
 
 /*--------------------------------------------------------------------------*/

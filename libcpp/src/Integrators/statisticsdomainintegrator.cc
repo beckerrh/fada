@@ -66,7 +66,7 @@ void StatisticsDomainIntegrator::afterIntegrationLoop(const FadaEnums::term& ter
 }
 
 /*--------------------------------------------------------------------------*/
-void StatisticsDomainIntegrator::beforeIntegrationLoop(const FadaEnums::term& term, const FadaEnums::domain& domain, const Fada::LocalGlobal& localglobal, Fada::LocalVectors& localvectors, Fada::LocalVectors& localvectorsR, const Fada::LocalGlobal::VectorMap& vectormap, const Alat::SystemVectorInterface* datavector) const
+void StatisticsDomainIntegrator::beforeIntegrationLoop(const FadaEnums::term& term, const FadaEnums::domain& domain, const Fada::LocalGlobal& localglobal, Fada::LocalVectors& localvectors, Fada::LocalVectors& localvectorsR, const Fada::LocalGlobal::VectorMap& vectormap, const Alat::SystemVector* datavector) const
 {
   _omega = 0.0;
   _Tmin = std::numeric_limits<double>::max();

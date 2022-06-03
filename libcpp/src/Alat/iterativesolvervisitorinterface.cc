@@ -43,42 +43,42 @@ IterativeSolverVisitorInterface* IterativeSolverVisitorInterface::clone() const
 // {
 //   _notWritten("getNcompOfVars");
 // }
-// 
+//
 // const Alat::IntVector& IterativeSolverVisitorInterface::getNOfVars() const
 // {
 //   _notWritten("getNcompOfVars");
 // }
-// 
+//
 // int IterativeSolverVisitorInterface::getNDomainSolvers() const
 // {
 //   _notWritten("getNDomainSolvers");
 // }
-// 
+//
 // int IterativeSolverVisitorInterface::getNCouplingSolvers() const
 // {
 //   _notWritten("getNCouplingSolvers");
 // }
 
-// Alat::SystemVectorInterface* IterativeSolverVisitorInterface::getDomainVector(int i, Alat::GhostVector& u) const
+// Alat::SystemVector* IterativeSolverVisitorInterface::getDomainVector(int i, Alat::GhostVector& u) const
 // {
 //   _notWritten("getDomainVector");
 // }
-// 
-// const Alat::SystemVectorInterface* IterativeSolverVisitorInterface::getDomainVector(int i, const Alat::GhostVector& u) const
+//
+// const Alat::SystemVector* IterativeSolverVisitorInterface::getDomainVector(int i, const Alat::GhostVector& u) const
 // {
 //   _notWritten("getDomainVector");
 // }
-// 
+//
 // const SystemMatrixInterface* IterativeSolverVisitorInterface::getDomainMatrix(int i, const Alat::GhostMatrix& A) const
 // {
 //   _notWritten("getDomainMatrix");
 // }
-// 
+//
 // const SystemMatrixInterface* IterativeSolverVisitorInterface::getCouplingMatrixLeftRight(int i, const Alat::GhostMatrix& A) const
 // {
 //   _notWritten("getCouplingMatrixLeftRight");
 // }
-// 
+//
 // const SystemMatrixInterface* IterativeSolverVisitorInterface::getCouplingMatrixRightLeft(int i, const Alat::GhostMatrix& A) const
 // {
 //   _notWritten("getCouplingMatrixRightLeft");
@@ -88,7 +88,7 @@ IterativeSolverVisitorInterface* IterativeSolverVisitorInterface::clone() const
 // {
 //   _notWritten("getLeftSolverIndexOfCouplingSolver");
 // }
-// 
+//
 // int IterativeSolverVisitorInterface::getRightSolverIndexOfCouplingSolver(int i) const
 // {
 //   _notWritten("getRightSolverIndexOfCouplingSolver");
@@ -98,12 +98,12 @@ IterativeSolverVisitorInterface* IterativeSolverVisitorInterface::clone() const
 // {
 //   _notWritten("getNvarsOfDomain");
 // }
-// 
+//
 // int IterativeSolverVisitorInterface::getNcompOfVar(int idomain, int ivar) const
 // {
 //   _notWritten("getNcompOfVar");
 // }
-// 
+//
 // int IterativeSolverVisitorInterface::getNOfVar(int idomain, int ivar) const
 // {
 //   _notWritten("getNOfVar");
@@ -184,10 +184,10 @@ std::ostream& IterativeSolverVisitorInterface::printLoopInformation(std::ostream
 }
 
 // /*-------------------------------------------------------------*/
-// 
-// void IterativeSolverVisitorInterface::matrixVectorProduct(Alat::SystemVectorInterface* r, const Alat::SystemVectorInterface* u, double d) const
+//
+// void IterativeSolverVisitorInterface::matrixVectorProduct(Alat::SystemVector* r, const Alat::SystemVector* u, double d) const
 // {
-//   _notWritten("matrixVectorProduct(Alat::SystemVectorInterface*)");
+//   _notWritten("matrixVectorProduct(Alat::SystemVector*)");
 // }
 
 /*-------------------------------------------------------------*/
@@ -209,14 +209,4 @@ void IterativeSolverVisitorInterface::vectorEqualOnDomain(int idomain, Alat::Gho
 void IterativeSolverVisitorInterface::matrixVectorProductCoupling(int i, const Alat::GhostMatrix& ghostmatrix, Alat::GhostVector& u, const Alat::GhostVector& f, double d) const
 {
   _notWritten("matrixVectorProductCoupling");
-}
-
-void IterativeSolverVisitorInterface::smoothInterface(int idomain, Alat::GhostVector& u) const
-{
-  _notWritten("smoothInterface");
-}
-
-void IterativeSolverVisitorInterface::smoothInterfaceOnLevel(int level, Alat::GhostVector& u) const
-{
-  _notWritten("smoothInterface");
 }

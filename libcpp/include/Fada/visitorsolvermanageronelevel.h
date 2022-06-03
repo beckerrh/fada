@@ -9,12 +9,12 @@
 namespace Alat
 {
   class SystemMatrixInterface;
-  class SystemVectorInterface;
+  class SystemVector;
 }
 namespace Fada
 {
   class DomainSolverInterface;
-  class SolverManagerInterface;
+  class SolverManager;
 
   class VisitorSolverManagerOneLevel : public Alat::IterativeSolverVisitorInterface
   {
@@ -22,20 +22,20 @@ protected:
     mutable Chronometer _chronometer;
     bool _integration;
     int _level;
-    SolverManagerInterface* _solvermanager;
+    SolverManager* _solvermanager;
     const Alat::GhostVector* _linearizationpoint;
     const Alat::StringSet _variables;
 
-    SolverManagerInterface* getSolverManager();
-    const SolverManagerInterface* getSolverManager() const;
+    SolverManager* getSolverManager();
+    const SolverManager* getSolverManager() const;
     const DomainSolverInterface* getDomainSolver(int idomain) const;
     DomainSolverInterface* getDomainSolver(int idomain);
-    Alat::SystemVectorInterface* getVector(int idomain, Alat::GhostVector& gp) const;
-    const Alat::SystemVectorInterface* getVector(int idomain, const Alat::GhostVector& gp) const;
+    Alat::SystemVector* getVector(int idomain, Alat::GhostVector& gp) const;
+    const Alat::SystemVector* getVector(int idomain, const Alat::GhostVector& gp) const;
 
 public:
     ~VisitorSolverManagerOneLevel();
-    VisitorSolverManagerOneLevel( SolverManagerInterface* solvermanager, int level, const Alat::StringSet& variables, bool integration);
+    VisitorSolverManagerOneLevel( SolverManager* solvermanager, int level, const Alat::StringSet& variables, bool integration);
     VisitorSolverManagerOneLevel( const VisitorSolverManagerOneLevel& visitoronelevel);
     VisitorSolverManagerOneLevel& operator=( const VisitorSolverManagerOneLevel& visitoronelevel);
     std::string getName() const;
@@ -46,8 +46,8 @@ public:
     void newVector(Alat::GhostVector* u);
     int getVectorLevel() const;
     const Alat::SystemMatrixInterface* getDomainMatrix(int i, const Alat::GhostMatrix& A) const;
-    Alat::SystemVectorInterface* getDomainVector(int i, Alat::GhostVector& u) const;
-    const Alat::SystemVectorInterface* getDomainVector(int i, const Alat::GhostVector& u) const;
+    Alat::SystemVector* getDomainVector(int i, Alat::GhostVector& u) const;
+    const Alat::SystemVector* getDomainVector(int i, const Alat::GhostVector& u) const;
 
     void setLinearizationPoint(const Alat::GhostVector& linearizationpoint);
     void matrixVectorProduct(const Alat::GhostMatrix& A, Alat::GhostVector& r, const Alat::GhostVector& u, double d) const;
@@ -61,7 +61,6 @@ public:
     void vectorEqualOnDomain(int idomain, Alat::GhostVector& u, const Alat::GhostVector& f) const;
     void matrixVectorProductCoupling(int i, const Alat::GhostMatrix& ghostmatrix, Alat::GhostVector& u, const Alat::GhostVector& f, double d) const;
     void setsmoothtype(const Alat::GhostLinearSolver& linearsolverdomain, std::string type);
-    void smoothInterface(int idomain, Alat::GhostVector& u) const;
   };
 }
 

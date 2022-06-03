@@ -24,14 +24,14 @@ protected:
     int _nlevels;
     const Alat::GhostLinearSolver _domainlinearsolver;
     const Alat::GhostMatrix _ghostmatrix;
-    Fada::SolverManagerInterface* _solvermanager;
+    Fada::SolverManager* _solvermanager;
     Alat::Vector<LinearSolverSolverManager*> _linearsolvers;
     Alat::Vector<Alat::StringVector> _variables;
     mutable Alat::Vector<Alat::GhostVector> _memory;
 
 public:
     ~LinearSolverSolverManagerAV();
-    LinearSolverSolverManagerAV(int nlevels, const Alat::GhostLinearSolver& domainlinearsolver, Fada::SolverManagerInterface* solvermanager);
+    LinearSolverSolverManagerAV(int nlevels, const Alat::GhostLinearSolver& domainlinearsolver, Fada::SolverManager* solvermanager);
     LinearSolverSolverManagerAV( const LinearSolverSolverManagerAV& multilevellinearsolver);
     LinearSolverSolverManagerAV& operator=( const LinearSolverSolverManagerAV& multilevellinearsolver);
     std::string getName() const;

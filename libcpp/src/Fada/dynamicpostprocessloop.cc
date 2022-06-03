@@ -36,7 +36,7 @@ DynamicPostProcessLoop* DynamicPostProcessLoop::clone() const
 }
 
 /*--------------------------------------------------------------------------*/
-void DynamicPostProcessLoop::basicInit(ModelManagerInterface* modelmanager, SolverManagerInterface* solvermanager, const std::string& rundirectory, const Alat::ParameterFile* parameterfile)
+void DynamicPostProcessLoop::basicInit(ModelManagerInterface* modelmanager, SolverManager* solvermanager, const std::string& rundirectory, const Alat::ParameterFile* parameterfile)
 {
   solvermanager->registerVector(_uold);
   solvermanager->registerVector(_postprocesstimeintegral);

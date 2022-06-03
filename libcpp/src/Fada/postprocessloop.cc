@@ -1,5 +1,5 @@
 #include  "Fada/postprocessloop.h"
-#include  "Fada/solvermanagerinterface.h"
+#include  "Fada/solvermanager.h"
 #include  <cassert>
 
 using namespace Fada;
@@ -39,7 +39,7 @@ PostProcessLoop* PostProcessLoop::clone() const
 }
 
 /*--------------------------------------------------------------------------*/
-void PostProcessLoop::basicInit(ModelManagerInterface* modelmanager, SolverManagerInterface* solvermanager, const std::string& rundirectory, const Alat::ParameterFile* parameterfile)
+void PostProcessLoop::basicInit(ModelManagerInterface* modelmanager, SolverManager* solvermanager, const std::string& rundirectory, const Alat::ParameterFile* parameterfile)
 {
   // solvermanager->registerVector(_postprocess);
   Loop::basicInit(modelmanager, solvermanager, rundirectory, parameterfile);

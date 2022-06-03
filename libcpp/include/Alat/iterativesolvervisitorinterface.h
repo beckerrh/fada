@@ -35,7 +35,7 @@ public:
     virtual std::string getVectorType() const;
     virtual int getVectorLevel() const=0;
     virtual void newVector(Alat::GhostVector* u) = 0;
- 
+
     virtual void vectorEqual(Alat::GhostVector& r, const Alat::GhostVector& f) const;
     virtual void vectorZero(Alat::GhostVector& v) const;
     virtual void vectorAdd(Alat::GhostVector& p, double d, const Alat::GhostVector& q) const;
@@ -52,8 +52,6 @@ public:
     virtual void solveOnDomain(int idomain, const Alat::GhostLinearSolver& linearsolverdomain, const Alat::GhostMatrix& ghostmatrix, Alat::GhostVector& u, const Alat::GhostVector& f) const;
     virtual void vectorEqualOnDomain(int idomain, Alat::GhostVector& u, const Alat::GhostVector& f) const;
     virtual void matrixVectorProductCoupling(int i, const Alat::GhostMatrix& ghostmatrix, Alat::GhostVector& u, const Alat::GhostVector& f, double d) const;
-    virtual void smoothInterface(int idomain, Alat::GhostVector& u) const;
-    virtual void smoothInterfaceOnLevel(int level, Alat::GhostVector& u) const;
   };
 }
 

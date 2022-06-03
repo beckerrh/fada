@@ -23,7 +23,7 @@ protected:
     std::string _meshname, _meshtype, _refinedmeshname, _rundirectory, _loopname;
     Alat::ParameterFile* _parameterfile;
 
-    Fada::SolverManagerInterface* newSolverManager(std::string meshtype) const;
+    Fada::SolverManager* newSolverManager(std::string meshtype) const;
     Fada::LoopInterface* newLoop(std::string loopname) const;
     Fada::ModelManagerInterface* newModelManager() const;
 

@@ -2,7 +2,7 @@
 #include  "Fada/domainsolverinterface.h"
 #include  "Alat/iterativesolvervisitorinterface.h"
 #include  "Fada/domaindecomposition.h"
-#include  "Fada/solvermanagerinterface.h"
+#include  "Fada/solvermanager.h"
 #include  "Fada/visitorsolvermanageronelevel.h"
 #include  "Alat/intvector.h"
 #include  "Alat/tokenize.h"
@@ -15,7 +15,7 @@ using namespace Fada;
 DomainDecomposition::~DomainDecomposition()
 {}
 
-DomainDecomposition::DomainDecomposition(std::string type, int level, Fada::SolverManagerInterface* solvermanager, const Alat::GhostMatrix& ghostmatrix, const Alat::GhostLinearSolver& linearsolverdomain) : Alat::Preconditioner(), _type(type), _level(level), _solvermanager(solvermanager), _ghostmatrix(ghostmatrix), _linearsolverdomain(linearsolverdomain)
+DomainDecomposition::DomainDecomposition(std::string type, int level, Fada::SolverManager* solvermanager, const Alat::GhostMatrix& ghostmatrix, const Alat::GhostLinearSolver& linearsolverdomain) : Alat::Preconditioner(), _type(type), _level(level), _solvermanager(solvermanager), _ghostmatrix(ghostmatrix), _linearsolverdomain(linearsolverdomain)
 {}
 
 DomainDecomposition::DomainDecomposition( const DomainDecomposition& preconditionerdomaindecomposition) : _linearsolverdomain(preconditionerdomaindecomposition._linearsolverdomain)
@@ -91,57 +91,6 @@ void DomainDecomposition::solveApproximate(AlatEnums::iterationstatus& status, c
     //   getVisitor()->matrixVectorProductCoupling(i, A, w, v, -1.0);
     //   getVisitor()->solveOnDomain(i, _linearsolverdomain, _ghostmatrix, u, w);
     // }
-  }
-  else if(_type == "gs")
-  {
-    for(int p = 0; p < permutation.size(); p++)
-    {
-      int i = permutation[p];
-      getVisitor()->vectorEqualOnDomain(i, v, f);
-      getVisitor()->matrixVectorProductCoupling(i, A, v, u, -1.0);
-      getVisitor()->solveOnDomain(i, _linearsolverdomain, _ghostmatrix, u, v);
-    }
-  }
-  else if(_type == "ags")
-  {
-    if(_smoothtype == "pre")
-    {
-      for(int p = 0; p < permutation.size(); p++)
-      {
-        int i = permutation[p];
-        getVisitor()->vectorEqualOnDomain(i, v, f);
-        getVisitor()->matrixVectorProductCoupling(i, A, v, u, -1.0);
-        getVisitor()->solveOnDomain(i, _linearsolverdomain, _ghostmatrix, u, v);
-      }
-    }
-    else
-    {
-      for(int p = permutation.size()-1; p >= 0; p--)
-      {
-        int i = permutation[p];
-        getVisitor()->vectorEqualOnDomain(i, v, f);
-        getVisitor()->matrixVectorProductCoupling(i, A, v, u, -1.0);
-        getVisitor()->solveOnDomain(i, _linearsolverdomain, _ghostmatrix, u, v);
-      }
-    }
-  }
-  else if(_type == "sgs")
-  {
-    Alat::GhostVector& v = getMemory(0);
-    for(int p = 0; p < permutation.size(); p++)
-    {
-      int i = permutation[p];
-      getVisitor()->vectorEqualOnDomain(i, v, f);
-      getVisitor()->matrixVectorProductCoupling(i, A, v, u, -1.0);
-      getVisitor()->solveOnDomain(i, _linearsolverdomain, _ghostmatrix, u, v);
-    }
-    for(int p = permutation.size()-1; p >= 0; p--)
-    {
-      int i = permutation[p];
-      getVisitor()->vectorEqualOnDomain(i, v, f);
-      getVisitor()->matrixVectorProductCoupling(i, A, v, u, -1.0);
-      getVisitor()->solveOnDomain(i, _linearsolverdomain, _ghostmatrix, u, v);
-    }
   }
   else
   {

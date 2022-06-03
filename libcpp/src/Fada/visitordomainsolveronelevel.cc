@@ -54,9 +54,9 @@ const DomainSolverInterface* VisitorDomainSolverOneLevel::getDomainSolver() cons
 }
 
 /*--------------------------------------------------------------------------*/
-Alat::SystemVectorInterface* VisitorDomainSolverOneLevel::getVector(Alat::GhostVector& vector) const
+Alat::SystemVector* VisitorDomainSolverOneLevel::getVector(Alat::GhostVector& vector) const
 {
-  Alat::SystemVectorInterface* vectori = dynamic_cast<Alat::SystemVectorInterface*>( getDomainSolver()->getVector(vector) );
+  Alat::SystemVector* vectori = dynamic_cast<Alat::SystemVector*>( getDomainSolver()->getVector(vector) );
   Fada::MultiLevelVector* mlvector = dynamic_cast<Fada::MultiLevelVector*>( getDomainSolver()->getVector(vector)  );
   if(mlvector)
   {
@@ -68,10 +68,10 @@ Alat::SystemVectorInterface* VisitorDomainSolverOneLevel::getVector(Alat::GhostV
   }
 }
 
-const Alat::SystemVectorInterface* VisitorDomainSolverOneLevel::getVector(const Alat::GhostVector& vector) const
+const Alat::SystemVector* VisitorDomainSolverOneLevel::getVector(const Alat::GhostVector& vector) const
 {
   // std::cerr << "VisitorDomainSolverOneLevel::getVector() vector " << vector << "\n";
-  const Alat::SystemVectorInterface* vectori = dynamic_cast<const Alat::SystemVectorInterface*>( getDomainSolver()->getVector(vector) );
+  const Alat::SystemVector* vectori = dynamic_cast<const Alat::SystemVector*>( getDomainSolver()->getVector(vector) );
   const Fada::MultiLevelVector* mlvector = dynamic_cast<const Fada::MultiLevelVector*>( getDomainSolver()->getVector(vector) );
   if(mlvector)
   {

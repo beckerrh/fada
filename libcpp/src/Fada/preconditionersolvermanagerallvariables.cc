@@ -3,6 +3,7 @@
 #include  "Alat/map.h"
 #include  "Fada/directsolver.h"
 #include  "Fada/linearsolversolvermanager.h"
+#include  "Fada/linearsolversolvermanagerAV.h"
 #include  <cassert>
 #include  <sstream>
 
@@ -21,7 +22,7 @@ PreconditionerSolverManagerAllvariables::~PreconditionerSolverManagerAllvariable
   }
 }
 
-PreconditionerSolverManagerAllvariables::PreconditionerSolverManagerAllvariables(const Alat::Map<Alat::StringVector, std::string>& solvernames, const Alat::GhostMatrix& ghostmatrix, Fada::SolverManagerInterface* solvermanager) : Alat::Preconditioner(), _ghostmatrix(ghostmatrix), _solvermanager(solvermanager)
+PreconditionerSolverManagerAllvariables::PreconditionerSolverManagerAllvariables(const Alat::Map<Alat::StringVector, std::string>& solvernames, const Alat::GhostMatrix& ghostmatrix, Fada::SolverManager* solvermanager) : Alat::Preconditioner(), _ghostmatrix(ghostmatrix), _solvermanager(solvermanager)
 {
   int n = solvernames.size();
   _variablenams.set_size(n);
@@ -112,6 +113,7 @@ void PreconditionerSolverManagerAllvariables::basicInit(const Alat::ParameterFil
       domainlinearsolver.setDescription("some_variables");
       _solvermanager->addLinearDomainSolvers(domainlinearsolver);
       _linearsolvers[isolver] = new Fada::LinearSolverSolverManager(variables, nlevels, domainlinearsolver, _solvermanager);
+      // _linearsolvers[isolver] = new Fada::LinearSolverSolverManagerAV(nlevels, domainlinearsolver, _solvermanager);
     }
     else
     {

@@ -10,13 +10,13 @@
 
 namespace Fada
 {
-  class SolverManagerInterface;
+  class SolverManager;
   class Chronometer;
 
   class DomainDecomposition : public Alat::Preconditioner
   {
 private:
-    Fada::SolverManagerInterface* _solvermanager;
+    Fada::SolverManager* _solvermanager;
     int _level;
     std::string _type, _smoothtype;
     mutable Fada::Chronometer _chronometer;
@@ -29,7 +29,7 @@ protected:
 
 public:
     ~DomainDecomposition();
-    DomainDecomposition(std::string type, int level, Fada::SolverManagerInterface* solvermanager, const Alat::GhostMatrix& ghostmatrix, const Alat::GhostLinearSolver& linearsolverdomain);
+    DomainDecomposition(std::string type, int level, Fada::SolverManager* solvermanager, const Alat::GhostMatrix& ghostmatrix, const Alat::GhostLinearSolver& linearsolverdomain);
     DomainDecomposition( const DomainDecomposition& preconditionerdomaindecomposition);
     DomainDecomposition& operator=( const DomainDecomposition& preconditionerdomaindecomposition);
     std::string getName() const;

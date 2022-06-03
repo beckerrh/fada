@@ -45,19 +45,19 @@ void UnstructuredMultiLevelMatrixTransfer::basicInit(const Fada::DomainSolverInt
   assert(0);
 }
 
-void UnstructuredMultiLevelMatrixTransfer::prolongate(int level, Alat::SystemVectorInterface* ufine, const Alat::SystemVectorInterface* ucoarse, double d) const
+void UnstructuredMultiLevelMatrixTransfer::prolongate(int level, Alat::SystemVector* ufine, const Alat::SystemVector* ucoarse, double d) const
 {
   assert(0);
 }
-void UnstructuredMultiLevelMatrixTransfer::restrict(int level, Alat::SystemVectorInterface* ucoarse, const Alat::SystemVectorInterface* ufine ) const
+void UnstructuredMultiLevelMatrixTransfer::restrict(int level, Alat::SystemVector* ucoarse, const Alat::SystemVector* ufine ) const
 {
   assert(0);
 }
-void UnstructuredMultiLevelMatrixTransfer::project(int level, Alat::SystemVectorInterface* ucoarse, const Alat::SystemVectorInterface* ufine) const
+void UnstructuredMultiLevelMatrixTransfer::project(int level, Alat::SystemVector* ucoarse, const Alat::SystemVector* ufine) const
 {
   assert(0);
 }
-void UnstructuredMultiLevelMatrixTransfer::interpolate(int level, Alat::SystemVectorInterface* ufine, const Alat::SystemVectorInterface* ucoarse) const
+void UnstructuredMultiLevelMatrixTransfer::interpolate(int level, Alat::SystemVector* ufine, const Alat::SystemVector* ucoarse) const
 {
   assert(0);
 }

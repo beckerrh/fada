@@ -115,7 +115,7 @@ void UmfSolverSomeVariables::compute()
 
 /*--------------------------------------------------------------------------*/
 
-void UmfSolverSomeVariables::solve(AlatEnums::iterationstatus& status, Alat::SystemVectorInterface* u, const Alat::SystemVectorInterface* f) const
+void UmfSolverSomeVariables::solve(AlatEnums::iterationstatus& status, Alat::SystemVector* u, const Alat::SystemVector* f) const
 {
   assert(_reinitcalled);
   assert(_computecalled);

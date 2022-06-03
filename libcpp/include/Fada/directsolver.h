@@ -5,7 +5,7 @@
 #include  "Alat/map.h"
 #include  "Fada/chronometer.h"
 #include  "Alat/iterativesolverwithvisitor.h"
-#include  "Fada/solvermanagerinterface.h"
+#include  "Fada/solvermanager.h"
 #include  "Alat/sparsematrix.h"
 #include  "Alat/umfmatrixbase.h"
 
@@ -24,7 +24,7 @@ namespace Fada
 private:
     static Fada::Chronometer _chronometer;
     bool _reinitcalled, _computecalled;
-    const Fada::SolverManagerInterface* _solvermanager;
+    const Fada::SolverManager* _solvermanager;
     Alat::Vector<Alat::IntVector> _ncompofvars, _nofvars;
     Alat::SparsityPatternSoft _sparsitypatternsoft;
     Alat::UmfMatrixBase _umf;
@@ -37,14 +37,14 @@ private:
     // void set_size(const Alat::Vector<Alat::IntVector>& nofvars, const Alat::Vector<Alat::IntVector>& ncompofvars);
     // void addMatrix(int i, const Alat::SystemMatrixInterface* A);
     // void addCouplingMatrix(int idomain, int jdomain, const Alat::SystemMatrixInterface* matrixLR, const Alat::SystemMatrixInterface* matrixRL);
-    // void addVectorRhs( int i, const Alat::SystemVectorInterface* f) const;
-    // void setVectorSolution(int i, Alat::SystemVectorInterface* u) const;
+    // void addVectorRhs( int i, const Alat::SystemVector* f) const;
+    // void setVectorSolution(int i, Alat::SystemVector* u) const;
     // void addMatrixEntries(int i, const Alat::SystemMatrixInterface* A);
     // void addCouplingMatrixEntries(int idomain, int jdomain, const Alat::SystemMatrixInterface* matrixLR, const Alat::SystemMatrixInterface* matrixRL);
 
 public:
     ~DirectSolver();
-    DirectSolver(int level, const Alat::GhostMatrix& ghostmatrix, const Fada::SolverManagerInterface* solvermanager, const Alat::StringVector& variables);
+    DirectSolver(int level, const Alat::GhostMatrix& ghostmatrix, const Fada::SolverManager* solvermanager, const Alat::StringVector& variables);
     DirectSolver( const DirectSolver& directsolver);
     DirectSolver& operator=( const DirectSolver& directsolver);
     std::string getName() const;

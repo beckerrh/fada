@@ -129,7 +129,7 @@ void LocalGlobal::initLocalVectors(Fada::LocalVectors& localvectors, const Vecto
 }
 
 /*--------------------------------------------------------------------------*/
-void LocalGlobal::extractAll(Fada::LocalVectors& localvectors, int iK, const VectorMap& vectormap, const Alat::SystemVectorInterface* datavector) const
+void LocalGlobal::extractAll(Fada::LocalVectors& localvectors, int iK, const VectorMap& vectormap, const Alat::SystemVector* datavector) const
 {
   if(vectormap.size() == 0)
   {
@@ -154,7 +154,7 @@ void LocalGlobal::extractAll(Fada::LocalVectors& localvectors, int iK, const Vec
 }
 
 /*--------------------------------------------------------------------------*/
-void LocalGlobal::extractAll(Fada::LocalVectors& localvectors, const VectorMap& vectormap, const Alat::SystemVectorInterface* datavector, const Alat::IntVector& indicesnodes) const
+void LocalGlobal::extractAll(Fada::LocalVectors& localvectors, const VectorMap& vectormap, const Alat::SystemVector* datavector, const Alat::IntVector& indicesnodes) const
 {
   if(vectormap.size() == 0)
   {
@@ -224,7 +224,7 @@ void LocalGlobal::assembleMatrixAllVariables(int iKL, int iKR, Alat::MatrixAllVa
 }
 
 /*--------------------------------------------------------------------------*/
-void LocalGlobal::assembleVector(Alat::SystemVectorInterface* fav, const Alat::SystemAssembleVector& floc, int iK, const Alat::StringSet& variables, double d) const
+void LocalGlobal::assembleVector(Alat::SystemVector* fav, const Alat::SystemAssembleVector& floc, int iK, const Alat::StringSet& variables, double d) const
 {
   for(Alat::StringSet::const_iterator p = variables.begin(); p != variables.end(); p++)
   {
@@ -237,7 +237,7 @@ void LocalGlobal::assembleVector(Alat::SystemVectorInterface* fav, const Alat::S
 }
 
 /*--------------------------------------------------------------------------*/
-void LocalGlobal::assembleVector(Alat::SystemVectorInterface* fav, const Alat::SystemAssembleVector& floc, const Alat::IntVector& indicesnodes, const Alat::StringSet& variables, double d) const
+void LocalGlobal::assembleVector(Alat::SystemVector* fav, const Alat::SystemAssembleVector& floc, const Alat::IntVector& indicesnodes, const Alat::StringSet& variables, double d) const
 {
   for(Alat::StringSet::const_iterator p = variables.begin(); p != variables.end(); p++)
   {
@@ -247,7 +247,7 @@ void LocalGlobal::assembleVector(Alat::SystemVectorInterface* fav, const Alat::S
 }
 
 /*--------------------------------------------------------------------------*/
-void LocalGlobal::assembleVectorPostProcess(Alat::SystemVectorInterface* fav, const Alat::SystemAssembleVector& floc, int iK, const Alat::StringSet& variables, double d) const
+void LocalGlobal::assembleVectorPostProcess(Alat::SystemVector* fav, const Alat::SystemAssembleVector& floc, int iK, const Alat::StringSet& variables, double d) const
 {
   for(Alat::StringSet::const_iterator p = variables.begin(); p != variables.end(); p++)
   {

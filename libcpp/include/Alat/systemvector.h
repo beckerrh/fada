@@ -2,15 +2,17 @@
 #define __Alat_SystemVector_h
 
 #include  "map.h"
-#include  "systemvectorinterface.h"
+#include  "vectorinterface.h"
 #include  "variablevectorinterface.h"
 
 /*--------------------------------------------------------------------------*/
 namespace Alat
 {
   class IntVector;
+  class StringDoubleVectorMap;
+  class StringSet;
 
-  class SystemVector : public Alat::Map<std::string, Alat::VariableVectorInterface*>, public Alat::SystemVectorInterface
+  class SystemVector : public Alat::Map<std::string, Alat::VariableVectorInterface*>, public Alat::VectorInterface
   {
 public:
     typedef Alat::Map<std::string, Alat::VariableVectorInterface*>::const_iterator const_iterator;

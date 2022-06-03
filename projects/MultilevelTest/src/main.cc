@@ -8,7 +8,7 @@
 class Main : public Integrators::Main
 {
 protected:
-  Fada::SolverManagerInterface* newSolverManager(std::string meshtype) const
+  Fada::SolverManager* newSolverManager(std::string meshtype) const
   {
     return new SolverManager();
   }

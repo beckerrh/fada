@@ -26,7 +26,7 @@ namespace Alat
 }
 namespace Alat
 {
-  class SystemVectorInterface;
+  class SystemVector;
   class VectorInterface;
 }
 namespace FadaMesh
@@ -107,8 +107,8 @@ public:
     virtual void sortCriterion(AlatEnums::residualstatus& status, double&  value, double weight, double measureSmallSide, const Fada::FemFunctionsMap& femfctsL, const Fada::FemFunctionsMap& femfctsR) const;
 
     virtual void beforeIntegration(const Fada::LocalVectors& localvectorsleft, const Fada::LocalVectors& localvectorsright) const;
-    virtual void beforeIntegrationLoop(const FadaEnums::term& term, const FadaEnums::domain& domain, const Fada::LocalGlobal& localglobal, Fada::LocalVectors& localvectors, Fada::LocalVectors& localvectorsR, const Fada::LocalGlobal::VectorMap& vectormap, const Alat::SystemVectorInterface* datavector) const;
-    virtual void afterIntegrationLoop(const FadaEnums::term& term, const FadaEnums::domain& domain, Alat::SystemVectorInterface* ouput) const;
+    virtual void beforeIntegrationLoop(const FadaEnums::term& term, const FadaEnums::domain& domain, const Fada::LocalGlobal& localglobal, Fada::LocalVectors& localvectors, Fada::LocalVectors& localvectorsR, const Fada::LocalGlobal::VectorMap& vectormap, const Alat::SystemVector* datavector) const;
+    virtual void afterIntegrationLoop(const FadaEnums::term& term, const FadaEnums::domain& domain, Alat::SystemVector* ouput) const;
     virtual void beforeIntegration(const Fada::LocalVectors& localvectors) const;
     virtual bool needsVeryOld() const;
     virtual void setLavrentievParameter(double parameter) const;

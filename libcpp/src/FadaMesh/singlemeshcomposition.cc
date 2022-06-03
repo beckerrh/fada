@@ -83,13 +83,6 @@ const FadaMesh::MeshInterface* SingleMeshComposition::getMesh(int i) const
 
 /*--------------------------------------------------------------------------*/
 
-const FadaMesh::CouplingMeshInterface* SingleMeshComposition::getCouplingMesh(int i) const
-{
-  return NULL;
-}
-
-/*--------------------------------------------------------------------------*/
-
 void SingleMeshComposition::constructFadaMesh(const std::string& meshname)
 {
   Alat::StringPair p = getMeshType(meshname);

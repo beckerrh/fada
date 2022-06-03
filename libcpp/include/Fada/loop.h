@@ -10,7 +10,7 @@
 
 namespace Fada
 {
-  class SolverManagerInterface;
+  class SolverManager;
   class TimeData;
 
   class Loop : public LoopInterface
@@ -18,7 +18,7 @@ namespace Fada
 protected:
     Alat::IoManager _io_manager;
     const Alat::ParameterFile* _parameterfile;
-    Fada::SolverManagerInterface* _solvermanager;
+    Fada::SolverManager* _solvermanager;
     FadaMesh::MeshCompositionInterface* _meshcomposition;
     mutable Chronometer _chronometer;
     std::string _vectortype;
@@ -33,12 +33,12 @@ public:
     std::string getName() const;
     static int _debuglevel;
 
-    void basicInit(ModelManagerInterface* modelmanager, SolverManagerInterface* solvermanager, const std::string& rundirectory, const Alat::ParameterFile* parameterfile = NULL);
+    void basicInit(ModelManagerInterface* modelmanager, SolverManager* solvermanager, const std::string& rundirectory, const Alat::ParameterFile* parameterfile = NULL);
     std::ostream& printLoopInformation(std::ostream& os) const;
     void initializeSolution(Alat::GhostVector& u, TimeData& timedata);
     void initializeSolution(Alat::GhostVector& u);
-    const SolverManagerInterface* getSolverManager() const;
-    SolverManagerInterface* getSolverManager();
+    const SolverManager* getSolverManager() const;
+    SolverManager* getSolverManager();
     const FadaMesh::MeshCompositionInterface* getMeshComposition() const;
     FadaMesh::MeshCompositionInterface* getMeshComposition();
     FadaMesh::MeshCompositionInterface*& getMeshCompositionPointer();

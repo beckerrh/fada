@@ -20,7 +20,7 @@
 #include  "Alat/sparsitypatternsoft.h"
 #include  "Fada/integratormanager.h"
 #include  "Alat/variablematrixinterface.h"
-#include  "Alat/systemvectorinterface.h"
+#include  "Alat/systemvector.h"
 #include  "Alat/variablevectorinterface.h"
 
 /*--------------------------------------------------------------------------*/
@@ -292,7 +292,7 @@ void DiscretizationTransport::matrixConnectivityPerLevel(const std::string& varn
 /*--------------------------------------------------------------------------*/
 void DiscretizationTransport::constructRightHandSide(AlatEnums::residualstatus& status, Alat::VectorInterface* f) const
 {
-  Alat::SystemVectorInterface* fs = dynamic_cast<Alat::SystemVectorInterface*>( f );
+  Alat::SystemVector* fs = dynamic_cast<Alat::SystemVector*>( f );
   assert(fs);
   int level = 0;
   Fada::LocalGlobal::VectorMap vectormap;
@@ -305,12 +305,12 @@ void DiscretizationTransport::constructRightHandSide(AlatEnums::residualstatus& 
 /*--------------------------------------------------------------------------*/
 void DiscretizationTransport::constructForm(AlatEnums::residualstatus& status, Alat::VectorInterface* f, const Alat::VectorInterface* u, const Alat::VectorInterface* uold, const Alat::VectorInterface* uveryold) const
 {
-  Alat::SystemVectorInterface* fs = dynamic_cast<Alat::SystemVectorInterface*>( f );
+  Alat::SystemVector* fs = dynamic_cast<Alat::SystemVector*>( f );
   assert(fs);
-  const Alat::SystemVectorInterface* us = dynamic_cast<const Alat::SystemVectorInterface*>( u );
+  const Alat::SystemVector* us = dynamic_cast<const Alat::SystemVector*>( u );
   assert(us);
-  const Alat::SystemVectorInterface* uolds = dynamic_cast<const Alat::SystemVectorInterface*>( uold );
-  const Alat::SystemVectorInterface* uveryolds = dynamic_cast<const Alat::SystemVectorInterface*>( uveryold );
+  const Alat::SystemVector* uolds = dynamic_cast<const Alat::SystemVector*>( uold );
+  const Alat::SystemVector* uveryolds = dynamic_cast<const Alat::SystemVector*>( uveryold );
   int level = 0;
   Fada::VisitorIntegrationLoopForm visitor(_localglobal, _variablemanager, fs);
   _dofmanagerallvariables->setMeshLevel(level);
@@ -330,7 +330,7 @@ void DiscretizationTransport::constructJacobianMatrix(AlatEnums::residualstatus&
     assert(umg);
     const Fada::MultiLevelVector* uoldmg = dynamic_cast<const Fada::MultiLevelVector*>( uold );
     const Fada::MultiLevelVector* uveryoldmg = dynamic_cast<const Fada::MultiLevelVector*>( uveryold );
-    const Alat::SystemVectorInterface* uolds = NULL, * uveryolds = NULL;
+    const Alat::SystemVector* uolds = NULL, * uveryolds = NULL;
 
     int nlevels = Amg->nlevels();
     for(int level = 0; level < nlevels; level++)
@@ -351,10 +351,10 @@ void DiscretizationTransport::constructJacobianMatrix(AlatEnums::residualstatus&
     // assert(0);
     Alat::SystemMatrixInterface* As = dynamic_cast<Alat::SystemMatrixInterface*>( A );
     int level = 0;
-    const Alat::SystemVectorInterface* us = dynamic_cast<const Alat::SystemVectorInterface*>( u );
+    const Alat::SystemVector* us = dynamic_cast<const Alat::SystemVector*>( u );
     assert(us);
-    const Alat::SystemVectorInterface* uolds = dynamic_cast<const Alat::SystemVectorInterface*>( uold );
-    const Alat::SystemVectorInterface* uveryolds = dynamic_cast<const Alat::SystemVectorInterface*>( uveryold );
+    const Alat::SystemVector* uolds = dynamic_cast<const Alat::SystemVector*>( uold );
+    const Alat::SystemVector* uveryolds = dynamic_cast<const Alat::SystemVector*>( uveryold );
     constructJacobianMatrix(level, status, As, us, uolds, uveryolds);
     // std::cerr << "DomainIntegrationLoop::constructJacobianMatrix(AlatEnums::residualstatus& status, )  A=";
     // As->write(std::cerr) << "\n";
@@ -362,7 +362,7 @@ void DiscretizationTransport::constructJacobianMatrix(AlatEnums::residualstatus&
 }
 
 /*--------------------------------------------------------------------------*/
-void DiscretizationTransport::constructJacobianMatrix(int level, AlatEnums::residualstatus& status, Alat::SystemMatrixInterface* As, const Alat::SystemVectorInterface* us, const Alat::SystemVectorInterface* uold, const Alat::SystemVectorInterface* uveryold) const
+void DiscretizationTransport::constructJacobianMatrix(int level, AlatEnums::residualstatus& status, Alat::SystemMatrixInterface* As, const Alat::SystemVector* us, const Alat::SystemVector* uold, const Alat::SystemVector* uveryold) const
 {
   Fada::VisitorIntegrationLoopMatrix visitor(_localglobal, _variablemanager, As, _couplingtype);
   _dofmanagerallvariables->setMeshLevel(level);

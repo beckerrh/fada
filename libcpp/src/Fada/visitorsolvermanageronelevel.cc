@@ -7,7 +7,7 @@
 #include  "Alat/matrixallvariables.h"
 #include  "Fada/multilevelvector.h"
 #include  "Alat/preconditionerinterface.h"
-#include  "Fada/solvermanagerinterface.h"
+#include  "Fada/solvermanager.h"
 #include  "Alat/systemvector.h"
 #include  "Fada/visitorsolvermanageronelevel.h"
 #include  "Alat/doublevector.h"
@@ -28,7 +28,7 @@ using namespace Fada;
 VisitorSolverManagerOneLevel::~VisitorSolverManagerOneLevel()
 {}
 
-VisitorSolverManagerOneLevel::VisitorSolverManagerOneLevel( SolverManagerInterface* solvermanager, int level, const Alat::StringSet& variables, bool integration) : Alat::IterativeSolverVisitorInterface(), _solvermanager(solvermanager), _variables(variables), _level(level),  _integration(integration), _linearizationpoint(NULL)
+VisitorSolverManagerOneLevel::VisitorSolverManagerOneLevel( SolverManager* solvermanager, int level, const Alat::StringSet& variables, bool integration) : Alat::IterativeSolverVisitorInterface(), _solvermanager(solvermanager), _variables(variables), _level(level),  _integration(integration), _linearizationpoint(NULL)
 {
 }
 
@@ -60,12 +60,12 @@ const Alat::StringSet& VisitorSolverManagerOneLevel::getVariables() const
   return _variables;
 }
 
-SolverManagerInterface* VisitorSolverManagerOneLevel::getSolverManager()
+SolverManager* VisitorSolverManagerOneLevel::getSolverManager()
 {
   return _solvermanager;
 }
 
-const SolverManagerInterface* VisitorSolverManagerOneLevel::getSolverManager() const
+const SolverManager* VisitorSolverManagerOneLevel::getSolverManager() const
 {
   return _solvermanager;
 }
@@ -119,12 +119,12 @@ void VisitorSolverManagerOneLevel::basicInit(const Alat::ParameterFile* paramete
 //
 // for DirectSolver
 //
-Alat::SystemVectorInterface* VisitorSolverManagerOneLevel::getDomainVector(int idomain, Alat::GhostVector& u) const
+Alat::SystemVector* VisitorSolverManagerOneLevel::getDomainVector(int idomain, Alat::GhostVector& u) const
 {
   return getDomainSolver(idomain)->getVector(_level, u);
 }
 
-const Alat::SystemVectorInterface* VisitorSolverManagerOneLevel::getDomainVector(int idomain, const Alat::GhostVector& u) const
+const Alat::SystemVector* VisitorSolverManagerOneLevel::getDomainVector(int idomain, const Alat::GhostVector& u) const
 {
   return getDomainSolver(idomain)->getVector(_level, u);
 }
@@ -142,7 +142,7 @@ int VisitorSolverManagerOneLevel::getVectorLevel() const
 }
 
 /*--------------------------------------------------------------------------*/
-Alat::SystemVectorInterface* VisitorSolverManagerOneLevel::getVector(int idomain, Alat::GhostVector& gu) const
+Alat::SystemVector* VisitorSolverManagerOneLevel::getVector(int idomain, Alat::GhostVector& gu) const
 {
   Fada::MultiLevelVector* umg = dynamic_cast<Fada::MultiLevelVector*>( getDomainSolver(idomain)->getVector(gu) );
   if(umg)
@@ -151,13 +151,13 @@ Alat::SystemVectorInterface* VisitorSolverManagerOneLevel::getVector(int idomain
   }
   else
   {
-    Alat::SystemVectorInterface* us = dynamic_cast<Alat::SystemVectorInterface*>( getDomainSolver(idomain)->getVector(gu) );
+    Alat::SystemVector* us = dynamic_cast<Alat::SystemVector*>( getDomainSolver(idomain)->getVector(gu) );
     assert(us);
     return us;
   }
 }
 
-const Alat::SystemVectorInterface* VisitorSolverManagerOneLevel::getVector(int idomain, const Alat::GhostVector& gu) const
+const Alat::SystemVector* VisitorSolverManagerOneLevel::getVector(int idomain, const Alat::GhostVector& gu) const
 {
   const Fada::MultiLevelVector* umg = dynamic_cast<const Fada::MultiLevelVector*>( getDomainSolver(idomain)->getVector(gu) );
   if(umg)
@@ -166,7 +166,7 @@ const Alat::SystemVectorInterface* VisitorSolverManagerOneLevel::getVector(int i
   }
   else
   {
-    const Alat::SystemVectorInterface* us = dynamic_cast<const Alat::SystemVectorInterface*>( getDomainSolver(idomain)->getVector(gu) );
+    const Alat::SystemVector* us = dynamic_cast<const Alat::SystemVector*>( getDomainSolver(idomain)->getVector(gu) );
     assert(us);
     return us;
   }
@@ -281,10 +281,4 @@ void VisitorSolverManagerOneLevel::vectorEqualOnDomain(int idomain, Alat::GhostV
 void VisitorSolverManagerOneLevel::matrixVectorProductCoupling(int idomain, const Alat::GhostMatrix& ghostmatrix, Alat::GhostVector& u, const Alat::GhostVector& f, double d) const
 {
   getSolverManager()->matrixVectorProductCoupling(idomain, _level, ghostmatrix, u, f, d);
-}
-
-/*--------------------------------------------------------------------------*/
-void VisitorSolverManagerOneLevel::smoothInterface(int idomain, Alat::GhostVector& u) const
-{
-  getSolverManager()->smoothInterface(_level, idomain, u);
 }

@@ -2,8 +2,8 @@
 #include  "Fada/femmanager.h"
 #include  "Fada/multileveltransferallvariables.h"
 #include  "Alat/stringset.h"
-#include  "Alat/systemvectorinterface.h"
-#include  "Alat/systemvectorinterface.h"
+#include  "Alat/systemvector.h"
+#include  "Alat/systemvector.h"
 #include  "Fada/variablemanager.h"
 #include  "FadaMesh/multilevelmesh.h"
 #include  <cassert>
@@ -60,7 +60,7 @@ void MultiLevelTransferAllVariables::basicInit(const Fada::DomainSolverInterface
     _mltransfersinglefem[p->first]->basicInit(mlmesh, p->second);
   }
 }
-void MultiLevelTransferAllVariables::prolongate(int level, Alat::SystemVectorInterface* ufine, const Alat::SystemVectorInterface* ucoarse, double d) const
+void MultiLevelTransferAllVariables::prolongate(int level, Alat::SystemVector* ufine, const Alat::SystemVector* ucoarse, double d) const
 {
   Alat::StringSet variables = 	ufine->getVariables();
   for(Alat::StringSet::const_iterator p=variables.begin(); p!=variables.end(); p++ )
@@ -69,7 +69,7 @@ void MultiLevelTransferAllVariables::prolongate(int level, Alat::SystemVectorInt
     _mltransfersinglefem[fem]->prolongate(level, ufine->getVector(*p), ucoarse->getVector(*p));  
   } 
 }
-void MultiLevelTransferAllVariables::restrict(int level, Alat::SystemVectorInterface* ucoarse, const Alat::SystemVectorInterface* ufine ) const
+void MultiLevelTransferAllVariables::restrict(int level, Alat::SystemVector* ucoarse, const Alat::SystemVector* ufine ) const
 {
   Alat::StringSet variables = 	ufine->getVariables();
   for(Alat::StringSet::const_iterator p=variables.begin(); p!=variables.end(); p++ )
@@ -78,7 +78,7 @@ void MultiLevelTransferAllVariables::restrict(int level, Alat::SystemVectorInter
     _mltransfersinglefem[fem]->restrict(level, ucoarse->getVector(*p), ufine->getVector(*p));  
   } 
 }
-void MultiLevelTransferAllVariables::project(int level, Alat::SystemVectorInterface* ucoarse, const Alat::SystemVectorInterface* ufine) const
+void MultiLevelTransferAllVariables::project(int level, Alat::SystemVector* ucoarse, const Alat::SystemVector* ufine) const
 {
   Alat::StringSet variables = 	ufine->getVariables();
   for(Alat::StringSet::const_iterator p=variables.begin(); p!=variables.end(); p++ )

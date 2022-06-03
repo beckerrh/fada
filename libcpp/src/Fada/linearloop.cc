@@ -2,7 +2,7 @@
 #include  "FadaMesh/meshcompositioninterface.h"
 #include  "Fada/model.h"
 #include  "Fada/solver.h"
-#include  "Fada/solvermanagerinterface.h"
+#include  "Fada/solvermanager.h"
 #include  <fstream>
 
 using namespace Fada;
@@ -43,7 +43,7 @@ FadaEnums::looptype LinearLoop::getType() const
 }
 
 /*---------------------------------------------------------*/
-void LinearLoop::basicInit(ModelManagerInterface* modelmanager, SolverManagerInterface* solvermanager, const std::string& rundirectory, const Alat::ParameterFile* parameterfile)
+void LinearLoop::basicInit(ModelManagerInterface* modelmanager, SolverManager* solvermanager, const std::string& rundirectory, const Alat::ParameterFile* parameterfile)
 {
   // std::cerr << "@@@ LinearLoop::basicInit() BEGIN\n";
   Loop::basicInit(modelmanager, solvermanager, rundirectory, parameterfile);

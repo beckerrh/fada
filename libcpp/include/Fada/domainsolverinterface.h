@@ -21,7 +21,7 @@ namespace Alat
 namespace Alat
 {
   class LinearSolverInterface;
-  class SystemVectorInterface;
+  class SystemVector;
   class VariableVectorInterface;
   class VectorInterface;
 }
@@ -91,8 +91,8 @@ public:
 
     virtual const Alat::VariableMatrixInterface* getMatrix(int level, const Alat::GhostMatrix& matrix, std::string outvar, std::string invar) const = 0;
     virtual Alat::VariableMatrixInterface* getMatrix(int level, Alat::GhostMatrix& matrix, std::string outvar, std::string invar) const = 0;
-    virtual const Alat::SystemVectorInterface* getVector(int level, const Alat::GhostVector& v) const = 0;
-    virtual Alat::SystemVectorInterface* getVector(int level,  Alat::GhostVector& v) const = 0;
+    virtual const Alat::SystemVector* getVector(int level, const Alat::GhostVector& v) const = 0;
+    virtual Alat::SystemVector* getVector(int level,  Alat::GhostVector& v) const = 0;
     virtual const Alat::SystemMatrixInterface* getMatrix(int level, const Alat::GhostMatrix& matrix) const = 0;
     virtual const Alat::VectorInterface* getVector(const Alat::GhostVector& v) const = 0;
     virtual Alat::VectorInterface* getVector(Alat::GhostVector& v) const = 0;

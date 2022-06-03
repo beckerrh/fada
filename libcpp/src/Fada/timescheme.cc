@@ -1,7 +1,7 @@
 #include  "Fada/dynamicloop.h"
 #include  "Alat/iterationinfo.h"
 #include  "Alat/nonlinearsolverinterface.h"
-#include  "Fada/solvermanagerinterface.h"
+#include  "Fada/solvermanager.h"
 #include  "Fada/timescheme.h"
 #include  "Fada/timesteppilot.h"
 #include  <cassert>
@@ -45,12 +45,12 @@ void TimeScheme::basicInit(DynamicLoop* loop)
 }
 
 /*--------------------------------------------------------------------------*/
-const SolverManagerInterface* TimeScheme::getSolverManager() const
+const SolverManager* TimeScheme::getSolverManager() const
 {
   return _loop->getSolverManager();
 }
 
-SolverManagerInterface* TimeScheme::getSolverManager()
+SolverManager* TimeScheme::getSolverManager()
 {
   return _loop->getSolverManager();
 }

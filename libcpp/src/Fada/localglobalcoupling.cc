@@ -54,7 +54,7 @@ void LocalGlobalCoupling::initLocalVectors(Fada::LocalVectors& localvectorsleft,
 }
 
 /*--------------------------------------------------------------------------*/
-void LocalGlobalCoupling::extractAll(Fada::LocalVectors& localvectors_left, Fada::LocalVectors& localvectorsR, const LocalGlobal::VectorMap& vectormapL, const Alat::SystemVectorInterface* datavectorL, const LocalGlobal::VectorMap& vectormapR, const Alat::SystemVectorInterface* datavectorR, const Alat::IntVector& indicesnodesleft, const Alat::IntVector& indicesnodesright) const
+void LocalGlobalCoupling::extractAll(Fada::LocalVectors& localvectors_left, Fada::LocalVectors& localvectorsR, const LocalGlobal::VectorMap& vectormapL, const Alat::SystemVector* datavectorL, const LocalGlobal::VectorMap& vectormapR, const Alat::SystemVector* datavectorR, const Alat::IntVector& indicesnodesleft, const Alat::IntVector& indicesnodesright) const
 {
   _left.extractAll(localvectors_left, vectormapL, datavectorL, indicesnodesleft);
   _right.extractAll(localvectorsR, vectormapR, datavectorR, indicesnodesright);
@@ -124,14 +124,14 @@ void LocalGlobalCoupling::initLocalMatrices(Alat::SystemAssembleMatrix& AlocLL, 
 }
 
 /*--------------------------------------------------------------------------*/
-void LocalGlobalCoupling::assembleVector(Alat::SystemVectorInterface* favL, Alat::SystemVectorInterface* favR, const Alat::SystemAssembleVector& flocL, const Alat::SystemAssembleVector& flocR, const Alat::IntVector& indicesnodesleft, const Alat::IntVector& indicesnodesright, const Alat::StringSet& variablesL, const Alat::StringSet& variablesR, double d) const
+void LocalGlobalCoupling::assembleVector(Alat::SystemVector* favL, Alat::SystemVector* favR, const Alat::SystemAssembleVector& flocL, const Alat::SystemAssembleVector& flocR, const Alat::IntVector& indicesnodesleft, const Alat::IntVector& indicesnodesright, const Alat::StringSet& variablesL, const Alat::StringSet& variablesR, double d) const
 {
   _left.assembleVector(favL, flocL, indicesnodesleft, variablesL, d);
   _right.assembleVector(favR, flocR, indicesnodesright, variablesR, d);
 }
 
 /*--------------------------------------------------------------------------*/
-void LocalGlobalCoupling::assembleVectorPostProcess(Alat::SystemVectorInterface* favL, Alat::SystemVectorInterface* favR, const Alat::SystemAssembleVector& flocL, const Alat::SystemAssembleVector& flocR, int iKL, int iKR, const Fada::VariableManager* variablemanagerL, const Fada::VariableManager* variablemanagerR, const Alat::StringSet& variablesL, const Alat::StringSet& variablesR, double d) const
+void LocalGlobalCoupling::assembleVectorPostProcess(Alat::SystemVector* favL, Alat::SystemVector* favR, const Alat::SystemAssembleVector& flocL, const Alat::SystemAssembleVector& flocR, int iKL, int iKR, const Fada::VariableManager* variablemanagerL, const Fada::VariableManager* variablemanagerR, const Alat::StringSet& variablesL, const Alat::StringSet& variablesR, double d) const
 {
   _left.assembleVectorPostProcess(favL, flocL, iKL, variablesL, d);
   _right.assembleVectorPostProcess(favR, flocR, iKR, variablesR, d);

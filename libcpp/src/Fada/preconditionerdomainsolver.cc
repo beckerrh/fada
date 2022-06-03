@@ -194,7 +194,7 @@ void PreconditionerDomainSolver::computePreconditioner()
 }
 
 /*--------------------------------------------------------------------------*/
-void PreconditionerDomainSolver::_solveApproximate(AlatEnums::iterationstatus& status, Alat::SystemVectorInterface* u, const Alat::SystemVectorInterface* f, int iteration) const
+void PreconditionerDomainSolver::_solveApproximate(AlatEnums::iterationstatus& status, Alat::SystemVector* u, const Alat::SystemVector* f, int iteration) const
 {
   Alat::SystemVector* hav = dynamic_cast<Alat::SystemVector*>( getMemory(0) );
   assert(hav);

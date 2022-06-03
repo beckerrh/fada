@@ -4,7 +4,7 @@
 #include  "Alat/iterativesolverwithvisitor.h"
 #include  "Fada/linearsolvervector.h"
 #include  "Fada/multilevelvector.h"
-#include  "Fada/solvermanagerinterface.h"
+#include  "Fada/solvermanager.h"
 #include  "Fada/visitorsolvermanagermultilevel.h"
 #include  "Fada/visitorsolvermanageronelevel.h"
 #include  <cassert>
@@ -18,7 +18,7 @@ using namespace Fada;
 VisitorSolverManagerMultiLevel::~VisitorSolverManagerMultiLevel()
 {}
 
-VisitorSolverManagerMultiLevel::VisitorSolverManagerMultiLevel(SolverManagerInterface* solvermanager, int nlevelsignore, int maxlevel, const Fada::LinearSolverVector&  linearsolvers, const Alat::StringSet& variables) : VisitorMultigridInterface(), _solvermanager(solvermanager), _nlevelsignore(nlevelsignore), _maxlevel(maxlevel), _chronometer( ), _linearsolvers(linearsolvers), _variables(variables)
+VisitorSolverManagerMultiLevel::VisitorSolverManagerMultiLevel(SolverManager* solvermanager, int nlevelsignore, int maxlevel, const Fada::LinearSolverVector&  linearsolvers, const Alat::StringSet& variables) : VisitorMultigridInterface(), _solvermanager(solvermanager), _nlevelsignore(nlevelsignore), _maxlevel(maxlevel), _chronometer( ), _linearsolvers(linearsolvers), _variables(variables)
 {
   _chronometer.enrol("scalarProduct", true);
   _chronometer.enrol("vectorOperations", true);
@@ -121,22 +121,13 @@ void VisitorSolverManagerMultiLevel::prolongate(int level, Alat::GhostVector& u,
 }
 
 /*--------------------------------------------------------------------------*/
-void VisitorSolverManagerMultiLevel::smoothInterfaceOnLevel(int level, Alat::GhostVector& u) const
-{
-  for(int i = 0; i < getSolverManager()->getNDomainSolvers(); i++)
-  {
-    getSolverManager()->smoothInterface(level, i, u);
-  }
-}
 
-/*--------------------------------------------------------------------------*/
-
-SolverManagerInterface* VisitorSolverManagerMultiLevel::getSolverManager()
+SolverManager* VisitorSolverManagerMultiLevel::getSolverManager()
 {
   return _solvermanager;
 }
 
-const SolverManagerInterface* VisitorSolverManagerMultiLevel::getSolverManager() const
+const SolverManager* VisitorSolverManagerMultiLevel::getSolverManager() const
 {
   return _solvermanager;
 }

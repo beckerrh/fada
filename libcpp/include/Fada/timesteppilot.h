@@ -12,7 +12,7 @@ namespace Alat
 }
 namespace Fada
 {
-  class SolverManagerInterface;
+  class SolverManager;
   
   class TimeStepPilot : Alat::InterfaceBase
   {
@@ -27,7 +27,7 @@ protected:
     int _nitermax, _frequency, _n_redo_time_step;
     std::string _stop_info;
     bool _redo_time_step, _stop_dynamic_loop;
-    const SolverManagerInterface* _solvermanager;
+    const SolverManager* _solvermanager;
     double _cut_dt;
     TimeStepCriterion* _timestepcriteria;
     mutable const TimeStepPilotInformation* _timesteppilotinformation;
@@ -60,7 +60,7 @@ public:
     int getNRedoTimeStep() const;
     int& getNRedoTimeStep();
 
-    void basicInit(const Alat::ParameterFile* parameterfile, const SolverManagerInterface* solvermanager, TimeData& timedata, Alat::IterationInfo& infonl);
+    void basicInit(const Alat::ParameterFile* parameterfile, const SolverManager* solvermanager, TimeData& timedata, Alat::IterationInfo& infonl);
     void checkTimeStep(const TimeData& timedata, TimeStepPilotInformation* timesteppilotinformation, int iteration);
     void computeNewDeltaT(TimeData& timedata, const TimeStepPilotInformation* timesteppilotinformation, int iteration);
     void setTimeStepPilotInformation(TimeStepPilotInformation& timesteppilotinformation) const;

@@ -18,7 +18,7 @@ namespace Alat
 namespace Alat
 {
   class SystemMatrixInterface;
-  class SystemVectorInterface;
+  class SystemVector;
 }
 namespace Alat
 {
@@ -46,7 +46,7 @@ namespace Fada
     mutable Alat::SystemAssembleVector _flocL, _flocR;
 
   public:
-    VisitorIntegrationLoop(const Fada::LocalGlobal& localglobal, const Fada::VariableManager* variablemanager, Alat::SystemVectorInterface* vector = NULL);
+    VisitorIntegrationLoop(const Fada::LocalGlobal& localglobal, const Fada::VariableManager* variablemanager, Alat::SystemVector* vector = NULL);
     void assembleOutput(int iK, const Alat::StringSet& variables);
     void assembleOutput(int iKL, int iKR, const Alat::StringSet& variablesL, const Alat::StringSet& variablesR);
     void setOuputZero() const;
@@ -72,7 +72,7 @@ namespace Fada
   class VisitorIntegrationLoopPostProcess : public VisitorIntegrationLoop
   {
   public:
-    VisitorIntegrationLoopPostProcess(const Fada::LocalGlobal& localglobal, const Fada::VariableManager* variablemanager, Alat::SystemVectorInterface* vector);
+    VisitorIntegrationLoopPostProcess(const Fada::LocalGlobal& localglobal, const Fada::VariableManager* variablemanager, Alat::SystemVector* vector);
     FadaEnums::term getTerm() const;
     void perCell(AlatEnums::residualstatus& status, int iK, const Fada::IntegratorInterface* integrator, double weight, const Fada::FemFunctionsMap& femfcts) const;
     void perBoundarySide(AlatEnums::residualstatus& status, int iS, int iK, const Fada::IntegratorInterface* integrator, double weight, const Fada::FemFunctionsMap& femfcts, int color) const;
@@ -87,7 +87,7 @@ namespace Fada
   class VisitorIntegrationLoopRightHandSide : public VisitorIntegrationLoop
   {
   public:
-    VisitorIntegrationLoopRightHandSide(const Fada::LocalGlobal& localglobal, const Fada::VariableManager* variablemanager, Alat::SystemVectorInterface* vector);
+    VisitorIntegrationLoopRightHandSide(const Fada::LocalGlobal& localglobal, const Fada::VariableManager* variablemanager, Alat::SystemVector* vector);
     FadaEnums::term getTerm() const;
     void perCell(AlatEnums::residualstatus& status, int iK, const Fada::IntegratorInterface* integrator, double weight, const Fada::FemFunctionsMap& femfcts) const;
     void perBoundarySide(AlatEnums::residualstatus& status, int iS, int iK, const Fada::IntegratorInterface* integrator, double weight, const Fada::FemFunctionsMap& femfcts, int color) const;
@@ -102,7 +102,7 @@ namespace Fada
   private:
     double _d;
   public:
-    VisitorIntegrationLoopTimeRhs(const Fada::LocalGlobal& localglobal, const Fada::VariableManager* variablemanager, Alat::SystemVectorInterface* vector, double d);
+    VisitorIntegrationLoopTimeRhs(const Fada::LocalGlobal& localglobal, const Fada::VariableManager* variablemanager, Alat::SystemVector* vector, double d);
     FadaEnums::term getTerm() const;
     void perCell(AlatEnums::residualstatus& status, int iK, const Fada::IntegratorInterface* integrator, double weight, const Fada::FemFunctionsMap& femfcts) const;
     void perBoundarySide(AlatEnums::residualstatus& status, int iS, int iK, const Fada::IntegratorInterface* integrator, double weight, const Fada::FemFunctionsMap& femfcts, int color) const;
@@ -115,7 +115,7 @@ namespace Fada
   class VisitorIntegrationLoopForm : public VisitorIntegrationLoop
   {
   public:
-    VisitorIntegrationLoopForm(const Fada::LocalGlobal& localglobal, const Fada::VariableManager* variablemanager, Alat::SystemVectorInterface* vector);
+    VisitorIntegrationLoopForm(const Fada::LocalGlobal& localglobal, const Fada::VariableManager* variablemanager, Alat::SystemVector* vector);
     FadaEnums::term getTerm() const;
     void assembleOutput(int iK, const Alat::StringSet& variables);
     void assembleOutput(int iKL, int iKR, const Alat::StringSet& variablesL, const Alat::StringSet& variablesR);
@@ -130,7 +130,7 @@ namespace Fada
   class VisitorIntegrationLoopLinearization : public VisitorIntegrationLoopForm
   {
   public:
-    VisitorIntegrationLoopLinearization(const Fada::LocalGlobal& localglobal, const Fada::VariableManager* variablemanager, Alat::SystemVectorInterface* vector);
+    VisitorIntegrationLoopLinearization(const Fada::LocalGlobal& localglobal, const Fada::VariableManager* variablemanager, Alat::SystemVector* vector);
     FadaEnums::term getTerm() const;
     void assembleOutput(int iK, const Alat::StringSet& variables);
     void assembleOutput(int iKL, int iKR, const Alat::StringSet& variablesL, const Alat::StringSet& variablesR);
@@ -181,7 +181,7 @@ namespace Fada
     mutable Alat::SystemAssembleVector _flocL, _flocR;
     const Fada::VariableManager* _variablemanagerL, * _variablemanagerR;
   public:
-    VisitorIntegrationLoopPostProcessCoupling(const Fada::LocalGlobalCoupling& localglobal, const Fada::VariableManager* variablemanagerL, const Fada::VariableManager* variablemanagerR, Alat::SystemVectorInterface* vectorL, Alat::SystemVectorInterface* vectorR);
+    VisitorIntegrationLoopPostProcessCoupling(const Fada::LocalGlobalCoupling& localglobal, const Fada::VariableManager* variablemanagerL, const Fada::VariableManager* variablemanagerR, Alat::SystemVector* vectorL, Alat::SystemVector* vectorR);
     FadaEnums::term getTerm() const;
     void perCouplingSide(AlatEnums::residualstatus& status, int iKL, int iKR,const Fada::IntegratorInterface* integrator, double weight, double measureSmallSide, const Fada::FemFunctionsMap& femfctsL, const Fada::FemFunctionsMap& femfctsR) const;
     void perCouplingSideBeforeIntegration(AlatEnums::residualstatus& status, int iS, const Fada::IntegratorInterface* integrator, const Fada::LocalVectors& localvectorsL, const Fada::LocalVectors& localvectorsR) const;
@@ -197,7 +197,7 @@ namespace Fada
     Alat::SystemVector* _vectorL, * _vectorR;
     mutable Alat::SystemAssembleVector _flocL, _flocR;
   public:
-    VisitorIntegrationLoopTimeRhsCoupling(const Fada::LocalGlobalCoupling& localglobal, Alat::SystemVectorInterface* vectorL, Alat::SystemVectorInterface* vectorR, double d);
+    VisitorIntegrationLoopTimeRhsCoupling(const Fada::LocalGlobalCoupling& localglobal, Alat::SystemVector* vectorL, Alat::SystemVector* vectorR, double d);
     FadaEnums::term getTerm() const;
     void perCouplingSide(AlatEnums::residualstatus& status, int iKL, int iKR,const Fada::IntegratorInterface* integrator, double weight, double measureSmallSide, const Fada::FemFunctionsMap& femfctsL, const Fada::FemFunctionsMap& femfctsR) const;
     void perCouplingSideBeforeIntegration(AlatEnums::residualstatus& status, int iS, const Fada::IntegratorInterface* integrator, const Fada::LocalVectors& localvectorsL, const Fada::LocalVectors& localvectorsR) const;
@@ -213,7 +213,7 @@ namespace Fada
     mutable Alat::SystemAssembleVector _flocL, _flocR;
 
   public:
-    VisitorIntegrationLoopFormCoupling(const Fada::LocalGlobalCoupling& localglobal, Alat::SystemVectorInterface* vectorL, Alat::SystemVectorInterface* vectorR);
+    VisitorIntegrationLoopFormCoupling(const Fada::LocalGlobalCoupling& localglobal, Alat::SystemVector* vectorL, Alat::SystemVector* vectorR);
     FadaEnums::term getTerm() const;
     void perCouplingSide(AlatEnums::residualstatus& status, int iKL, int iKR,const Fada::IntegratorInterface* integrator, double weight, double measureSmallSide, const Fada::FemFunctionsMap& femfctsL, const Fada::FemFunctionsMap& femfctsR) const;
     void perCouplingSideBeforeIntegration(AlatEnums::residualstatus& status, int iS, const Fada::IntegratorInterface* integrator, const Fada::LocalVectors& localvectorsL, const Fada::LocalVectors& localvectorsR) const;
@@ -224,7 +224,7 @@ namespace Fada
   class VisitorIntegrationLoopLinearizationCoupling : public VisitorIntegrationLoopFormCoupling
   {
   public:
-    VisitorIntegrationLoopLinearizationCoupling(const Fada::LocalGlobalCoupling& localglobal, Alat::SystemVectorInterface* vectorL, Alat::SystemVectorInterface* vectorR);
+    VisitorIntegrationLoopLinearizationCoupling(const Fada::LocalGlobalCoupling& localglobal, Alat::SystemVector* vectorL, Alat::SystemVector* vectorR);
     void perCouplingSide(AlatEnums::residualstatus& status, int iKL, int iKR,const Fada::IntegratorInterface* integrator, double weight, double measureSmallSide, const Fada::FemFunctionsMap& femfctsL, const Fada::FemFunctionsMap& femfctsR) const;
     void perCouplingSideBeforeIntegration(AlatEnums::residualstatus& status, int iS, const Fada::IntegratorInterface* integrator, const Fada::LocalVectors& localvectorsL, const Fada::LocalVectors& localvectorsR) const;
     void assembleOutput(int iKl, int iKr, const Alat::IntVector& indicesnodesleft, const Alat::IntVector& indicesnodesright, const Alat::StringSet& variablesL, const Alat::StringSet& variablesR);

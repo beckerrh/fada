@@ -94,13 +94,6 @@ const FadaMesh::MeshInterface* SingleMultiLevelMeshComposition::getMesh(int i) c
 
 /*--------------------------------------------------------------------------*/
 
-const FadaMesh::CouplingMeshInterface* SingleMultiLevelMeshComposition::getCouplingMesh(int i) const
-{
-  return NULL;
-}
-
-/*--------------------------------------------------------------------------*/
-
 void SingleMultiLevelMeshComposition::constructFadaMesh(const std::string& meshname)
 {
   Alat::StringPair p = getMeshType(meshname);

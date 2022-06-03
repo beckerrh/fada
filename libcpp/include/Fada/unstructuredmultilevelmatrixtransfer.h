@@ -28,10 +28,10 @@ public:
 
      void basicInit(const Fada::DomainSolverInterface* domainsolver, const FadaMesh::MeshInterface* mesh, const Fada::VariableManager& variablemanager, const Fada::DofManagerAllVariables* dofmanagerallvariables);
 
-     void prolongate(int level, Alat::SystemVectorInterface* ufine, const Alat::SystemVectorInterface* ucoarse, double d = 1.0) const;
-     void restrict(int level, Alat::SystemVectorInterface* ucoarse, const Alat::SystemVectorInterface* ufine ) const;
-     void project(int level, Alat::SystemVectorInterface* ucoarse, const Alat::SystemVectorInterface* ufine) const;
-     void interpolate(int level, Alat::SystemVectorInterface* ufine, const Alat::SystemVectorInterface* ucoarse) const;
+     void prolongate(int level, Alat::SystemVector* ufine, const Alat::SystemVector* ucoarse, double d = 1.0) const;
+     void restrict(int level, Alat::SystemVector* ucoarse, const Alat::SystemVector* ufine ) const;
+     void project(int level, Alat::SystemVector* ucoarse, const Alat::SystemVector* ufine) const;
+     void interpolate(int level, Alat::SystemVector* ufine, const Alat::SystemVector* ucoarse) const;
      void constructTransfer(int level, const Alat::SystemMatrixInterface* matrixfine, const Alat::SystemMatrixInterface* matrixcoarse);
 
     bool isConstant() const;

@@ -1,7 +1,7 @@
-#include  "FadaMesh/couplingmeshinterface.h"
 #include  "Fada/domainmodelinterface.h"
 #include  "Alat/filescanner.h"
 #include  "Alat/iomanager.h"
+#include  "FadaMesh/meshinterface.h"
 #include  "FadaMesh/meshcompositioninterface.h"
 #include  "Fada/modelmanager.h"
 #include  "Alat/map.h"
@@ -189,10 +189,10 @@ void ModelManager::_constructModels(const Alat::ParameterFile* parameterfile, Fa
   {
     getDomainModel(idomain)->basicInit(parameterfile, meshcomposition->getMesh(idomain), looptype);
   }
-  for(int icoupling = 0; icoupling < ncouplings; icoupling++)
-  {
-    getCouplingModel(icoupling)->basicInit(parameterfile, meshcomposition->getCouplingMesh(icoupling), looptype);
-  }
+  // for(int icoupling = 0; icoupling < ncouplings; icoupling++)
+  // {
+  //   getCouplingModel(icoupling)->basicInit(parameterfile, meshcomposition->getCouplingMesh(icoupling), looptype);
+  // }
   // std::cerr<<"ModelManager::constructModels() MODELS\n";
   // for(int i = 0; i < _domainmodels.size(); i++)
   // {

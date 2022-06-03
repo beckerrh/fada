@@ -6,7 +6,7 @@
 #include  "Alat/matrixallvariables.h"
 #include  "Fada/multilevelmatrix.h"
 #include  "Fada/multilevelvector.h"
-#include  "Alat/systemvectorinterface.h"
+#include  "Alat/systemvector.h"
 #include  "Fada/variablemanager.h"
 #include  "Alat/systemvector.h"
 #include  "Fada/visitorintegrationloop.h"
@@ -15,7 +15,7 @@
 using namespace Fada;
 
 /*--------------------------------------------------------------------------*/
-VisitorIntegrationLoop::VisitorIntegrationLoop(const Fada::LocalGlobal& localglobal, const Fada::VariableManager* variablemanager, Alat::SystemVectorInterface* vector) : _localglobal(localglobal), _variablemanager(variablemanager)
+VisitorIntegrationLoop::VisitorIntegrationLoop(const Fada::LocalGlobal& localglobal, const Fada::VariableManager* variablemanager, Alat::SystemVector* vector) : _localglobal(localglobal), _variablemanager(variablemanager)
 {
   _vector = dynamic_cast<Alat::SystemVector*>( vector );
 
@@ -84,7 +84,7 @@ void VisitorIntegrationLoopComputeNormSquared::setOuputZero() const
 {}
 
 /*--------------------------------------------------------------------------*/
-VisitorIntegrationLoopPostProcess::VisitorIntegrationLoopPostProcess(const Fada::LocalGlobal& localglobal, const Fada::VariableManager* variablemanager, Alat::SystemVectorInterface* vector) : VisitorIntegrationLoop(localglobal, variablemanager, vector)
+VisitorIntegrationLoopPostProcess::VisitorIntegrationLoopPostProcess(const Fada::LocalGlobal& localglobal, const Fada::VariableManager* variablemanager, Alat::SystemVector* vector) : VisitorIntegrationLoop(localglobal, variablemanager, vector)
 {
   _localglobal.initLocalPostProcess(_flocL);
   _localglobal.initLocalPostProcess(_flocR);
@@ -151,7 +151,7 @@ void VisitorIntegrationLoopPostProcess::perBoundarySideBeforeIntegration(AlatEnu
 }
 
 /*--------------------------------------------------------------------------*/
-VisitorIntegrationLoopRightHandSide::VisitorIntegrationLoopRightHandSide(const Fada::LocalGlobal& localglobal, const Fada::VariableManager* variablemanager, Alat::SystemVectorInterface* vector) : VisitorIntegrationLoop(localglobal, variablemanager, vector) {}
+VisitorIntegrationLoopRightHandSide::VisitorIntegrationLoopRightHandSide(const Fada::LocalGlobal& localglobal, const Fada::VariableManager* variablemanager, Alat::SystemVector* vector) : VisitorIntegrationLoop(localglobal, variablemanager, vector) {}
 
 FadaEnums::term VisitorIntegrationLoopRightHandSide::getTerm() const
 {
@@ -192,7 +192,7 @@ void VisitorIntegrationLoopRightHandSide::perBoundarySideBeforeIntegration(AlatE
 }
 
 /*--------------------------------------------------------------------------*/
-VisitorIntegrationLoopTimeRhs::VisitorIntegrationLoopTimeRhs(const Fada::LocalGlobal& localglobal, const Fada::VariableManager* variablemanager, Alat::SystemVectorInterface* vector, double d) : VisitorIntegrationLoop(localglobal, variablemanager, vector), _d(d) {}
+VisitorIntegrationLoopTimeRhs::VisitorIntegrationLoopTimeRhs(const Fada::LocalGlobal& localglobal, const Fada::VariableManager* variablemanager, Alat::SystemVector* vector, double d) : VisitorIntegrationLoop(localglobal, variablemanager, vector), _d(d) {}
 
 FadaEnums::term VisitorIntegrationLoopTimeRhs::getTerm() const
 {
@@ -231,7 +231,7 @@ void VisitorIntegrationLoopTimeRhs::perBoundarySideBeforeIntegration(AlatEnums::
 }
 
 /*--------------------------------------------------------------------------*/
-VisitorIntegrationLoopForm::VisitorIntegrationLoopForm(const Fada::LocalGlobal& localglobal, const Fada::VariableManager* variablemanager, Alat::SystemVectorInterface* vector) : VisitorIntegrationLoop(localglobal, variablemanager, vector) {}
+VisitorIntegrationLoopForm::VisitorIntegrationLoopForm(const Fada::LocalGlobal& localglobal, const Fada::VariableManager* variablemanager, Alat::SystemVector* vector) : VisitorIntegrationLoop(localglobal, variablemanager, vector) {}
 
 FadaEnums::term VisitorIntegrationLoopForm::getTerm() const
 {
@@ -283,7 +283,7 @@ void VisitorIntegrationLoopForm::perBoundarySideBeforeIntegration(AlatEnums::res
 }
 
 /*--------------------------------------------------------------------------*/
-VisitorIntegrationLoopLinearization::VisitorIntegrationLoopLinearization(const Fada::LocalGlobal& localglobal, const Fada::VariableManager* variablemanager, Alat::SystemVectorInterface* vector) : VisitorIntegrationLoopForm(localglobal, variablemanager, vector) {}
+VisitorIntegrationLoopLinearization::VisitorIntegrationLoopLinearization(const Fada::LocalGlobal& localglobal, const Fada::VariableManager* variablemanager, Alat::SystemVector* vector) : VisitorIntegrationLoopForm(localglobal, variablemanager, vector) {}
 
 FadaEnums::term VisitorIntegrationLoopLinearization::getTerm() const
 {
@@ -416,7 +416,7 @@ void VisitorIntegrationLoopMatrix::setAssembleData(const Fada::IntegratorInterfa
 }
 
 /*--------------------------------------------------------------------------*/
-VisitorIntegrationLoopPostProcessCoupling::VisitorIntegrationLoopPostProcessCoupling(const Fada::LocalGlobalCoupling& localglobal, const Fada::VariableManager* variablemanagerL, const Fada::VariableManager* variablemanagerR, Alat::SystemVectorInterface* vectorL, Alat::SystemVectorInterface* vectorR) : _localglobal(localglobal), _variablemanagerL(variablemanagerL), _variablemanagerR(variablemanagerR)
+VisitorIntegrationLoopPostProcessCoupling::VisitorIntegrationLoopPostProcessCoupling(const Fada::LocalGlobalCoupling& localglobal, const Fada::VariableManager* variablemanagerL, const Fada::VariableManager* variablemanagerR, Alat::SystemVector* vectorL, Alat::SystemVector* vectorR) : _localglobal(localglobal), _variablemanagerL(variablemanagerL), _variablemanagerR(variablemanagerR)
 {
   _vectorL = dynamic_cast<Alat::SystemVector*>( vectorL );
   assert(_vectorL);
@@ -457,7 +457,7 @@ void VisitorIntegrationLoopPostProcessCoupling::setOuputZeroAll() const
 }
 
 /*--------------------------------------------------------------------------*/
-VisitorIntegrationLoopTimeRhsCoupling::VisitorIntegrationLoopTimeRhsCoupling(const Fada::LocalGlobalCoupling& localglobal, Alat::SystemVectorInterface* vectorL, Alat::SystemVectorInterface* vectorR, double d) : _localglobal(localglobal), _d(d)
+VisitorIntegrationLoopTimeRhsCoupling::VisitorIntegrationLoopTimeRhsCoupling(const Fada::LocalGlobalCoupling& localglobal, Alat::SystemVector* vectorL, Alat::SystemVector* vectorR, double d) : _localglobal(localglobal), _d(d)
 {
   _vectorL = dynamic_cast<Alat::SystemVector*>( vectorL );
   assert(_vectorL);
@@ -493,7 +493,7 @@ void VisitorIntegrationLoopTimeRhsCoupling::setOuputZeroAll() const
 }
 
 /*--------------------------------------------------------------------------*/
-VisitorIntegrationLoopFormCoupling::VisitorIntegrationLoopFormCoupling(const Fada::LocalGlobalCoupling& localglobal, Alat::SystemVectorInterface* vectorL, Alat::SystemVectorInterface* vectorR) : _localglobal(localglobal)
+VisitorIntegrationLoopFormCoupling::VisitorIntegrationLoopFormCoupling(const Fada::LocalGlobalCoupling& localglobal, Alat::SystemVector* vectorL, Alat::SystemVector* vectorR) : _localglobal(localglobal)
 {
   _vectorL = dynamic_cast<Alat::SystemVector*>( vectorL );
   assert(_vectorL);
@@ -530,7 +530,7 @@ void VisitorIntegrationLoopFormCoupling::setOuputZeroAll() const
 }
 
 /*--------------------------------------------------------------------------*/
-VisitorIntegrationLoopLinearizationCoupling::VisitorIntegrationLoopLinearizationCoupling(const Fada::LocalGlobalCoupling& localglobal, Alat::SystemVectorInterface* vectorL, Alat::SystemVectorInterface* vectorR) : VisitorIntegrationLoopFormCoupling(localglobal, vectorL, vectorR)
+VisitorIntegrationLoopLinearizationCoupling::VisitorIntegrationLoopLinearizationCoupling(const Fada::LocalGlobalCoupling& localglobal, Alat::SystemVector* vectorL, Alat::SystemVector* vectorR) : VisitorIntegrationLoopFormCoupling(localglobal, vectorL, vectorR)
 {}
 
 void VisitorIntegrationLoopLinearizationCoupling::perCouplingSide(AlatEnums::residualstatus& status, int iKL, int iKR,const Fada::IntegratorInterface* integrator, double weight, double measureSmallSide, const Fada::FemFunctionsMap& femfctsL, const Fada::FemFunctionsMap& femfctsR) const

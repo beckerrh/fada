@@ -14,7 +14,7 @@
 #include  "Fada/timedata.h"
 #include  "Fada/variablemanager.h"
 #include  "Fada/visitorsolvermanageronelevel.h"
-#include  "FadaMesh/couplingmeshinterface.h"
+#include  "FadaMesh/meshinterface.h"
 #include  "FadaMesh/meshcompositioninterface.h"
 #include  "Alat/sorterinterface.h"
 #include  "Alat/variablevector.h"
@@ -52,7 +52,7 @@ SolverManager::~SolverManager()
   }
 }
 
-SolverManager::SolverManager() : SolverManagerInterface(), _chronometer("SolverManager"), _time(0.0)
+SolverManager::SolverManager() : Alat::InterfaceBase(), _chronometer("SolverManager"), _time(0.0)
 {
   _chronometer.enrol("BasicInit", true);
   _chronometer.enrol("ConstructLinearSolver", true);
@@ -66,14 +66,14 @@ SolverManager::SolverManager() : SolverManagerInterface(), _chronometer("SolverM
   _chronometer.enrol("Rhs", true);
 }
 
-SolverManager::SolverManager( const SolverManager& solvermanager) : SolverManagerInterface(solvermanager)
+SolverManager::SolverManager( const SolverManager& solvermanager) : Alat::InterfaceBase(solvermanager)
 {
   assert(0);
 }
 
 SolverManager& SolverManager::operator=( const SolverManager& solvermanager)
 {
-  SolverManagerInterface::operator=(solvermanager);
+  Alat::InterfaceBase::operator=(solvermanager);
   assert(0);
   return *this;
 }
@@ -163,11 +163,6 @@ Fada::DomainSolverInterface* SolverManager::newDomainSolver(const FadaMesh::Mesh
 {
   return new Fada::DomainSolver;
 }
-/*--------------------------------------------------------------------------*/
-void SolverManager::smoothInterface(int level, int idomain, Alat::GhostVector& u) const
-{
-  assert(0);
-}
 
 /*---------------------------------------------------------*/
 void SolverManager::basicInit(Fada::ModelManagerInterface* modelmanager, const FadaMesh::MeshCompositionInterface* meshcomposition, const Alat::IoManager& io_manager, FadaEnums::looptype looptype, const Alat::ParameterFile* parameterfile)
@@ -211,11 +206,11 @@ void SolverManager::basicInit(Fada::ModelManagerInterface* modelmanager, const F
   setDomainsOfCoupling(_domainsofcoupling, _domainneighbours, _couplingofdomains);
   // std::cerr<<"SolverManager::basicInit() _domainsofcoupling "<<_domainsofcoupling<<'\n';
 
-  for(int i = 0; i < meshcomposition->getNCouplingMeshes(); i++)
-  {
-    // meshcomposition->getCouplingMesh(i)->setNLevels(nlevelsmax);
-    meshcomposition->getCouplingMesh(i)->computeCouplingSideInformation(_nlevels);
-  }
+  // for(int i = 0; i < meshcomposition->getNCouplingMeshes(); i++)
+  // {
+  //   // meshcomposition->getCouplingMesh(i)->setNLevels(nlevelsmax);
+  //   meshcomposition->getCouplingMesh(i)->computeCouplingSideInformation(_nlevels);
+  // }
   _domainsolvers.set_size(ndomains);
   int ncouplingsolvers = _domainsofcoupling.size();
   // _couplingsolvers.set_size( ncouplingsolvers );
@@ -554,7 +549,7 @@ void SolverManager::restartLinearSolver(AlatEnums::residualstatus& status, Alat:
 void SolverManager::constructLinearSolver(Alat::GhostLinearSolver& linearsolver, const Alat::GhostVector& u)
 {
   _chronometer.start("ConstructLinearSolver");
-  constructVectorOfDomains(u);
+  // constructVectorOfDomains(u);
 
   // std::cerr << "SolverManager::constructLinearSolver() _domainSolversOfSolver="<<_domainSolversOfSolver<<"\n";
 

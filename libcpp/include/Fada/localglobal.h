@@ -16,7 +16,7 @@ namespace Alat
 }
 namespace Alat
 {
-  class SystemVectorInterface;
+  class SystemVector;
 }
 namespace Alat
 {
@@ -32,7 +32,7 @@ namespace Fada
   class LocalGlobal
   {
 public:
-    typedef Alat::Map<std::string, const Alat::SystemVectorInterface*> VectorMap;
+    typedef Alat::Map<std::string, const Alat::SystemVector*> VectorMap;
 
     ~LocalGlobal();
     LocalGlobal();
@@ -48,16 +48,16 @@ public:
     void setVariablesScales(const Alat::StringDoubleVectorMap& variablescales);
     void basicInit(const DofManagerAllVariables* dofmanagerallvariables, const VariableManager* variable_manager, const Alat::StringDoubleVectorMap& scalings);
     void initLocalVectors(Fada::LocalVectors& localvectors, const VectorMap& vectormap) const;
-    void extractAll(Fada::LocalVectors& localvectors, int iK, const VectorMap& vectormap, const Alat::SystemVectorInterface* datavector) const;
-    void extractAll(Fada::LocalVectors& localvectors, const VectorMap& vectormap, const Alat::SystemVectorInterface* datavector, const Alat::IntVector& indices) const;
+    void extractAll(Fada::LocalVectors& localvectors, int iK, const VectorMap& vectormap, const Alat::SystemVector* datavector) const;
+    void extractAll(Fada::LocalVectors& localvectors, const VectorMap& vectormap, const Alat::SystemVector* datavector, const Alat::IntVector& indices) const;
     void initLocalOutput(Alat::SystemAssembleVector& floc) const;
     void initLocalPostProcess(Alat::SystemAssembleVector& floc) const;
     void initLocalMatrix(Alat::SystemAssembleMatrix& Aloc) const;
     void assembleMatrixAllVariables(int iK, Alat::MatrixAllVariables* matrix, const Alat::SystemAssembleMatrix& Aloc, const Alat::StringSet& variables) const;
     void assembleMatrixAllVariables(int iKL, int iKR, Alat::MatrixAllVariables* matrix, const Alat::SystemAssembleMatrix& AlocLL, const Alat::SystemAssembleMatrix& AlocLR, const Alat::SystemAssembleMatrix& AlocRL, const Alat::SystemAssembleMatrix& AlocRR, const Alat::StringSet& variablesL, const Alat::StringSet& variablesR) const;
-    void assembleVector(Alat::SystemVectorInterface* fav, const Alat::SystemAssembleVector& floc, int iK, const Alat::StringSet& variables, double d) const;
-    void assembleVector(Alat::SystemVectorInterface* fav, const Alat::SystemAssembleVector& floc, const Alat::IntVector& indicesnodes, const Alat::StringSet& variables, double d) const;
-    void assembleVectorPostProcess(Alat::SystemVectorInterface* fav, const Alat::SystemAssembleVector& floc, int iK, const Alat::StringSet& variables, double d) const;
+    void assembleVector(Alat::SystemVector* fav, const Alat::SystemAssembleVector& floc, int iK, const Alat::StringSet& variables, double d) const;
+    void assembleVector(Alat::SystemVector* fav, const Alat::SystemAssembleVector& floc, const Alat::IntVector& indicesnodes, const Alat::StringSet& variables, double d) const;
+    void assembleVectorPostProcess(Alat::SystemVector* fav, const Alat::SystemAssembleVector& floc, int iK, const Alat::StringSet& variables, double d) const;
   };
 }
 

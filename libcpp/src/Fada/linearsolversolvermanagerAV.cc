@@ -2,8 +2,7 @@
 #include  "Alat/filescanner.h"
 #include  "Alat/iomanager.h"
 #include  "Alat/iterativesolverwithpreconditioner.h"
-#include  "Fada/domaindecomposition.h"
-#include  "Fada/solvermanagerinterface.h"
+#include  "Fada/solvermanager.h"
 #include  "Fada/visitorsolvermanagermultilevel.h"
 #include  "Fada/visitorsolvermanageronelevel.h"
 #include  "Alat/tokenize.h"
@@ -29,7 +28,7 @@ LinearSolverSolverManagerAV::~LinearSolverSolverManagerAV()
   }
 }
 
-LinearSolverSolverManagerAV::LinearSolverSolverManagerAV(int nlevels, const Alat::GhostLinearSolver& domainlinearsolver,  Fada::SolverManagerInterface* solvermanager) :  Alat::LinearSolverInterface(), Alat::PreconditionerInterface(), _nlevels(nlevels), _domainlinearsolver(domainlinearsolver), _ghostmatrix( domainlinearsolver.getMatrix() ), _solvermanager(solvermanager)
+LinearSolverSolverManagerAV::LinearSolverSolverManagerAV(int nlevels, const Alat::GhostLinearSolver& domainlinearsolver,  Fada::SolverManager* solvermanager) :  Alat::LinearSolverInterface(), Alat::PreconditionerInterface(), _nlevels(nlevels), _domainlinearsolver(domainlinearsolver), _ghostmatrix( domainlinearsolver.getMatrix() ), _solvermanager(solvermanager)
 {}
 
 LinearSolverSolverManagerAV::LinearSolverSolverManagerAV( const LinearSolverSolverManagerAV& mlsolversolvermanager) : Alat::LinearSolverInterface(mlsolversolvermanager), Alat::PreconditionerInterface(mlsolversolvermanager), _nlevels(mlsolversolvermanager._nlevels), _domainlinearsolver(mlsolversolvermanager._domainlinearsolver), _ghostmatrix(mlsolversolvermanager._ghostmatrix), _solvermanager(mlsolversolvermanager._solvermanager),  _linearsolvers(mlsolversolvermanager._linearsolvers)

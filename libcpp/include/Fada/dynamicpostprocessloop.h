@@ -24,7 +24,7 @@ public:
     std::string getName() const;
     DynamicPostProcessLoop* clone() const;
 
-    void basicInit(ModelManagerInterface* modelmanager, SolverManagerInterface* solvermanager, const std::string& rundirectory, const Alat::ParameterFile* parameterfile = NULL);
+    void basicInit(ModelManagerInterface* modelmanager, SolverManager* solvermanager, const std::string& rundirectory, const Alat::ParameterFile* parameterfile = NULL);
     void run();
   };
 }

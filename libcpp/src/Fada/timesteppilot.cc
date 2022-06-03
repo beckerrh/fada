@@ -40,7 +40,7 @@ std::string TimeStepPilot::getInterfaceName() const
 }
 
 /*--------------------------------------------------------------------------*/
-void TimeStepPilot::basicInit(const Alat::ParameterFile* parameterfile, const SolverManagerInterface* solvermanager, TimeData& timedata, Alat::IterationInfo& infonl)
+void TimeStepPilot::basicInit(const Alat::ParameterFile* parameterfile, const SolverManager* solvermanager, TimeData& timedata, Alat::IterationInfo& infonl)
 {
   _solvermanager = solvermanager;
   Alat::DataFormatHandler dataformathandler;

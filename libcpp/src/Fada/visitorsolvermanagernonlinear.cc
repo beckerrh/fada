@@ -14,7 +14,7 @@ using namespace Fada;
 VisitorSolverManagerNonlinear::~VisitorSolverManagerNonlinear()
 {}
 
-VisitorSolverManagerNonlinear::VisitorSolverManagerNonlinear(SolverManagerInterface* solvermanager, int level) : Alat::NonlinearSolverVisitorInterface(), _solvermanager(solvermanager), _level(level)
+VisitorSolverManagerNonlinear::VisitorSolverManagerNonlinear(SolverManager* solvermanager, int level) : Alat::NonlinearSolverVisitorInterface(), _solvermanager(solvermanager), _level(level)
 {}
 
 VisitorSolverManagerNonlinear::VisitorSolverManagerNonlinear( const VisitorSolverManagerNonlinear& visitorsolvermanagernonlinear) : Alat::NonlinearSolverVisitorInterface(visitorsolvermanagernonlinear)
@@ -40,12 +40,12 @@ VisitorSolverManagerNonlinear* VisitorSolverManagerNonlinear::clone() const
 }
 
 /*--------------------------------------------------------------------------*/
-const SolverManagerInterface* VisitorSolverManagerNonlinear::getSolverManager() const
+const SolverManager* VisitorSolverManagerNonlinear::getSolverManager() const
 {
   return _solvermanager;
 }
 
-SolverManagerInterface* VisitorSolverManagerNonlinear::getSolverManager()
+SolverManager* VisitorSolverManagerNonlinear::getSolverManager()
 {
   return _solvermanager;
 }

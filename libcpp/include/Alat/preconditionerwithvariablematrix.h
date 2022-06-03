@@ -14,7 +14,7 @@ namespace Alat
   class PreconditionerWithVariableMatrix : public Alat::Preconditioner
   {
 protected:
-    Alat::SystemVectorInterface* getMemory(int i) const;
+    Alat::SystemVector* getMemory(int i) const;
     const Alat::VariableMatrixInterface* _matrix;
     const Alat::IterativeSolverVisitorWithVectorInterface* _visitordomainsolver;
 

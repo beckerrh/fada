@@ -42,7 +42,7 @@ public:
     DynamicLoop* clone() const;
     FadaEnums::looptype getType() const;
 
-    void basicInit(ModelManagerInterface* modelmanager, SolverManagerInterface* solvermanager, const std::string& rundirectory, const Alat::ParameterFile* parameterfile = NULL);
+    void basicInit(ModelManagerInterface* modelmanager, SolverManager* solvermanager, const std::string& rundirectory, const Alat::ParameterFile* parameterfile = NULL);
     void run();
     TimeData& getTimeData();
   };

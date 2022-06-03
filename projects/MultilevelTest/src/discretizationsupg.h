@@ -10,7 +10,7 @@
 namespace Alat
 {
   class SystemMatrixInterface;
-  class SystemVectorInterface;
+  class SystemVector;
 }
 namespace Alat
 {
@@ -37,12 +37,12 @@ public:
 
   void basicInit(const Fada::DomainSolverInterface* solver);
   void matrixSparsityPattern(const std::string& varnamei, const std::string& varnamej, Alat::SparsityPatternSoft& sparsitypatternsoft, const FadaMesh::MeshInterface* mesh, const DiscretizationData& discdata) const;
-  void rightHandSideCells(AlatEnums::residualstatus& status, Alat::SystemVectorInterface* fs, const FadaMesh::MeshInterface* mesh, const DiscretizationData& discdata) const; 
-  void rightHandSideBoundarySides(AlatEnums::residualstatus& status, Alat::SystemVectorInterface* fs, const FadaMesh::MeshInterface* mesh, const DiscretizationData& discdata) const; 
-  void formCells(AlatEnums::residualstatus& status, Alat::SystemVectorInterface* fs, const Alat::SystemVectorInterface* us, const FadaMesh::MeshInterface* mesh, const DiscretizationData& discdata) const; 
-  void formBoundarySides(AlatEnums::residualstatus& status, Alat::SystemVectorInterface* fs, const Alat::SystemVectorInterface* us, const FadaMesh::MeshInterface* mesh, const DiscretizationData& discdata) const; 
-  void matrixCells(AlatEnums::residualstatus& status, Alat::SystemMatrixInterface* As, const Alat::SystemVectorInterface* us, const FadaMesh::MeshInterface* mesh, const DiscretizationData& discdata) const; 
-  void matrixBoundarySides(AlatEnums::residualstatus& status, Alat::SystemMatrixInterface* As, const Alat::SystemVectorInterface* us, const FadaMesh::MeshInterface* mesh, const DiscretizationData& discdata) const; 
+  void rightHandSideCells(AlatEnums::residualstatus& status, Alat::SystemVector* fs, const FadaMesh::MeshInterface* mesh, const DiscretizationData& discdata) const; 
+  void rightHandSideBoundarySides(AlatEnums::residualstatus& status, Alat::SystemVector* fs, const FadaMesh::MeshInterface* mesh, const DiscretizationData& discdata) const; 
+  void formCells(AlatEnums::residualstatus& status, Alat::SystemVector* fs, const Alat::SystemVector* us, const FadaMesh::MeshInterface* mesh, const DiscretizationData& discdata) const; 
+  void formBoundarySides(AlatEnums::residualstatus& status, Alat::SystemVector* fs, const Alat::SystemVector* us, const FadaMesh::MeshInterface* mesh, const DiscretizationData& discdata) const; 
+  void matrixCells(AlatEnums::residualstatus& status, Alat::SystemMatrixInterface* As, const Alat::SystemVector* us, const FadaMesh::MeshInterface* mesh, const DiscretizationData& discdata) const; 
+  void matrixBoundarySides(AlatEnums::residualstatus& status, Alat::SystemMatrixInterface* As, const Alat::SystemVector* us, const FadaMesh::MeshInterface* mesh, const DiscretizationData& discdata) const; 
 };
 
 /*--------------------------------------------------------------------------*/

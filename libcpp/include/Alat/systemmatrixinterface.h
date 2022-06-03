@@ -11,7 +11,7 @@ namespace Alat
 }
 namespace Alat
 {
-  class SystemVectorInterface;
+  class SystemVector;
   class VariableMatrixInterface;
 
   class SystemMatrixInterface : public MatrixInterface
@@ -32,7 +32,7 @@ public:
     virtual const Alat::VariableMatrixInterface* getMatrix(std::string varOut, std::string varIn) const;
     virtual Alat::VariableMatrixInterface* getMatrix(std::string varOut, std::string varIn);
 
-    virtual void matrixVectorProduct(Alat::SystemVectorInterface* out, const Alat::SystemVectorInterface* in, double d = 1.0) const=0;
+    virtual void matrixVectorProduct(Alat::SystemVector* out, const Alat::SystemVector* in, double d = 1.0) const=0;
     virtual std::ostream& write(std::ostream& os) const = 0;
   };
 }

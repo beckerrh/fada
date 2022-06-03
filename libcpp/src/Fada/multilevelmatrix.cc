@@ -92,7 +92,7 @@ std::ostream& Fada::operator<<(std::ostream& os, const MultiLevelMatrix& A)
 }
 
 /*--------------------------------------------------------------------------*/
-void MultiLevelMatrix::matrixVectorProduct(int level, Alat::SystemVectorInterface* f, const Alat::SystemVectorInterface* u, double d) const
+void MultiLevelMatrix::matrixVectorProduct(int level, Alat::SystemVector* f, const Alat::SystemVector* u, double d) const
 { 
   assert(0);
   // getMatrix(level)->matrixVectorProduct(f, u, d);

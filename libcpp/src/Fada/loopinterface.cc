@@ -52,7 +52,7 @@ void LoopInterface::linearSolve(AlatEnums::iterationstatus& status, Alat::GhostM
 
 /*--------------------------------------------------------------------------*/
 
-void LoopInterface::basicInit(ModelManagerInterface* modelmanager, SolverManagerInterface* solvermanager, const std::string& rundirectory, const Alat::ParameterFile* parameterfile)
+void LoopInterface::basicInit(ModelManagerInterface* modelmanager, SolverManager* solvermanager, const std::string& rundirectory, const Alat::ParameterFile* parameterfile)
 {
   _notWritten("basicInit");
 }

@@ -161,7 +161,7 @@ void MatrixAllVariables::addMatrix(const SystemMatrixInterface* matrix, double d
 }
 
 /*--------------------------------------------------------------------------*/
-void MatrixAllVariables::matrixVectorProduct(Alat::SystemVectorInterface* out, const Alat::SystemVectorInterface* in, double d) const
+void MatrixAllVariables::matrixVectorProduct(Alat::SystemVector* out, const Alat::SystemVector* in, double d) const
 {
   Alat::StringSet varsout = out->getVariables();
   Alat::StringSet varsin = in->getVariables();

@@ -2,7 +2,7 @@
 #include  "Alat/ghostmatrix.h"
 #include  "Alat/iterativesolvervisitorinterface.h"
 #include  "Alat/matrixallvariables.h"
-#include  "Fada/solvermanagerinterface.h"
+#include  "Fada/solvermanager.h"
 #include  "Alat/sparsitypatternsoft.h"
 #include  "Alat/sparsitypatternwithrowindex.h"
 #include  "Fada/variablemanager.h"
@@ -16,7 +16,7 @@ using namespace Fada;
 /*--------------------------------------------------------------------------*/
 DirectSolver::~DirectSolver()
 {}
-DirectSolver::DirectSolver(int level, const Alat::GhostMatrix& ghostmatrix, const Fada::SolverManagerInterface* solvermanager, const Alat::StringVector& variables) : Alat::IterativeSolverWithVisitor(), _ghostmatrix(ghostmatrix), _solvermanager(solvermanager), _level(level), _reinitcalled(false), _computecalled(false)
+DirectSolver::DirectSolver(int level, const Alat::GhostMatrix& ghostmatrix, const Fada::SolverManager* solvermanager, const Alat::StringVector& variables) : Alat::IterativeSolverWithVisitor(), _ghostmatrix(ghostmatrix), _solvermanager(solvermanager), _level(level), _reinitcalled(false), _computecalled(false)
 {
   assert( variables.size() );
   _variables.set_size( variables.size() );

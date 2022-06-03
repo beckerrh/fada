@@ -527,7 +527,7 @@ Alat::VariableVectorInterface* DomainSolver::newVariableVector(const Fada::Varia
 }
 
 /*---------------------------------------------------------*/
-Alat::SystemVectorInterface* DomainSolver::newLevelVector(const Alat::GhostVector& v) const
+Alat::SystemVector* DomainSolver::newLevelVector(const Alat::GhostVector& v) const
 {
   return new Alat::SystemVector;
 }
@@ -572,7 +572,7 @@ void DomainSolver::reInitVariableVectorForInterpolation(int level, Alat::Variabl
 }
 
 /*---------------------------------------------------------*/
-void DomainSolver::reInitLevelVector(int level, Alat::SystemVectorInterface* v, const Alat::GhostVector& gv) const
+void DomainSolver::reInitLevelVector(int level, Alat::SystemVector* v, const Alat::GhostVector& gv) const
 {
   // std::cerr << "DomainSolver::reInitLevelVector() gv="<<gv<< " level="<<level<<"\n";
   const std::string& name = gv.getName();
@@ -630,7 +630,7 @@ void DomainSolver::reInitVector(Alat::VectorInterface* v, const Alat::GhostVecto
   }
   else
   {
-    Alat::SystemVectorInterface* vs = dynamic_cast<Alat::SystemVectorInterface*>( v );
+    Alat::SystemVector* vs = dynamic_cast<Alat::SystemVector*>( v );
     assert(vs);
     int level = gv.getLevel();
     reInitLevelVector(level, vs, gv);
@@ -701,9 +701,9 @@ void DomainSolver::writeUnknownVariables(Alat::GhostVector& help, const Alat::Gh
   }
   else
   {
-    const Alat::SystemVectorInterface* vs = dynamic_cast<const Alat::SystemVectorInterface*>( getVector(v) );
+    const Alat::SystemVector* vs = dynamic_cast<const Alat::SystemVector*>( getVector(v) );
     assert(vs);
-    Alat::SystemVectorInterface* h = dynamic_cast<Alat::SystemVectorInterface*>( getVector(help) );
+    Alat::SystemVector* h = dynamic_cast<Alat::SystemVector*>( getVector(help) );
     assert(h);
     std::string filename = getIoManager()->getFileNameOut(Alat::IoManager::Unknowns, "U", number);
     filename = getIoManager()->getFileNameOnBlock( filename, getIndex() )+".h5";
@@ -730,7 +730,7 @@ void DomainSolver::readUnknownVariables(Alat::GhostVector& gv, int number)
   }
   else
   {
-    Alat::SystemVectorInterface* v = dynamic_cast<Alat::SystemVectorInterface*>( getVector(gv) );
+    Alat::SystemVector* v = dynamic_cast<Alat::SystemVector*>( getVector(gv) );
     assert(v);
     std::string filename = getIoManager()->getFileNameIn(number);
     filename = getIoManager()->getFileNameOnBlock( filename, getIndex() )+".h5";
@@ -740,7 +740,7 @@ void DomainSolver::readUnknownVariables(Alat::GhostVector& gv, int number)
 }
 
 /*---------------------------------------------------------*/
-void DomainSolver::_writeUnknownVariables(Alat::SystemVectorInterface* h, const Alat::SystemVectorInterface* vs, std::string filename) const
+void DomainSolver::_writeUnknownVariables(Alat::SystemVector* h, const Alat::SystemVector* vs, std::string filename) const
 {
   // std::cerr << "_writeUnknownVariables filename="<<filename<<"\n";
   h->equal(vs);
@@ -786,7 +786,7 @@ void DomainSolver::_writeUnknownVariables(Alat::SystemVectorInterface* h, const 
 }
 
 /*---------------------------------------------------------*/
-void DomainSolver::_readUnknownVariables(Alat::SystemVectorInterface* v, std::string filename)
+void DomainSolver::_readUnknownVariables(Alat::SystemVector* v, std::string filename)
 {
   // std::cerr << "_readUnknownVariables filename="<<filename<<"\n";
   // const H5std_string h5filename(filename);
@@ -838,7 +838,7 @@ void DomainSolver::_readUnknownVariables(Alat::SystemVectorInterface* v, std::st
 void DomainSolver::writePostProcessVariables(Alat::DoubleVector& est, const Alat::GhostVector& gv, int number) const
 {
   _chronometer.start("InputOutput");
-  const Alat::SystemVectorInterface* v = dynamic_cast<const Alat::SystemVectorInterface*>( getVector(gv) );
+  const Alat::SystemVector* v = dynamic_cast<const Alat::SystemVector*>( getVector(gv) );
   assert(v);
   std::string filename = getIoManager()->getFileNameOut(Alat::IoManager::PostProcess, "P", number);
   std::string filenameestimator = getIoManager()->getResultsDir() + "/" + "estimator";
@@ -1080,7 +1080,7 @@ void DomainSolver::initSolution(Alat::GhostVector& u)
     for(int level = 0; level < nlevels; level++)
     {
       getDomainIntegrationLoop()->initSolution( umg, level);
-      Alat::SystemVectorInterface* uall = umg->getVector(level);
+      Alat::SystemVector* uall = umg->getVector(level);
       if(_varscaleafterinitialize)
       {
         Alat::StringSet variables = getVariableManager()->getUnknownsNames();
@@ -1123,7 +1123,7 @@ void DomainSolver::initSolution(Alat::GhostVector& u)
   if(_varscaleafterinitialize)
   {
     Alat::StringDoubleVectorMap maxvalues;
-    Alat::SystemVectorInterface* uall = dynamic_cast<Alat::SystemVectorInterface*>( getVector(u) );
+    Alat::SystemVector* uall = dynamic_cast<Alat::SystemVector*>( getVector(u) );
     if(not uall)
     {
       _error_string( "initSolution", getVector(u)->getName() );
@@ -1398,7 +1398,7 @@ void DomainSolver::reInitLevelMatrix(int level, Alat::SystemMatrixInterface* mat
 
 //
 // /*--------------------------------------------------------------------------*/
-// void DomainSolver::oswaldInterpolation( Alat::VariableVector* uvisu, const Alat::SystemVectorInterface* u, const Fada::VariableInterface* var) const
+// void DomainSolver::oswaldInterpolation( Alat::VariableVector* uvisu, const Alat::SystemVector* u, const Fada::VariableInterface* var) const
 // {
 //   std::string visutype = var->getVisualizationType();
 //   assert ( visutype == "node" );
@@ -1456,8 +1456,8 @@ void DomainSolver::interpolateSolution( Alat::GhostVector& unew, const Alat::Gho
   int level = 0;
   getMesh()->setResolution(level);
   vectorZero(unew);
-  Alat::SystemVectorInterface* unewall = NULL;
-  const Alat::SystemVectorInterface* uoldall = NULL;
+  Alat::SystemVector* unewall = NULL;
+  const Alat::SystemVector* uoldall = NULL;
 
   Fada::MultiLevelVector* unewmg = dynamic_cast< Fada::MultiLevelVector*>( getVector(unew) );
   if(unewmg)
@@ -1802,7 +1802,7 @@ Alat::VariableMatrixInterface* DomainSolver::getMatrix(int level, Alat::GhostMat
 }
 
 /*---------------------------------------------------------*/
-Alat::SystemVectorInterface* DomainSolver::getVector(int level, Alat::GhostVector& ghostvector) const
+Alat::SystemVector* DomainSolver::getVector(int level, Alat::GhostVector& ghostvector) const
 {
   MultiLevelVector* mlvector = dynamic_cast<MultiLevelVector*>( _ghost_vector_agent(ghostvector) );
   if(mlvector)
@@ -1811,14 +1811,14 @@ Alat::SystemVectorInterface* DomainSolver::getVector(int level, Alat::GhostVecto
   }
   else
   {
-    Alat::SystemVectorInterface* svector = dynamic_cast<Alat::SystemVectorInterface*>( _ghost_vector_agent(ghostvector) );
+    Alat::SystemVector* svector = dynamic_cast<Alat::SystemVector*>( _ghost_vector_agent(ghostvector) );
     assert( level == ghostvector.getLevel() );
     return svector;
   }
 }
 
 /*---------------------------------------------------------*/
-const Alat::SystemVectorInterface* DomainSolver::getVector(int level, const Alat::GhostVector& ghostvector) const
+const Alat::SystemVector* DomainSolver::getVector(int level, const Alat::GhostVector& ghostvector) const
 {
   const MultiLevelVector* mlvector = dynamic_cast<const MultiLevelVector*>( _ghost_vector_agent(ghostvector) );
   if(mlvector)
@@ -1827,7 +1827,7 @@ const Alat::SystemVectorInterface* DomainSolver::getVector(int level, const Alat
   }
   else
   {
-    const Alat::SystemVectorInterface* svector = dynamic_cast<const Alat::SystemVectorInterface*>( _ghost_vector_agent(ghostvector) );
+    const Alat::SystemVector* svector = dynamic_cast<const Alat::SystemVector*>( _ghost_vector_agent(ghostvector) );
     assert( level == ghostvector.getLevel() );
     return svector;
   }
@@ -1937,7 +1937,7 @@ void DomainSolver::setMultiGridVector(int level, Alat::GhostVector& mgf, const A
   assert( level == gf.getLevel() );
   Fada::MultiLevelVector* mf = dynamic_cast<Fada::MultiLevelVector*>( getVector(mgf) );
   assert(mf);
-  const Alat::SystemVectorInterface* f = dynamic_cast<const Alat::SystemVectorInterface*>( getVector(gf) );
+  const Alat::SystemVector* f = dynamic_cast<const Alat::SystemVector*>( getVector(gf) );
   assert(f);
   mf->getVector(level)->equal( f );
 }
@@ -1948,7 +1948,7 @@ void DomainSolver::setVector(int level, Alat::GhostVector& gf, const Alat::Ghost
   assert( level == gf.getLevel() );
   const Fada::MultiLevelVector* mf = dynamic_cast<const Fada::MultiLevelVector*>( getVector(mgf) );
   assert(mf);
-  Alat::SystemVectorInterface* f = dynamic_cast<Alat::SystemVectorInterface*>( getVector(gf) );
+  Alat::SystemVector* f = dynamic_cast<Alat::SystemVector*>( getVector(gf) );
   assert(f);
   f->equal( mf->getVector(level) );
 }
@@ -2051,8 +2051,8 @@ std::ostream& DomainSolver::vectorWrite(std::ostream& os, const Alat::GhostVecto
 void DomainSolver::setVariableVectorToAll(Alat::GhostVector& u, const Alat::GhostVector& ui) const
 {
   Alat::StringSet variables = ui.getVariables();
-  Alat::SystemVectorInterface* us = dynamic_cast<Alat::SystemVectorInterface*>( getVector(u) );
-  const Alat::SystemVectorInterface* uis = dynamic_cast<const Alat::SystemVectorInterface*>( getVector(ui) );
+  Alat::SystemVector* us = dynamic_cast<Alat::SystemVector*>( getVector(u) );
+  const Alat::SystemVector* uis = dynamic_cast<const Alat::SystemVector*>( getVector(ui) );
   for(Alat::StringSet::const_iterator p = variables.begin(); p != variables.end(); p++)
   {
     if( us->hasVector(*p) )
@@ -2066,8 +2066,8 @@ void DomainSolver::setVariableVectorToAll(Alat::GhostVector& u, const Alat::Ghos
 void DomainSolver::setVariableVectorFromAll(Alat::GhostVector& ui, const Alat::GhostVector& u) const
 {
   Alat::StringSet variables = ui.getVariables();
-  const Alat::SystemVectorInterface* us = dynamic_cast<const Alat::SystemVectorInterface*>( getVector(u) );
-  Alat::SystemVectorInterface* uis = dynamic_cast<Alat::SystemVectorInterface*>( getVector(ui) );
+  const Alat::SystemVector* us = dynamic_cast<const Alat::SystemVector*>( getVector(u) );
+  Alat::SystemVector* uis = dynamic_cast<Alat::SystemVector*>( getVector(ui) );
   for(Alat::StringSet::const_iterator p = variables.begin(); p != variables.end(); p++)
   {
     if( uis->hasVector(*p) )
@@ -2245,14 +2245,14 @@ void DomainSolver::strongDirichletVectorSolution(Alat::GhostVector& f) const
   }
   else
   {
-    Alat::SystemVectorInterface* fs = dynamic_cast<Alat::SystemVectorInterface*>( getVector(f) );
+    Alat::SystemVector* fs = dynamic_cast<Alat::SystemVector*>( getVector(f) );
     assert(fs);
     strongDirichletVectorSolution(f.getLevel(), fs);
   }
 }
 
 /*--------------------------------------------------------------------------*/
-void DomainSolver::strongDirichletVectorSolution(int level, Alat::SystemVectorInterface* f) const
+void DomainSolver::strongDirichletVectorSolution(int level, Alat::SystemVector* f) const
 {
   const Fada::VariablesMap& unknowns = getVariableManager()->getUnknowns();
   const FadaMesh::BoundaryInfo* boundaryinfo = getMesh()->getBoundaryInfo();
@@ -2399,14 +2399,14 @@ void DomainSolver::strongDirichletVectorZero(Alat::GhostVector& f) const
   }
   else
   {
-    Alat::SystemVectorInterface* fs = dynamic_cast<Alat::SystemVectorInterface*>( getVector(f) );
+    Alat::SystemVector* fs = dynamic_cast<Alat::SystemVector*>( getVector(f) );
     assert(fs);
     strongDirichletVectorZero( f.getLevel(), fs );
   }
 }
 
 /*--------------------------------------------------------------------------*/
-void DomainSolver::strongDirichletVectorZero(int level, Alat::SystemVectorInterface* f) const
+void DomainSolver::strongDirichletVectorZero(int level, Alat::SystemVector* f) const
 {
   const Fada::VariablesMap& unknowns = getVariableManager()->getUnknowns();
   const FadaMesh::BoundaryInfo* boundaryinfo = getMesh()->getBoundaryInfo();

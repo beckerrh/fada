@@ -47,8 +47,8 @@ public:
     void vectorScale(Alat::GhostVector& r, double d) const;
     double scalarProduct(const Alat::GhostVector& p, const Alat::GhostVector& q) const;
     void matrixVectorProduct(const Alat::GhostMatrix& A, Alat::GhostVector& p, const Alat::GhostVector& q, double d) const;
-    Alat::SystemVectorInterface* getVector(Alat::GhostVector& u) const;
-    const Alat::SystemVectorInterface* getVector(const Alat::GhostVector& u) const;
+    Alat::SystemVector* getVector(Alat::GhostVector& u) const;
+    const Alat::SystemVector* getVector(const Alat::GhostVector& u) const;
     const Alat::IntVector& getNOfVars() const;
     const Alat::IntVector& getNcompOfVars() const;
     int level() const;

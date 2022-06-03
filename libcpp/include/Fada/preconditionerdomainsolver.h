@@ -41,7 +41,7 @@ public:
     void basicInit(const Alat::ParameterFile* parameterfile, std::string blockname, Alat::IterativeSolverVisitorInterface* visitor);
     void reInit();
     void computePreconditioner();
-    void _solveApproximate(AlatEnums::iterationstatus& status, Alat::SystemVectorInterface* u, const Alat::SystemVectorInterface* f, int iteration) const;
+    void _solveApproximate(AlatEnums::iterationstatus& status, Alat::SystemVector* u, const Alat::SystemVector* f, int iteration) const;
   };
 }
 

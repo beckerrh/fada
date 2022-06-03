@@ -21,7 +21,7 @@ public:
   Fada::DomainIntegrationLoopInterface* newDomainIntegrationLoop() const;
   void interpolateSolution( Alat::GhostVector& unew, const Alat::GhostVector& uold) const;
   void testProlongate(Alat::GhostVector& u) const;
-  void project( const FadaMesh::MeshInterface* coarsemesh, const FadaMesh::MeshInterface* finemesh, Alat::SystemVectorInterface* ucoarse, const Alat::SystemVectorInterface* ufine) const;
+  void project( const FadaMesh::MeshInterface* coarsemesh, const FadaMesh::MeshInterface* finemesh, Alat::SystemVector* ucoarse, const Alat::SystemVector* ufine) const;
 };
 
 /*--------------------------------------------------------------------------*/

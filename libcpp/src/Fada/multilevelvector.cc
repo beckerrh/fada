@@ -1,5 +1,5 @@
 #include  "Fada/multilevelvector.h"
-#include  "Alat/systemvectorinterface.h"
+#include  "Alat/systemvector.h"
 #include  <cassert>
 #include  <math.h>
 
@@ -17,8 +17,8 @@ MultiLevelVector::~MultiLevelVector()
     }
   }
 }
-MultiLevelVector::MultiLevelVector() : Alat::Vector<Alat::SystemVectorInterface*>(), Alat::VectorInterface(){}
-MultiLevelVector::MultiLevelVector( const MultiLevelVector& multilevelvector) : Alat::Vector<Alat::SystemVectorInterface*>(multilevelvector), Alat::VectorInterface(multilevelvector)
+MultiLevelVector::MultiLevelVector() : Alat::Vector<Alat::SystemVector*>(), Alat::VectorInterface(){}
+MultiLevelVector::MultiLevelVector( const MultiLevelVector& multilevelvector) : Alat::Vector<Alat::SystemVector*>(multilevelvector), Alat::VectorInterface(multilevelvector)
 {
   int n = multilevelvector.size();
   set_size(n);
@@ -43,15 +43,15 @@ MultiLevelVector* MultiLevelVector::clone() const
 }
 
 /*--------------------------------------------------------------------------*/
-const Alat::SystemVectorInterface* MultiLevelVector::getVector(int level) const
+const Alat::SystemVector* MultiLevelVector::getVector(int level) const
 {
   return ( *this )[level];
 }
-Alat::SystemVectorInterface* MultiLevelVector::getVector(int level)
+Alat::SystemVector* MultiLevelVector::getVector(int level)
 {
   return ( *this )[level];
 }
-Alat::SystemVectorInterface*& MultiLevelVector::getVectorPointer(int level)
+Alat::SystemVector*& MultiLevelVector::getVectorPointer(int level)
 {
   return ( *this )[level];
 }
@@ -79,7 +79,7 @@ int MultiLevelVector::nlevels() const
 /*--------------------------------------------------------------------------*/
 void MultiLevelVector::set_size(int nlevels)
 {
-  Alat::Vector<Alat::SystemVectorInterface*>::set_size(nlevels);
+  Alat::Vector<Alat::SystemVector*>::set_size(nlevels);
 }
 
 /*--------------------------------------------------------------------------*/

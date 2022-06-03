@@ -12,7 +12,7 @@
 namespace Alat
 {
   class SystemMatrixInterface;
-  class SystemVectorInterface;
+  class SystemVector;
   class VariableVectorInterface;
   class VectorInterface;
 }
@@ -41,7 +41,7 @@ public:
     void reInit();
     void compute();
     void solve(AlatEnums::iterationstatus& status, const Alat::GhostMatrix& A, Alat::GhostVector& u, const Alat::GhostVector& f) const;
-    void solve(AlatEnums::iterationstatus& status, Alat::SystemVectorInterface* u, const Alat::SystemVectorInterface* f) const;
+    void solve(AlatEnums::iterationstatus& status, Alat::SystemVector* u, const Alat::SystemVector* f) const;
   };
 }
 

@@ -7,7 +7,7 @@
 #include  "Alat/newtonlinesearch.h"
 #include  "Alat/newtonrb.h"
 #include  "Alat/newtonsimple.h"
-#include  "Fada/solvermanagerinterface.h"
+#include  "Fada/solvermanager.h"
 #include  "Fada/staticloop.h"
 #include  "Alat/tokenize.h"
 #include  "Fada/visitorsolvermanagernonlinear.h"
@@ -51,7 +51,7 @@ FadaEnums::looptype StaticLoop::getType() const
 
 /*---------------------------------------------------------*/
 
-void StaticLoop::basicInit(ModelManagerInterface* modelmanager, SolverManagerInterface* solvermanager, const std::string& rundirectory, const Alat::ParameterFile* parameterfile)
+void StaticLoop::basicInit(ModelManagerInterface* modelmanager, SolverManager* solvermanager, const std::string& rundirectory, const Alat::ParameterFile* parameterfile)
 {
   getChronometer().start("basicInit");
   Alat::DataFormatHandler dataformathandler;

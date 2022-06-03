@@ -7,7 +7,7 @@
 namespace Fada
 {
   class SystemMatrixInterface;
-  class SystemVectorInterface;
+  class SystemVector;
   class VariableVector;
 }
 

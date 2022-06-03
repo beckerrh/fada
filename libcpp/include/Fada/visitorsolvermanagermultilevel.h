@@ -9,7 +9,7 @@
 namespace Fada
 {
   class LinearSolverVector;
-  class SolverManagerInterface;
+  class SolverManager;
   class VisitorSolverManagerOneLevel;
 
   class VisitorSolverManagerMultiLevel : public VisitorMultigridInterface
@@ -18,15 +18,15 @@ protected:
     mutable Fada::Chronometer _chronometer;
     int _nlevelsignore, _maxlevel;
     std::string _varname;
-    SolverManagerInterface* _solvermanager;
-    SolverManagerInterface* getSolverManager();
+    SolverManager* _solvermanager;
+    SolverManager* getSolverManager();
     const Fada::LinearSolverVector&  _linearsolvers;
     Alat::Vector<const Fada::VisitorSolverManagerOneLevel*> _visitors;
     const Alat::StringSet _variables;
-    
+
 public:
     ~VisitorSolverManagerMultiLevel();
-    VisitorSolverManagerMultiLevel(SolverManagerInterface* solvermanager, int nlevelsignore, int maxlevel, const Fada::LinearSolverVector&  linearsolvers, const Alat::StringSet& variables);
+    VisitorSolverManagerMultiLevel(SolverManager* solvermanager, int nlevelsignore, int maxlevel, const Fada::LinearSolverVector&  linearsolvers, const Alat::StringSet& variables);
     VisitorSolverManagerMultiLevel( const VisitorSolverManagerMultiLevel& visitormultigrid);
     VisitorSolverManagerMultiLevel& operator=( const VisitorSolverManagerMultiLevel& visitormultigrid);
     std::string getName() const;
@@ -36,7 +36,7 @@ public:
     void setLevel(int level) const;
     int getMaxLevel() const;
     int getMinLevel() const;
-    const SolverManagerInterface* getSolverManager() const;
+    const SolverManager* getSolverManager() const;
     void newVector(Alat::GhostVector* u);
     void vectorZero(int level, Alat::GhostVector& v) const;
     double vectorNorm(int level, const Alat::GhostVector& r) const;
@@ -48,7 +48,6 @@ public:
     void setVector(int level, Alat::GhostVector& gf, const Alat::GhostVector& mgf) const;
     void restrict(int level, Alat::GhostVector& f, const Alat::GhostVector& v ) const;
     void prolongate(int level, Alat::GhostVector& u, const Alat::GhostVector& v, double d = 1.0) const;
-    void smoothInterfaceOnLevel(int level, Alat::GhostVector& u) const;
   };
 }
 

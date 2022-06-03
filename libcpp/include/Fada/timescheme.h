@@ -11,7 +11,7 @@
 namespace Fada
 { 
   class NewtonData;
-  class SolverManagerInterface;
+  class SolverManager;
 
   class TimeScheme : public TimeSchemeInterface
   {
@@ -28,8 +28,8 @@ public:
     TimeScheme* clone() const;
 
     void basicInit(DynamicLoop* loop);
-    const SolverManagerInterface* getSolverManager() const;
-    SolverManagerInterface* getSolverManager();
+    const SolverManager* getSolverManager() const;
+    SolverManager* getSolverManager();
     int getNTimeStepMemory() const;
     void printTimeStepInfo(const TimeData& timedata, int iteration) const;
     void computeRightHandSideTimeSchemeImplicit(AlatEnums::residualstatus& status, Alat::GhostVector& f, const Alat::GhostVector& u, const Alat::Vector<Alat::GhostVector>& prev, const TimeData& timedata, int iteration) const;

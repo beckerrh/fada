@@ -36,7 +36,7 @@ void PreconditionerWithVariableMatrix::basicInit(const Alat::ParameterFile* para
 }
 
 /*--------------------------------------------------------------------------*/
-Alat::SystemVectorInterface* PreconditionerWithVariableMatrix::getMemory(int i) const
+Alat::SystemVector* PreconditionerWithVariableMatrix::getMemory(int i) const
 {
   assert(0);
   return _visitordomainsolver->getVector(Preconditioner::getMemory(i));

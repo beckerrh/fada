@@ -52,7 +52,7 @@ bool MultiLevelTransferAllVariablesInterface::isConstant() const
   return true;
 }
 
-void MultiLevelTransferAllVariablesInterface::interpolate(int level, Alat::SystemVectorInterface* ufines, const Alat::SystemVectorInterface* ucoarses) const
+void MultiLevelTransferAllVariablesInterface::interpolate(int level, Alat::SystemVector* ufines, const Alat::SystemVector* ucoarses) const
 {
   _notWritten("interpolate");
 }

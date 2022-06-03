@@ -9,7 +9,7 @@
 
 namespace Alat
 {  
-  class SystemVectorInterface;
+  class SystemVector;
 }
 namespace Fada
 {    
@@ -17,7 +17,7 @@ namespace Fada
   {
 public:
     typedef Alat::Map<std::string, Alat::SystemAssembleVector> LocalVectorMap;
-    typedef Alat::Map<std::string, const Alat::SystemVectorInterface*> GlobalVectorMap;
+    typedef Alat::Map<std::string, const Alat::SystemVector*> GlobalVectorMap;
 
 private:
     Alat::SystemAssembleVector _dataloc;

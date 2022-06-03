@@ -24,9 +24,9 @@ SystemVector::~SystemVector()
   }
 }
 
-SystemVector::SystemVector() : Alat::Map<std::string, Alat::VariableVectorInterface*>(),Alat::SystemVectorInterface()
+SystemVector::SystemVector() : Alat::Map<std::string, Alat::VariableVectorInterface*>(), Alat::VectorInterface()
 {}
-SystemVector::SystemVector( const SystemVector& systemvector) : Alat::Map<std::string, Alat::VariableVectorInterface*>(systemvector),Alat::SystemVectorInterface(systemvector)
+SystemVector::SystemVector( const SystemVector& systemvector) : Alat::Map<std::string, Alat::VariableVectorInterface*>(systemvector), Alat::VectorInterface(systemvector)
 {
   for(SystemVector::const_iterator p = systemvector.begin(); p != systemvector.end(); p++)
   {
@@ -36,7 +36,7 @@ SystemVector::SystemVector( const SystemVector& systemvector) : Alat::Map<std::s
 
 SystemVector& SystemVector::operator=( const SystemVector& systemvector)
 {
- Alat::SystemVectorInterface::operator=(systemvector);
+ Alat::SystemVector::operator=(systemvector);
   assert(0);
   return *this;
 }

@@ -1,7 +1,7 @@
 #include  "Fada/interpolationloop.h"
 #include  "FadaMesh/meshcompositioninterface.h"
 #include  "FadaMesh/meshinterface.h"
-#include  "Fada/solvermanagerinterface.h"
+#include  "Fada/solvermanager.h"
 #include  <cassert>
 
 using namespace Fada;
@@ -53,7 +53,7 @@ const FadaMesh::MeshCompositionInterface* InterpolationLoop::getRefinedMeshCompo
 }
 
 /*--------------------------------------------------------------------------*/
-void InterpolationLoop::basicInit(ModelManagerInterface* modelmanager, SolverManagerInterface* solvermanager, const std::string& rundirectory, const Alat::ParameterFile* parameterfile)
+void InterpolationLoop::basicInit(ModelManagerInterface* modelmanager, SolverManager* solvermanager, const std::string& rundirectory, const Alat::ParameterFile* parameterfile)
 {
   // std::cerr << "InterpolationLoop::basicInit() DEBUT\n";
   Loop::basicInit(modelmanager, solvermanager, rundirectory, parameterfile);

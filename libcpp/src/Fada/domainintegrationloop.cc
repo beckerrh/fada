@@ -84,7 +84,7 @@ const Fada::VariableManager* DomainIntegrationLoop::getVariableManager() const
 }
 
 /*--------------------------------------------------------------------------*/
-void DomainIntegrationLoop::_fillVectorMap(Fada::LocalGlobal::VectorMap& vectormap, FadaEnums::term term, const Alat::SystemVectorInterface* u, const Alat::SystemVectorInterface* uold, const Alat::SystemVectorInterface* uveryold) const
+void DomainIntegrationLoop::_fillVectorMap(Fada::LocalGlobal::VectorMap& vectormap, FadaEnums::term term, const Alat::SystemVector* u, const Alat::SystemVector* uold, const Alat::SystemVector* uveryold) const
 {
   const Alat::SystemVector* uav = dynamic_cast<const Alat::SystemVector*>( u );
   assert(uav);
@@ -121,7 +121,7 @@ void DomainIntegrationLoop::initSolution(Alat::VectorInterface* u, int level) co
     std::cerr << "### DomainIntegrationLoop::initSolution() no integrator !\n";
     return;
   }
-  Alat::SystemVectorInterface* uav = dynamic_cast<Alat::SystemVectorInterface*>( u );
+  Alat::SystemVector* uav = dynamic_cast<Alat::SystemVector*>( u );
   if(not uav)
   {
     Fada::MultiLevelVector* umg = dynamic_cast< Fada::MultiLevelVector*>( u );
@@ -254,7 +254,7 @@ void DomainIntegrationLoop::initSolution(Alat::VectorInterface* u, int level) co
 /*--------------------------------------------------------------------------*/
 void DomainIntegrationLoop::constructRightHandSide(AlatEnums::residualstatus& status, Alat::VectorInterface* f, int level) const
 {
-  Alat::SystemVectorInterface* fs = dynamic_cast<Alat::SystemVectorInterface*>( f );
+  Alat::SystemVector* fs = dynamic_cast<Alat::SystemVector*>( f );
   assert(fs);
   Fada::LocalGlobal::VectorMap vectormap;
   Fada::VisitorIntegrationLoopRightHandSide visitor(_localglobal, _variablemanager, fs);
@@ -275,7 +275,7 @@ void DomainIntegrationLoop::constructRightHandSide(AlatEnums::residualstatus& st
 /*--------------------------------------------------------------------------*/
 void DomainIntegrationLoop::integrateTimeRhs(AlatEnums::residualstatus& status, Alat::VectorInterface* f, const Alat::VectorInterface* u, const Alat::VectorInterface* bdf, double d, int level) const
 {
-  Alat::SystemVectorInterface* fs = dynamic_cast<Alat::SystemVectorInterface*>( f );
+  Alat::SystemVector* fs = dynamic_cast<Alat::SystemVector*>( f );
   assert(fs);
   Fada::LocalGlobal::VectorMap vectormap;
   const Alat::SystemVector* uav = dynamic_cast<const Alat::SystemVector*>( u );
@@ -304,12 +304,12 @@ void DomainIntegrationLoop::integrateTimeRhs(AlatEnums::residualstatus& status, 
 /*--------------------------------------------------------------------------*/
 void DomainIntegrationLoop::constructForm(AlatEnums::residualstatus& status, Alat::VectorInterface* f, const Alat::VectorInterface* u, const Alat::VectorInterface* uold, const Alat::VectorInterface* uveryold, int level) const
 {
-  Alat::SystemVectorInterface* fs = dynamic_cast<Alat::SystemVectorInterface*>( f );
+  Alat::SystemVector* fs = dynamic_cast<Alat::SystemVector*>( f );
   assert(fs);
-  const Alat::SystemVectorInterface* us = dynamic_cast<const Alat::SystemVectorInterface*>( u );
+  const Alat::SystemVector* us = dynamic_cast<const Alat::SystemVector*>( u );
   assert(us);
-  const Alat::SystemVectorInterface* uolds = dynamic_cast<const Alat::SystemVectorInterface*>( uold );
-  const Alat::SystemVectorInterface* uveryolds = dynamic_cast<const Alat::SystemVectorInterface*>( uveryold );
+  const Alat::SystemVector* uolds = dynamic_cast<const Alat::SystemVector*>( uold );
+  const Alat::SystemVector* uveryolds = dynamic_cast<const Alat::SystemVector*>( uveryold );
   Fada::VisitorIntegrationLoopForm visitor(_localglobal, _variablemanager, fs);
   // _datavector = dynamic_cast<const Alat::SystemVector*>( _datamg->getVector(level) );
   _dofmanagerallvariables->setMeshLevel(level);
@@ -326,14 +326,14 @@ void DomainIntegrationLoop::constructForm(AlatEnums::residualstatus& status, Ala
 /*--------------------------------------------------------------------------*/
 void DomainIntegrationLoop::computeLinearization(AlatEnums::residualstatus& status, Alat::VectorInterface* f, const Alat::VectorInterface* u, const Alat::VectorInterface* du, const Alat::VectorInterface* uold, const Alat::VectorInterface* uveryold, int level) const
 {
-  Alat::SystemVectorInterface* fs = dynamic_cast<Alat::SystemVectorInterface*>( f );
+  Alat::SystemVector* fs = dynamic_cast<Alat::SystemVector*>( f );
   assert(fs);
-  const Alat::SystemVectorInterface* us = dynamic_cast<const Alat::SystemVectorInterface*>( u );
+  const Alat::SystemVector* us = dynamic_cast<const Alat::SystemVector*>( u );
   assert(us);
   const Alat::SystemVector* dus = dynamic_cast<const Alat::SystemVector*>( du );
   assert(dus);
-  const Alat::SystemVectorInterface* uolds = dynamic_cast<const Alat::SystemVectorInterface*>( uold );
-  const Alat::SystemVectorInterface* uveryolds = dynamic_cast<const Alat::SystemVectorInterface*>( uveryold );
+  const Alat::SystemVector* uolds = dynamic_cast<const Alat::SystemVector*>( uold );
+  const Alat::SystemVector* uveryolds = dynamic_cast<const Alat::SystemVector*>( uveryold );
   Fada::LocalGlobal::VectorMap vectormap;
   Fada::VisitorIntegrationLoopLinearization visitor(_localglobal, _variablemanager, fs);
   _fillVectorMap(vectormap, visitor.getTerm(), us, uolds, uveryolds);
@@ -351,7 +351,7 @@ void DomainIntegrationLoop::computeLinearization(AlatEnums::residualstatus& stat
 /*--------------------------------------------------------------------------*/
 void DomainIntegrationLoop::computeNormSquared(AlatEnums::residualstatus& status, Alat::StringDoubleMap& norms, const Alat::VectorInterface* u, const Alat::VectorInterface* du, int level) const
 {
-  const Alat::SystemVectorInterface* us = dynamic_cast<const Alat::SystemVectorInterface*>( u );
+  const Alat::SystemVector* us = dynamic_cast<const Alat::SystemVector*>( u );
   assert(us);
   Fada::VisitorIntegrationLoopComputeNormSquared visitor(_localglobal, _variablemanager, norms);
   // _datavector = dynamic_cast<const Alat::SystemVector*>( _datamg->getVector(level) );
@@ -377,9 +377,9 @@ void DomainIntegrationLoop::postProcess(AlatEnums::residualstatus& status, Alat:
   {
     return;
   }
-  const Alat::SystemVectorInterface* us = dynamic_cast<const Alat::SystemVectorInterface*>( u );
-  const Alat::SystemVectorInterface* uolds;
-  Alat::SystemVectorInterface* fs;
+  const Alat::SystemVector* us = dynamic_cast<const Alat::SystemVector*>( u );
+  const Alat::SystemVector* uolds;
+  Alat::SystemVector* fs;
   if(not us)
   {
     assert(level>=0);
@@ -398,8 +398,8 @@ void DomainIntegrationLoop::postProcess(AlatEnums::residualstatus& status, Alat:
   else
   {
     assert(level==0);
-    uolds = dynamic_cast<const Alat::SystemVectorInterface*>( uold );
-    fs = dynamic_cast<Alat::SystemVectorInterface*>( f );
+    uolds = dynamic_cast<const Alat::SystemVector*>( uold );
+    fs = dynamic_cast<Alat::SystemVector*>( f );
   }
   assert(us);
   assert(fs);
@@ -408,7 +408,7 @@ void DomainIntegrationLoop::postProcess(AlatEnums::residualstatus& status, Alat:
   // std::cerr << "u\n";
   // us->writeAscii(std::cerr);
 
-  const Alat::SystemVectorInterface* uveryolds = NULL;
+  const Alat::SystemVector* uveryolds = NULL;
   Fada::VisitorIntegrationLoopPostProcess visitor(_localglobal, _variablemanager, fs);
   _dofmanagerallvariables->setMeshLevel(level);
   Fada::LocalGlobal::VectorMap vectormap;
@@ -434,7 +434,7 @@ void DomainIntegrationLoop::constructJacobianMatrix(AlatEnums::residualstatus& s
     assert(umg);
     const Fada::MultiLevelVector* uoldmg = dynamic_cast<const Fada::MultiLevelVector*>( uold );
     const Fada::MultiLevelVector* uveryoldmg = dynamic_cast<const Fada::MultiLevelVector*>( uveryold );
-    const Alat::SystemVectorInterface* uolds = NULL, * uveryolds = NULL;
+    const Alat::SystemVector* uolds = NULL, * uveryolds = NULL;
 
     int nlevels = Amg->nlevels();
     for(int level = 0; level < nlevels; level++)
@@ -454,10 +454,10 @@ void DomainIntegrationLoop::constructJacobianMatrix(AlatEnums::residualstatus& s
   {
     Alat::SystemMatrixInterface* As = dynamic_cast<Alat::SystemMatrixInterface*>( A );
     int level = 0;
-    const Alat::SystemVectorInterface* us = dynamic_cast<const Alat::SystemVectorInterface*>( u );
+    const Alat::SystemVector* us = dynamic_cast<const Alat::SystemVector*>( u );
     assert(us);
-    const Alat::SystemVectorInterface* uolds = dynamic_cast<const Alat::SystemVectorInterface*>( uold );
-    const Alat::SystemVectorInterface* uveryolds = dynamic_cast<const Alat::SystemVectorInterface*>( uveryold );
+    const Alat::SystemVector* uolds = dynamic_cast<const Alat::SystemVector*>( uold );
+    const Alat::SystemVector* uveryolds = dynamic_cast<const Alat::SystemVector*>( uveryold );
     constructJacobianMatrix(level, status, As, us, uolds, uveryolds);
     // std::cerr << "DomainIntegrationLoop::constructJacobianMatrix(AlatEnums::residualstatus& status, )  A=";
     // As->write(std::cerr) << "\n";
@@ -465,7 +465,7 @@ void DomainIntegrationLoop::constructJacobianMatrix(AlatEnums::residualstatus& s
 }
 
 /*--------------------------------------------------------------------------*/
-void DomainIntegrationLoop::constructJacobianMatrix(int level, AlatEnums::residualstatus& status, Alat::SystemMatrixInterface* A, const Alat::SystemVectorInterface* u, const Alat::SystemVectorInterface* uold, const Alat::SystemVectorInterface* uveryold) const
+void DomainIntegrationLoop::constructJacobianMatrix(int level, AlatEnums::residualstatus& status, Alat::SystemMatrixInterface* A, const Alat::SystemVector* u, const Alat::SystemVector* uold, const Alat::SystemVector* uveryold) const
 {
   Fada::VisitorIntegrationLoopMatrix visitor(_localglobal, _variablemanager, A, _couplingtype);
   // _datavector = dynamic_cast<const Alat::SystemVector*>( _datamg->getVector(level) );
