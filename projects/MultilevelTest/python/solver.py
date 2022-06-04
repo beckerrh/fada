@@ -50,9 +50,9 @@ class Solver():
         # self.runloop("prolongate")
         self.runloop("static")
         self.runloop("postprocess")
-        info = self.resultmanager.getMeshInfo(iteration, resultsdir)
-        self.resultmanager.getVariablesInfo(resultsdir)
-        self.visu_manager.visu(iteration, resultsdir, info)
+        infomesh = self.resultmanager.getMeshInfo(iteration, resultsdir)
+        infovars = self.resultmanager.getVariablesInfo(resultsdir)
+        self.visu_manager.visu(iteration, resultsdir, infomesh, infovars)
 
 # ----------------------------------------------------------------------------------
     def interpolate(self, iteration, currentmesh, refined_mesh):

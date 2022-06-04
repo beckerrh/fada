@@ -91,19 +91,21 @@ def main(pathmanager, args):
     loop = MeshLoop(meshmanager=meshmanager, solver=solver, niter=15)
 
 
-    if len(args)==0 or args[0] not in ['plt', 'plot']:
-        loop.run()
+    if len(args)==0 or args[0] not in ['p', 'plt', 'plot']:
+        timer = loop.run()
+        print(f"{timer=}")
 
-    result = solver.resultmanager.getAllScalarPosrprocess(loop.niter)
-    print(f"{result.keys()=}")
-    # print(f"{result=}")
-    import matplotlib.pyplot as plt
-    import numpy as np
-    plt.loglog(result["N"], np.sqrt(result["estimator0"]), '-x', label="est0")
-    plt.loglog(result["N"], np.sqrt(result["estimator1"]), '-x', label="est1")
-    plt.loglog(result["N"], result["Err_U_H1"], '-x', label="err")
-    # plt.loglog(result["N"], result["Est2_U"], '-x', label="Est2_U")
-    plt.plot(result["N"], np.power(result["N"],-0.5), '-', label="-1/2")
-    plt.grid()
-    plt.legend()
-    plt.show()
+    if len(args)==0 or args[0] in ['p', 'plt', 'plot']:
+        result = solver.resultmanager.getAllScalarPosrprocess(loop.niter)
+        print(f"{result.keys()=}")
+        # print(f"{result=}")
+        import matplotlib.pyplot as plt
+        import numpy as np
+        plt.loglog(result["N"], np.sqrt(result["estimator0"]), '-x', label="est0")
+        plt.loglog(result["N"], np.sqrt(result["estimator1"]), '-x', label="est1")
+        plt.loglog(result["N"], result["Err_U_H1"], '-x', label="err")
+        # plt.loglog(result["N"], result["Est2_U"], '-x', label="Est2_U")
+        plt.plot(result["N"], np.power(result["N"],-0.5), '-', label="-1/2")
+        plt.grid()
+        plt.legend()
+        plt.show()
