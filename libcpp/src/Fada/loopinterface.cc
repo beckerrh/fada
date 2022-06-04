@@ -73,14 +73,14 @@ void LoopInterface::nonlinearSolve(Alat::NewtonData& newtondata, Alat::GhostVect
 
 /*--------------------------------------------------------------------------*/
 
-FadaMesh::MeshCompositionInterface*& LoopInterface::getRefinedMeshCompositionPointer()
+FadaMesh::MeshInterface*& LoopInterface::getRefinedMeshPointer()
 {
-  _notWritten("getRefinedMeshCompositionPointer");
+  _notWritten("getRefinedMeshPointer");
 }
 
 /*--------------------------------------------------------------------------*/
 
-const FadaMesh::MeshCompositionInterface* LoopInterface::getRefinedMeshComposition() const
+const FadaMesh::MeshInterface* LoopInterface::getRefinedMeshComposition() const
 {
   _notWritten("getRefinedMeshComposition");
 }

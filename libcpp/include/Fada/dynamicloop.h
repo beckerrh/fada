@@ -4,7 +4,7 @@
 #include  "Alat/doublevector.h"
 #include  "Alat/intvector.h"
 #include  "Alat/vector.h"
-#include  "fadalightenums.h"
+#include  "fadaenums.h"
 #include  "staticloop.h"
 #include  "timedata.h"
 #include  "timesteppilot.h"

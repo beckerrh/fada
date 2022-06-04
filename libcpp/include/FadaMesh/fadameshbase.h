@@ -52,7 +52,7 @@ protected:
 
 public:
     FadaMeshBase<DIM, NODESPERCELL, SIDESPERCELL, NODESPERSIDE>( );
-    FadaMeshBase<DIM, NODESPERCELL, SIDESPERCELL, NODESPERSIDE>( const FadaMeshBase<DIM, NODESPERCELL, SIDESPERCELL, NODESPERSIDE>&fadalightmeshbase );
+    FadaMeshBase<DIM, NODESPERCELL, SIDESPERCELL, NODESPERSIDE>( const FadaMeshBase<DIM, NODESPERCELL, SIDESPERCELL, NODESPERSIDE>&fadameshbase );
     ~FadaMeshBase<DIM, NODESPERCELL, SIDESPERCELL, NODESPERSIDE>( );
 
     const std::string& getInfileName() const;

@@ -1,7 +1,7 @@
 #ifndef __Fada_SolverInterface_h
 #define __Fada_SolverInterface_h
 
-#include  "fadalightenums.h"
+#include  "fadaenums.h"
 #include  "Alat/interfacebase.h"
 #include  "Alat/vector.h"
 #include  "Alat/enums.h"

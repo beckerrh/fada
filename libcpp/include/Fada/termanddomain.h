@@ -2,7 +2,7 @@
 #define __Fada_TermAndDomain_h
 
 #include  "Alat/pair.h"
-#include  "fadalightenums.h"
+#include  "fadaenums.h"
 
 /*--------------------------------------------------------------------------*/
 

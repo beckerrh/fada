@@ -1,7 +1,7 @@
 #ifndef __Fada_VisitorIntegrationLoop_h
 #define __Fada_VisitorIntegrationLoop_h
 
-#include  "Fada/fadalightenums.h"
+#include  "Fada/fadaenums.h"
 #include  "Alat/systemassemblematrix.h"
 #include  "Alat/systemassemblevector.h"
 #include  "integrationloopinterface.h"

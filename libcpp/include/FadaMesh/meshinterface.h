@@ -4,13 +4,9 @@
 #include  "Alat/interfacebase.h"
 #include  "Alat/node.h"
 #include  "Alat/sparsitypatternfixarray.h"
-#include  "enums.h"
+#include  "fadameshenums.h"
 
 /*--------------------------------------------------------------------------*/
-namespace H5
-{
-  class H5File;
-}
 namespace Alat
 {
   class StringVector;

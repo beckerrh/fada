@@ -1,7 +1,7 @@
 #ifndef __Fada_IntegrationLoopInterface_h
 #define __Fada_IntegrationLoopInterface_h
 
-#include  "fadalightenums.h"
+#include  "fadaenums.h"
 #include  "Alat/interfacebase.h"
 #include  "Alat/map.h"
 

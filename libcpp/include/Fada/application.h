@@ -2,7 +2,7 @@
 #define __Fada_Application_h
 
 #include  "applicationinterface.h"
-#include  "fadalightenums.h"
+#include  "fadaenums.h"
 #include  "parametermap.h"
 
 /*--------------------------------------------------------------------------*/

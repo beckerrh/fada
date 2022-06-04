@@ -10,7 +10,7 @@ namespace Fada
   class InterpolationLoop : public Loop
   {
 private:
-    FadaMesh::MeshCompositionInterface* _refinedmeshcomposition;
+    FadaMesh::MeshInterface* _refinedmesh;
     Alat::GhostVector _uold, _uhelp;
 
 public:
@@ -24,8 +24,8 @@ public:
 
     void basicInit(Fada::ModelInterface* model, SolverManager* solvermanager, const std::string& rundirectory, const Alat::ParameterFile* parameterfile = NULL);
     void run();
-    FadaMesh::MeshCompositionInterface*& getRefinedMeshCompositionPointer();
-    const FadaMesh::MeshCompositionInterface* getRefinedMeshComposition() const;
+    FadaMesh::MeshInterface*& getRefinedMeshPointer() {return _refinedmesh;}
+    const FadaMesh::MeshInterface* getRefinedMeshComposition() const{return _refinedmesh;}
   };
 }
 

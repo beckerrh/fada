@@ -5,16 +5,13 @@ LINK_DIRECTORIES(${Fada_LIBRARY_INSTALL_DIR} ${EXTERNAL_LIBRARY_DIR} )
 
 
 SET(EXECUTABLES
-Crop
 EstimatorToMarkedCells
-FadaMeshToSimpleMesh
 MarkedCellsTriangleMeshToQuadMesh
 MeshCoarsener
 MeshRefiner
 MultiMeshConstructor
 MultiMeshConstructorQuadToTri
 ReaderMesh
-Rotate
 )
 
 

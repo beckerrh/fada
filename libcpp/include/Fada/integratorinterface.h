@@ -1,7 +1,7 @@
 #ifndef __Fada_integratorinterface_h
 #define __Fada_integratorinterface_h
 
-#include  "fadalightenums.h"
+#include  "fadaenums.h"
 #include  "Alat/interfacebase.h"
 #include  "localglobal.h"
 #include  "Alat/enums.h"

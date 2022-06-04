@@ -1,6 +1,5 @@
 #include  "Alat/filescanner.h"
 #include  "Fada/loop.h"
-#include  "FadaMesh/meshcompositioninterface.h"
 #include  "Fada/solver.h"
 #include  "Fada/solvermanager.h"
 #include  "Fada/timedata.h"
@@ -14,7 +13,7 @@ int Loop::_debuglevel;
 /*--------------------------------------------------------------------------*/
 
 /*---------------------------------------------------------*/
-Loop::Loop() : _parameterfile(NULL), _solvermanager(NULL), _meshcomposition(NULL), _io_manager(), _chronometer(), _u("u", "unknowns"), _data("data", "data"), _postprocess("postprocess", "postprocess")
+Loop::Loop() : _parameterfile(NULL), _solvermanager(NULL), _mesh(NULL), _io_manager(), _chronometer(), _u("u", "unknowns"), _data("data", "data"), _postprocess("postprocess", "postprocess")
 {
   getChronometer().enrol("basicInit", true);
   getChronometer().enrol("InPutOutPut", true);
@@ -34,10 +33,10 @@ Loop::~Loop()
     delete _solvermanager;
     _solvermanager = NULL;
   }
-  if(_meshcomposition)
+  if(_mesh)
   {
-    delete _meshcomposition;
-    _meshcomposition = NULL;
+    delete _mesh;
+    _mesh = NULL;
   }
 }
 
@@ -70,9 +69,9 @@ void Loop::basicInit(Fada::ModelInterface* model, SolverManager* solvermanager, 
     std::cerr<<"\"Loop::basicInit()\": ERROR: no SolverManager set !\n";
     assert(0);
   }
-  if(_meshcomposition == NULL)
+  if(_mesh == NULL)
   {
-    std::cerr<<"\"Loop::basicInit()\": ERROR: no MeshComposition set !\n";
+    std::cerr<<"\"Loop::basicInit()\": ERROR: no Mesh set !\n";
     assert(0);
   }
   _parameterfile = parameterfile;
@@ -88,7 +87,7 @@ void Loop::basicInit(Fada::ModelInterface* model, SolverManager* solvermanager, 
   getSolverManager()->registerVector(_data);
   getSolverManager()->registerVector(_postprocess);
 
-  getSolverManager()->basicInit(model, getMeshComposition(), getIoManager(), getType(), parameterfile);
+  getSolverManager()->basicInit(model, getMesh(), getIoManager(), getType(), parameterfile);
 
   std::string filename = getIoManager().getDirectoryName(Alat::IoManager::RunInfo)+"/LoopInformation";
   std::ofstream file;
@@ -115,7 +114,7 @@ std::ostream& Loop::printLoopInformation(std::ostream& os) const
   Alat::UserAndSystemInfo userandsysteminfo(os);
   os << "|>~~~ Loop="<<getName()<<"\n";
   os << "|>~~~ SolverManager="<<getSolverManager()->getName()<<"\n";
-  os << "|>~~~ Mesh="<<getMeshComposition()->getName()<<" ("<<getMeshComposition()->getInfo()<<")\n";
+  os << "|>~~~ Mesh="<<getMesh()->getName()<<" ("<<getMesh()->getInfo()<<")\n";
   // os << "|>~~~ RunDir="<<getIoManager()->getRunDir()<<"\n"<<getIoManager()->printLoopInformation(os)<<"\n";
   getIoManager()->printLoopInformation(os);
   os << "|>~~~~~~-----------------------------------------------------------------------------------------~~~~~~<|\n";
@@ -163,10 +162,10 @@ void Loop::initializeSolution(Alat::GhostVector& u)
 }
 
 /*---------------------------------------------------------*/
-const Alat::ParameterFile* Loop::getParameterFile() const
-{
-  return _parameterfile;
-}
+// const Alat::ParameterFile* Loop::getParameterFile() const
+// {
+//   return _parameterfile;
+// }
 
 Chronometer& Loop::getChronometer() const
 {
@@ -176,41 +175,6 @@ Chronometer& Loop::getChronometer() const
 std::string Loop::getName() const
 {
   return "Loop";
-}
-
-const SolverManager* Loop::getSolverManager() const
-{
-  return _solvermanager;
-}
-
-SolverManager* Loop::getSolverManager()
-{
-  return _solvermanager;
-}
-
-const FadaMesh::MeshCompositionInterface* Loop::getMeshComposition() const
-{
-  return _meshcomposition;
-}
-
-FadaMesh::MeshCompositionInterface* Loop::getMeshComposition()
-{
-  return _meshcomposition;
-}
-
-FadaMesh::MeshCompositionInterface*& Loop::getMeshCompositionPointer()
-{
-  return _meshcomposition;
-}
-
-const Alat::IoManager* Loop::getIoManager() const
-{
-  return &_io_manager;
-}
-
-Alat::IoManager& Loop::getIoManager()
-{
-  return _io_manager;
 }
 
 std::string Loop::getRunDir() const

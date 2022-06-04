@@ -32,7 +32,7 @@ def main(pathmanager, args):
     modelname = "Laplace"
     solver = Solver(args=args, rundir=rundir)
     solver.cpp_param.addBlock("Mesh")
-    solver.cpp_param.parameters["Mesh"]["meshtype"] = "unstructured_multilevel"
+    solver.cpp_param.parameters["Mesh"]["meshtype"] = "MultilevelTriangleMesh"
     solver.cpp_param.addBlock("ModelManager")
     solver.cpp_param.parameters["ModelManager"]["numberofmodels"] = 1
     solver.cpp_param.parameters["ModelManager"]["model"] = modelname

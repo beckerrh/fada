@@ -1,7 +1,7 @@
 #ifndef __FadaMesh_FadaMeshBase2d_h
 #define __FadaMesh_FadaMeshBase2d_h
 
-#include  "fadalightmeshbase.h"
+#include  "fadameshbase.h"
 
 /*---------------------------------------------------------*/
 

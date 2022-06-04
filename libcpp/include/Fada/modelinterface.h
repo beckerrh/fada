@@ -4,7 +4,7 @@
 #include  "Alat/map.h"
 #include  "Alat/stringset.h"
 #include  "Alat/vector.h"
-#include  "fadalightenums.h"
+#include  "fadaenums.h"
 #include  "Alat/interfacebase.h"
 
 /*--------------------------------------------------------------------------*/

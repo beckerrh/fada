@@ -14,7 +14,6 @@
 #include  "Fada/variablemanager.h"
 #include  "Fada/visitorsolvermanageronelevel.h"
 #include  "FadaMesh/meshinterface.h"
-#include  "FadaMesh/meshcompositioninterface.h"
 #include  "Alat/sorterinterface.h"
 #include  "Alat/variablevector.h"
 #include  "Alat/systemvector.h"
@@ -132,63 +131,51 @@ Fada::DomainSolverInterface* SolverManager::newDomainSolver(const FadaMesh::Mesh
 }
 
 /*---------------------------------------------------------*/
-void SolverManager::basicInit(Fada::ModelInterface* model, const FadaMesh::MeshCompositionInterface* meshcomposition, const Alat::IoManager& io_manager, FadaEnums::looptype looptype, const Alat::ParameterFile* parameterfile)
+void SolverManager::basicInit(Fada::ModelInterface* model, const FadaMesh::MeshInterface* mesh, const Alat::IoManager& io_manager, FadaEnums::looptype looptype, const Alat::ParameterFile* parameterfile)
 {
   // std::cerr << "SolverManager::basicInit() DEBUT\n";
   initSolverChronometer();
   _chronometer.start("BasicInit");
   _looptype = looptype;
   _model = model;
-  assert(meshcomposition);
-  _meshcomposition = meshcomposition;
+  assert(mesh);
+  _mesh = mesh;
   _parameterfile = parameterfile;
   _io_manager = &io_manager;
   Alat::DataFormatHandler dataformathandler;
   dataformathandler.insert("linearsolver", &_linearsolver, "direct");
   dataformathandler.insert("ncellsdirect", &_ncellsdirect, 200);
   Alat::FileScanner filescanner(dataformathandler, parameterfile, "SolverManager", 0);
-  int ndomains = meshcomposition->getNDomains();
-  assert(ndomains==1);
-  _nlevels = meshcomposition->getMesh(0)->getNLevels();
-  int ncells = 0;
-  for(int idomain = 0; idomain < ndomains; idomain++)
-  {
-    assert(meshcomposition->getMesh(idomain)->getNLevels() == _nlevels);
-    ncells += meshcomposition->getMesh(idomain)->getNCells();
-  }
+  int ndomains = 1;
+  _nlevels = _mesh->getNLevels();
+  int ncells = _mesh->getNCells();
   if(ncells < _ncellsdirect)
   {
     _linearsolver = "direct";
   }
-  // std::cerr << "@@@@@@@@  SolverManager::basicInit() _nlevels " << _nlevels << "\n";
-  for(int i = 0; i < ndomains; i++)
-  {
-    meshcomposition->getMesh(i)->setResolution(0);
-  }
-  _domainsolvers.set_size(ndomains);
-  for(int i = 0; i < ndomains; i++)
-  {
-    getDomainSolverPointer(i) = newDomainSolver( getMeshComposition()->getMesh(i) );
-    getDomainSolver(i)->defineIntegratorsAndVariables( _model, getMeshComposition()->getMesh(i) );
-  }
-  for(int i = 0; i < getNDomainSolvers(); i++)
-  {
-    getDomainSolver(i)->basicInit(_model, getMeshComposition()->getMesh(i), getIoManager(), looptype, getParameterFile() );
-  }
-  _initDomainsOfVar();
+  _mesh->setResolution(0);
+  _domainsolver = newDomainSolver( _mesh );
+  _domainsolver->defineIntegratorsAndVariables( _model, _mesh );
+  _domainsolver->basicInit(_model, _mesh, getIoManager(), looptype, getParameterFile() );
+
   _ppvarswithoutfem.clear();
-  for(int i = 0; i < getNDomainSolvers(); i++)
-  {
-    const VariablesMap& variables = getDomainSolver(i)->getVariableManager()->getPostProcess();
+  const VariableManager* variablemanager = _domainsolver->getVariableManager();
+    const VariablesMap& variables = variablemanager->getPostProcess();
     for(VariablesMap::const_iterator p = variables.begin(); p != variables.end(); p++)
     {
       const VariableInterface* var = p->second;
       if(var->getFemName() == "none")
       {
-        _ppvarswithoutfem[p->first].insert(i);
+        _ppvarswithoutfem[p->first].insert(0);
       }
     }
-  }
+    _variables.clear();
+      const VariablesMap& unknowns = variablemanager->getUnknowns();
+      for(VariablesMap::const_iterator p = unknowns.begin(); p != unknowns.end(); p++)
+      {
+        std::string varname = p->second->getVarName();
+        _variables.insert(varname);
+    }
   _onlydirectsolvers = true;
   if(_linearsolver != "direct")
   {
@@ -212,23 +199,6 @@ void SolverManager::basicInit(Fada::ModelInterface* model, const FadaMesh::MeshC
   }
   _chronometer.stop("BasicInit");
   // std::cerr << "SolverManager::basicInit() FIN\n";
-}
-
-/*--------------------------------------------------------------------------*/
-void SolverManager::_initDomainsOfVar()
-{
-  _variables.clear();
-  for(int i = 0; i < getNDomainSolvers(); i++)
-  {
-    const VariableManager* variablemanager = getDomainSolver(i)->getVariableManager();
-    const VariablesMap& unknowns = variablemanager->getUnknowns();
-    for(VariablesMap::const_iterator p = unknowns.begin(); p != unknowns.end(); p++)
-    {
-      std::string varname = p->second->getVarName();
-      // _domainsofvar[varname].insert(i);
-      _variables.insert(varname);
-    }
-  }
 }
 
 /*--------------------------------------------------------------------------*/
@@ -295,13 +265,10 @@ void SolverManager::reInit()
 }
 
 /*--------------------------------------------------------------------------*/
-void SolverManager::reInitForInterpolation(const FadaMesh::MeshCompositionInterface* meshcomposition)
+void SolverManager::reInitForInterpolation(const FadaMesh::MeshInterface* mesh)
 {
   _reInitSansSolvers();
-  for(int i = 0; i < getNDomainSolvers(); i++)
-  {
-    getDomainSolver(i)->reInitForInterpolation( meshcomposition->getMesh(i) );
-  }
+  _domainsolver->reInitForInterpolation( mesh );
 }
 
 /*--------------------------------------------------------------------------*/
@@ -564,7 +531,7 @@ void SolverManager::writePostProcessVariables(const Alat::GhostVector& v, int nu
   std::ofstream file( filename.c_str() );
 
   file << "# N " << names << "\n";
-  file << getMeshComposition()->getNCells() << " ";
+  file << _mesh->getNCells() << " ";
   file.precision(12);
   file.setf(arma::ios::scientific);
   vec.t().raw_print(file);
@@ -626,7 +593,7 @@ void SolverManager::_writePostProcessScalars(const Alat::Map<std::string, Alat::
   }
   else if(first_column == "N")
   {
-    file << " " << getMeshComposition()->getNCells();
+    file << " " << _mesh->getNCells();
   }
   else
   {
@@ -1080,15 +1047,6 @@ void SolverManager::integrateInTimePostProcess(Alat::GhostVector& ptime, const A
   _chronometer.stop("PostProcess");
 }
 
-/*---------------------------------------------------------*/
-void SolverManager::setMeshDecomposition(const FadaMesh::MeshCompositionInterface* meshcomposition)
-{
-  for(int i = 0; i < getNDomainSolvers(); i++)
-  {
-    getDomainSolver(i)->setMesh( meshcomposition->getMesh(i) );
-  }
-}
-
 /*--------------------------------------------------------------------------*/
 void SolverManager::interpolateSolution(Alat::GhostVector& ufine, const Alat::GhostVector& ucoarse) const
 {
@@ -1168,23 +1126,6 @@ double SolverManager::computeTimeEstimator(const Alat::GhostVector& u, const Ala
   return max;
 }
 
-/*---------------------------------------------------------*/
-const Alat::IoManager* SolverManager::getIoManager() const
-{
-  assert(_io_manager);
-  return _io_manager;
-}
-
-const Alat::ParameterFile* SolverManager::getParameterFile() const
-{
-  return _parameterfile;
-}
-
-const FadaMesh::MeshCompositionInterface* SolverManager::getMeshComposition() const
-{
-  return _meshcomposition;
-}
-
 const Alat::LinearSolverInterface* SolverManager::getLinearSolver(const Alat::GhostLinearSolver& v) const
 {
   return _ghost_linear_solver_agent(v);
@@ -1193,29 +1134,6 @@ const Alat::LinearSolverInterface* SolverManager::getLinearSolver(const Alat::Gh
 Alat::LinearSolverInterface* SolverManager::getLinearSolver(const Alat::GhostLinearSolver& v)
 {
   return _ghost_linear_solver_agent(v);
-}
-
-DomainSolverInterface*& SolverManager::getDomainSolverPointer(int i)
-{
-  assert( i < _domainsolvers.size() );
-  return _domainsolvers[i];
-}
-
-DomainSolverInterface* SolverManager::getDomainSolver(int i)
-{
-  assert( i < _domainsolvers.size() );
-  return _domainsolvers[i];
-}
-
-const DomainSolverInterface* SolverManager::getDomainSolver(int i) const
-{
-  assert( i < _domainsolvers.size() );
-  return _domainsolvers[i];
-}
-
-int SolverManager::getNDomainSolvers() const
-{
-  return _domainsolvers.size();
 }
 
 void SolverManager::registerVector(const Alat::GhostVector& v)
@@ -1286,14 +1204,9 @@ void SolverManager::setTimeScheme(std::string time_discretization)
 int SolverManager::linearSolve(AlatEnums::iterationstatus& status, const Alat::GhostMatrix& A, const Alat::GhostLinearSolver& linearsolver, Alat::GhostVector& u, const Alat::GhostVector& f) const
 {
   _chronometer.start("LinearSolve");
-
   // std::cerr << " SolverManager::linearSolve() " << *getLinearSolver(linearsolver)->getIterationInfo() << "\n";
   getLinearSolver(linearsolver)->solve(status, A, u, f);
-
-  for(int i = 0; i < getNDomainSolvers(); i++)
-  {
-    getDomainSolver(i)->getMesh()->setResolution(0);
-  }
+  _domainsolver->getMesh()->setResolution(0);
   _chronometer.stop("LinearSolve");
   // std::cerr << "SolverManager::linearSolve() linearsolver="<<getLinearSolver(linearsolver)->getName()<<"\n";
   return getLinearSolver(linearsolver)->getNumberOfIterations();

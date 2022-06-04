@@ -7,9 +7,10 @@
 
 namespace FadaMeshEnums
 {
-  enum meshtype {LineMesh, TriangleMesh, QuadrilateralMesh};
+  enum meshtype {LineMesh, TriangleMesh, QuadrilateralMesh, MultilevelTriangleMesh, MultilevelQuadrilateralMesh};
 
   std::string meshTypeToString(meshtype m);
+  meshtype stringToMeshType(std::string string);
 }
 
 #endif

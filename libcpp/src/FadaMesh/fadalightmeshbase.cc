@@ -1,7 +1,7 @@
 #include  "Alat/directoryandfileexists.h"
 #include  "Alat/sparsitypatternsoft.h"
 #include  "FadaMesh/coarseninfo.h"
-#include  "FadaMesh/fadalightmeshbase.h"
+#include  "FadaMesh/fadameshbase.h"
 #include  "FadaMesh/geometryobjectsconstructor.h"
 #include  "FadaMesh/hangingnodeinfo.h"
 #include  "FadaMesh/hangingsideinfo.h"
@@ -59,7 +59,7 @@ FadaMeshBase<DIM, NODESPERCELL, SIDESPERCELL, NODESPERSIDE>::FadaMeshBase() : Fa
 /*---------------------------------------------------------*/
 
 template<int DIM, int NODESPERCELL, int SIDESPERCELL, int NODESPERSIDE>
-FadaMeshBase<DIM, NODESPERCELL, SIDESPERCELL, NODESPERSIDE>::FadaMeshBase(const FadaMeshBase<DIM, NODESPERCELL, SIDESPERCELL, NODESPERSIDE>& fadalightmeshbase) : FadaMesh::MeshInterface(fadalightmeshbase), _infilename("none")
+FadaMeshBase<DIM, NODESPERCELL, SIDESPERCELL, NODESPERSIDE>::FadaMeshBase(const FadaMeshBase<DIM, NODESPERCELL, SIDESPERCELL, NODESPERSIDE>& fadameshbase) : FadaMesh::MeshInterface(fadameshbase), _infilename("none")
 {
   assert(0);
 }
@@ -601,7 +601,7 @@ void FadaMeshBase<DIM, NODESPERCELL, SIDESPERCELL, NODESPERSIDE>::readFadaMesh(c
   file>>name>>datatype;
   if( name != getName() )
   {
-    std::cerr<<"*** ERROR in FadaMeshBase::readFadaMesh() : meshname(file) is \""<<name<<"\" but I am \""<<getName()<<"\"\n";
+    std::cerr<<"*** ERROR in FadaMeshBase::readFadaMesh()" << "(filename is " << basefilename<<")"<< " : meshname(file) is \""<<name<<"\" but I am \""<<getName()<<"\"\n";
     assert(0);
   }
   if( ( datatype != "ascii" )&&( datatype != "binary" ) )

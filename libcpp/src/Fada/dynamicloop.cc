@@ -2,7 +2,6 @@
 #include  "Alat/filescanner.h"
 #include  "Alat/alatio.h"
 #include  "Alat/iterationinfo.h"
-#include  "FadaMesh/meshcompositioninterface.h"
 #include  "Alat/nonlinearsolverinterface.h"
 #include  "Fada/solvermanager.h"
 #include  "Fada/timeschemebdf.h"
@@ -156,11 +155,11 @@ void DynamicLoop::_outputSolution(int iteration, bool stop)
     std::string filenametimeinfo = getIoManager().getFileNameOut(Alat::IoManager::RunInfo, "DynamicLoopInfo");
     std::ofstream filetimeinfo( filenametimeinfo.c_str() );
     copy( _output_times.begin(), _output_times.end(), std::ostream_iterator<double>(filetimeinfo, " ") );
-    
+
     // _output_times.write(filetimeinfo, "ascii");
     filetimeinfo.close();
-        
-    getSolverManager()->writePostProcessVariablesDynamic(_postprocesstimeintegral, istep);    
+
+    getSolverManager()->writePostProcessVariablesDynamic(_postprocesstimeintegral, istep);
   }
 }
 
@@ -171,8 +170,8 @@ void DynamicLoop::run()
 
   _output_times.push_back( _timedata.time );
   getSolverManager()->writeUnknownVariables(_f, _u, _firstnumber);
-  getMeshComposition()->writeH5( getIoManager().getFileNameOut(Alat::IoManager::MeshVisu, "Mesh") );
-  getMeshComposition()->writeMeshInfo( getIoManager().getFileNameOut(Alat::IoManager::MeshVisu, "MeshInfo") );
+  getMesh()->writeH5( getIoManager().getFileNameOut(Alat::IoManager::MeshVisu, "Mesh") );
+  getMesh()->writeMeshInfo( getIoManager().getFileNameOut(Alat::IoManager::MeshVisu, "MeshInfo") );
   getSolverManager()->writeVariablesInfo( );
   _nextoutputtime = _timedata.time + _outputdeltat;
 
@@ -262,7 +261,7 @@ void DynamicLoop::run()
       {
         _timesteppilot.computeNewDeltaT(_timedata, &_timesteppilotinformation, iteration);
       }
-      if( _timedata.deltat < _timesteppilot._dtmin) 
+      if( _timedata.deltat < _timesteppilot._dtmin)
       {
         _timedata.deltat = _timesteppilot._dtmin;
       }
@@ -279,7 +278,7 @@ void DynamicLoop::run()
         else if( _timedata.time+_timedata.deltat > _timesteppilot.getEndTime() )
         {
           _timedata.deltat = _timesteppilot.getEndTime()-_timedata.time;
-        }        
+        }
       }
 
       std::string filename = getIoManager().getFileNameOut(Alat::IoManager::RunInfo, "IterationInfo");

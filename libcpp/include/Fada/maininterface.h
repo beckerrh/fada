@@ -16,7 +16,7 @@ namespace Fada
 protected:
     std::string getInterfaceName() const;
 
-    virtual Fada::SolverManager* newSolverManager(std::string meshtype) const = 0;
+    virtual Fada::SolverManager* newSolverManager() const = 0;
     virtual Fada::LoopInterface* newLoop(std::string loopname) const = 0;
     virtual Fada::ModelInterface* newModel() const = 0;
 

@@ -95,9 +95,7 @@ class MeshManager():
         return self.current_mesh_name
 
     def copyMesh(self, destination):
-              self.current_mesh_name, ' ==> ', destination)
-        osadd.copytree(
-            self.current_mesh_name + '.fadalightmesh', destination + '.fadalightmesh')
+        osadd.copytree(self.current_mesh_name + '.fadalightmesh', destination + '.fadalightmesh')
 
     def updateMesh(self):
         osadd.copytree(

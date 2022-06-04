@@ -1,5 +1,4 @@
 #include  "Fada/linearloop.h"
-#include  "FadaMesh/meshcompositioninterface.h"
 #include  "Fada/model.h"
 #include  "Fada/solver.h"
 #include  "Fada/solvermanager.h"
@@ -117,8 +116,8 @@ void LinearLoop::run()
   getSolverManager()->writeVariablesInfo( );
 
   // getNonLinearInfo().printInfo( getIoManager().getFileNameOut(Alat::IoManager::RunInfo,"IterationInfo") );
-  getMeshComposition()->writeH5( getIoManager().getFileNameOut(Alat::IoManager::MeshVisu, "Mesh") );
-  getMeshComposition()->writeMeshInfo( getIoManager().getFileNameOut(Alat::IoManager::MeshVisu, "MeshInfo") );
+  getMesh()->writeH5( getIoManager().getFileNameOut(Alat::IoManager::MeshVisu, "Mesh") );
+  getMesh()->writeMeshInfo( getIoManager().getFileNameOut(Alat::IoManager::MeshVisu, "MeshInfo") );
 
   getChronometer().start("InPutOutPut");
   getSolverManager()->writeUnknownVariables(_f, _u);

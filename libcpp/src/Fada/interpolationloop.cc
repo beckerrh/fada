@@ -1,5 +1,4 @@
 #include  "Fada/interpolationloop.h"
-#include  "FadaMesh/meshcompositioninterface.h"
 #include  "FadaMesh/meshinterface.h"
 #include  "Fada/solvermanager.h"
 #include  <cassert>
@@ -8,92 +7,80 @@ using namespace Fada;
 
 /*--------------------------------------------------------------------------*/
 InterpolationLoop::~InterpolationLoop()
-{}
-InterpolationLoop::InterpolationLoop() : Loop(), _refinedmeshcomposition(NULL), _uold("uold", "unknowns"), _uhelp("uhelp", "unknowns")
-{}
-InterpolationLoop::InterpolationLoop( const InterpolationLoop& interpolationloop) : Loop(interpolationloop), _refinedmeshcomposition(interpolationloop._refinedmeshcomposition)
 {
-  assert(0);
 }
 
-InterpolationLoop& InterpolationLoop::operator=( const InterpolationLoop& interpolationloop)
+InterpolationLoop::InterpolationLoop() : Loop(), _refinedmesh(NULL), _uold("uold", "unknowns"), _uhelp("uhelp", "unknowns")
 {
-  Loop::operator=(interpolationloop);
-  assert(0);
-  return *this;
+}
+
+InterpolationLoop::InterpolationLoop(const InterpolationLoop& interpolationloop) : Loop(interpolationloop), _refinedmesh(interpolationloop._refinedmesh)
+{
+   assert(0);
+}
+
+InterpolationLoop& InterpolationLoop::operator=(const InterpolationLoop& interpolationloop)
+{
+   Loop::operator=(interpolationloop);
+
+   assert(0);
+   return(*this);
 }
 
 std::string InterpolationLoop::getName() const
 {
-  return "InterpolationLoop";
+   return("InterpolationLoop");
 }
 
 FadaEnums::looptype InterpolationLoop::getType() const
 {
-  return FadaEnums::InterpolationLoop;
+   return(FadaEnums::InterpolationLoop);
 }
 
-InterpolationLoop* InterpolationLoop::clone() const
+InterpolationLoop * InterpolationLoop::clone() const
 {
-  return new InterpolationLoop(*this);
-}
-
-/*--------------------------------------------------------------------------*/
-
-FadaMesh::MeshCompositionInterface*& InterpolationLoop::getRefinedMeshCompositionPointer()
-{
-  return _refinedmeshcomposition;
+   return(new InterpolationLoop(*this));
 }
 
 /*--------------------------------------------------------------------------*/
-
-const FadaMesh::MeshCompositionInterface* InterpolationLoop::getRefinedMeshComposition() const
+void InterpolationLoop::basicInit(Fada::ModelInterface *model, SolverManager *solvermanager, const std::string& rundirectory, const Alat::ParameterFile *parameterfile)
 {
-  return _refinedmeshcomposition;
-}
+   // std::cerr << "InterpolationLoop::basicInit() DEBUT\n";
+   Loop::basicInit(model, solvermanager, rundirectory, parameterfile);
 
-/*--------------------------------------------------------------------------*/
-void InterpolationLoop::basicInit(Fada::ModelInterface* model, SolverManager* solvermanager, const std::string& rundirectory, const Alat::ParameterFile* parameterfile)
-{
-  // std::cerr << "InterpolationLoop::basicInit() DEBUT\n";
-  Loop::basicInit(model, solvermanager, rundirectory, parameterfile);
+   if (getMesh() == NULL)
+   {
+      std::cerr << "***ERROR in InterpolationLoop::basicInit(): no Mesh set !\n";
+      assert(0);
+      exit(1);
+   }
+   if (_vectortype == "ml")
+   {
+      _uold.setLevel(-1);
+      _uhelp.setLevel(-1);
+   }
+   getSolverManager()->registerVector(_uold);
+   getSolverManager()->registerVector(_uhelp);
 
-  if(getMeshComposition() == NULL)
-  {
-    std::cerr << "***ERROR in InterpolationLoop::basicInit(): no Mesh set !\n";
-    assert(0);
-    exit(1);
-  }
-  if(_vectortype=="ml")
-  {
-    _uold.setLevel(-1);
-    _uhelp.setLevel(-1);
-  }
-  getSolverManager()->registerVector(_uold);
-  getSolverManager()->registerVector(_uhelp);
-
-  assert( _refinedmeshcomposition );
-  for(int i = 0; i < getMeshComposition()->getNDomains(); i++)
-  {
-    getMeshComposition()->getMesh(i)->setResolution(0);
-  }
-  getSolverManager()->reInitForInterpolation(_refinedmeshcomposition);
-  getSolverManager()->reInitVectorForInterpolation(_uhelp);
-  getSolverManager()->reInitVectorForInterpolation(_u);
-  getIoManager().setReadUnknownVariables(true);
-  // std::cerr << "InterpolationLoop::basicInit() FIN\n";
+   assert(_refinedmesh);
+   getMesh()->setResolution(0);
+   getSolverManager()->reInitForInterpolation(_refinedmesh);
+   getSolverManager()->reInitVectorForInterpolation(_uhelp);
+   getSolverManager()->reInitVectorForInterpolation(_u);
+   getIoManager().setReadUnknownVariables(true);
+   // std::cerr << "InterpolationLoop::basicInit() FIN\n";
 }
 
 /*--------------------------------------------------------------------------*/
 void InterpolationLoop::run()
 {
-  assert( getRefinedMeshComposition() );
-  getSolverManager()->readUnknownVariables( _uold);
-  getSolverManager()->interpolateSolution( _u, _uold);
-  getSolverManager()->setMeshDecomposition( getRefinedMeshComposition() );
-  getSolverManager()->writeUnknownVariables(_uhelp, _u);
+   assert(getRefinedMeshComposition());
+   getSolverManager()->readUnknownVariables(_uold);
+   getSolverManager()->interpolateSolution(_u, _uold);
+   getSolverManager()->setMesh(getRefinedMeshComposition());
+   getSolverManager()->writeUnknownVariables(_uhelp, _u);
 
-  // getRefinedMeshComposition()->writeH5( getIoManager().getFileNameOut(Alat::IoManager::MeshVisu, "Mesh") );
-  // getRefinedMeshComposition()->writeMeshInfo( getIoManager().getFileNameOut(Alat::IoManager::MeshVisu, "MeshInfo") );
-  // getSolverManager()->writeVariablesInfo( );
+   // getRefinedMeshComposition()->writeH5( getIoManager().getFileNameOut(Alat::IoManager::MeshVisu, "Mesh") );
+   // getRefinedMeshComposition()->writeMeshInfo( getIoManager().getFileNameOut(Alat::IoManager::MeshVisu, "MeshInfo") );
+   // getSolverManager()->writeVariablesInfo( );
 }

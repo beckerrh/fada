@@ -2,7 +2,7 @@
 #define __Fada_IntegratorSingleVariable_h
 
 #include  "Fada/integrator.h"
-#include  "FadaMesh/enums.h"
+#include  "FadaMesh/fadameshenums.h"
 #include  "Alat/node.h"
 
 /*--------------------------------------------------------------------------*/

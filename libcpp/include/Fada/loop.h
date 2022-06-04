@@ -19,7 +19,7 @@ protected:
     Alat::IoManager _io_manager;
     const Alat::ParameterFile* _parameterfile;
     Fada::SolverManager* _solvermanager;
-    FadaMesh::MeshCompositionInterface* _meshcomposition;
+    FadaMesh::MeshInterface* _mesh;
     mutable Chronometer _chronometer;
     std::string _vectortype;
     Alat::GhostVector _u, _data, _postprocess;
@@ -37,15 +37,15 @@ public:
     std::ostream& printLoopInformation(std::ostream& os) const;
     void initializeSolution(Alat::GhostVector& u, TimeData& timedata);
     void initializeSolution(Alat::GhostVector& u);
-    const SolverManager* getSolverManager() const;
-    SolverManager* getSolverManager();
-    const FadaMesh::MeshCompositionInterface* getMeshComposition() const;
-    FadaMesh::MeshCompositionInterface* getMeshComposition();
-    FadaMesh::MeshCompositionInterface*& getMeshCompositionPointer();
-    const Alat::IoManager* getIoManager() const;
-    Alat::IoManager& getIoManager();
+    const SolverManager* getSolverManager() const {return _solvermanager;}
+    SolverManager* getSolverManager() {return _solvermanager;}
+    const FadaMesh::MeshInterface* getMesh() const {return _mesh;}
+    FadaMesh::MeshInterface* getMesh() {return _mesh;}
+    FadaMesh::MeshInterface*& getMeshPointer() {return _mesh;}
+    const Alat::IoManager* getIoManager() const{return &_io_manager;}
+    Alat::IoManager& getIoManager(){return _io_manager;}
     std::string getRunDir() const;
-    const Alat::ParameterFile* getParameterFile() const;
+    const Alat::ParameterFile* getParameterFile() const {return _parameterfile;}
 
     void setLavrentievParameter(double parameter) const;
     void computeLinearization(AlatEnums::residualstatus& status, Alat::GhostVector& y, const Alat::GhostVector& x, const Alat::GhostVector& dx) const;

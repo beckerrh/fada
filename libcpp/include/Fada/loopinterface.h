@@ -2,13 +2,13 @@
 #define __Fada_LoopInterface_h
 
 #include  "Alat/interfacebase.h"
-#include  "fadalightenums.h"
+#include  "fadaenums.h"
 #include  "Alat/enums.h"
 
 /*--------------------------------------------------------------------------*/
 
 namespace Alat
-{ 
+{
   class GhostMatrix;
   class GhostVector;
   class GhostLinearSolver;
@@ -16,16 +16,16 @@ namespace Alat
   class ParameterFile;
 }
 namespace Alat
-{ 
+{
   class NewtonData;
   class NonLinearInfo;
 }
 namespace FadaMesh
-{ 
-  class MeshCompositionInterface;
+{
+  class MeshInterface;
 }
 namespace Fada
-{ 
+{
   class ModelInterface;
   class SolverManager;
 
@@ -45,12 +45,12 @@ public:
     virtual std::string getRunDir() const = 0;
     virtual SolverManager* getSolverManager() = 0;
     virtual const SolverManager* getSolverManager() const = 0;
-    virtual FadaMesh::MeshCompositionInterface*& getMeshCompositionPointer() = 0;
-    virtual const FadaMesh::MeshCompositionInterface* getMeshComposition() const = 0;
-    virtual FadaMesh::MeshCompositionInterface* getMeshComposition() = 0;
+    virtual FadaMesh::MeshInterface*& getMeshPointer() = 0;
+    virtual const FadaMesh::MeshInterface* getMesh() const = 0;
+    virtual FadaMesh::MeshInterface* getMesh() = 0;
     virtual const Alat::IoManager* getIoManager() const=0;
-    virtual FadaMesh::MeshCompositionInterface*& getRefinedMeshCompositionPointer();
-    virtual const FadaMesh::MeshCompositionInterface* getRefinedMeshComposition() const;
+    virtual FadaMesh::MeshInterface*& getRefinedMeshPointer();
+    virtual const FadaMesh::MeshInterface* getRefinedMeshComposition() const;
     virtual void computeLinearization(AlatEnums::residualstatus& status, Alat::GhostVector& y, const Alat::GhostVector& x, const Alat::GhostVector& dx) const=0;
     virtual void constructMatrixAndLinearSolvers(Alat::GhostMatrix& A,  Alat::GhostVector& u);
     virtual void constructJacobianMatrix(AlatEnums::residualstatus& status, Alat::GhostMatrix& A,  Alat::GhostVector& u);

@@ -1,5 +1,4 @@
 #include  "Alat/filescanner.h"
-#include  "FadaMesh/meshcompositioninterface.h"
 #include  "Fada/modelinterface.h"
 #include  "Alat/newtondata.h"
 #include  "Alat/newtonlavrentiev.h"
@@ -140,8 +139,8 @@ void StaticLoop::run()
   file<<_newtondata.getNNewtonIteration()<<" "<<_newtondata.getNLinearIteration()<<"\n";
   file.close();
 
-  getMeshComposition()->writeH5( getIoManager().getFileNameOut(Alat::IoManager::MeshVisu, "Mesh") );
-  getMeshComposition()->writeMeshInfo( getIoManager().getFileNameOut(Alat::IoManager::MeshVisu, "MeshInfo") );
+  getMesh()->writeH5( getIoManager().getFileNameOut(Alat::IoManager::MeshVisu, "Mesh") );
+  getMesh()->writeMeshInfo( getIoManager().getFileNameOut(Alat::IoManager::MeshVisu, "MeshInfo") );
   getSolverManager()->writeVariablesInfo( );
   getChronometer().stop("InPutOutPut");
   if(_newtondata.getNewtonStatus() != AlatEnums::NewtonStatusConverged)

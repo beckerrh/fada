@@ -2,7 +2,7 @@
 #define __Fada_IntegrationFormulaSelectorInterface_h
 
 #include  "Alat/interfacebase.h"
-#include  "fadalightenums.h"
+#include  "fadaenums.h"
 
 /*--------------------------------------------------------------------------*/
 

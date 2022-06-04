@@ -1,7 +1,7 @@
 #ifndef __Fada_ApplicationInterface_h
 #define __Fada_ApplicationInterface_h
 
-#include  "fadalightenums.h"
+#include  "fadaenums.h"
 #include  "Alat/interfacebase.h"
 
 /*--------------------------------------------------------------------------*/

@@ -9,7 +9,7 @@ using namespace std;
 MultiMeshCreator::~MultiMeshCreator() {}
 MultiMeshCreator::MultiMeshCreator(Coarsener2d* coarsener): _coarsener(coarsener){}
 MultiMeshCreator::MultiMeshCreator(const MultiMeshCreator& multimeshcreator) {assert(0);}
-MultiMeshCreator& MultiMeshCreator::operator= (const MultiMeshCreator & multimeshcreator) {assert(0);}    
+MultiMeshCreator& MultiMeshCreator::operator= (const MultiMeshCreator & multimeshcreator) {assert(0);}
 std::string MultiMeshCreator::getName() const
 {
     return "MultiMeshCreator";
@@ -33,11 +33,6 @@ void MultiMeshCreator::createMultiMesh(std::string dirname, std::string datatype
   // bool coarsen = 1;
   _getMesh()->createGeometryObject("RefineInfo");
   FadaMesh::RefineInfo* _refineinfo= dynamic_cast<FadaMesh::RefineInfo*>(_getMesh()->getGeometryObject("RefineInfo"));
-  // if(_getFaces().max_depth() == 0)
-  // {
-  //   coarsen = 0;
-  // }
-  // while(coarsen)
   while(( _getFaces().max_depth() > 0 ) && (count < nlevels)  && (_getFaces().size() > ncells))
   {
     _coarsener->globalCoarsen();
@@ -45,23 +40,9 @@ void MultiMeshCreator::createMultiMesh(std::string dirname, std::string datatype
     std::stringstream ss0;
     ss0<<count;
     std::string outfilename = multimeshname+"/mesh."+ss0.str();
-    // coarsen = ( _getFaces().max_depth() > 0 ) && (count < nlevels)  && (_getFaces().size() > ncells);
     _getMesh()->writeFadaMesh(outfilename, datatype);
-    // if(count == 1)
-    // {
-    //   outfilename = dirname+".fadalightmesh/RefineInfoML";
-    //   _refineinfo->write(outfilename, datatype);
-    // }
-    // else
-    // {
-    //   std::stringstream ss1;
-    //   ss1<<count-1;
-    //   outfilename = multimeshname+"/mesh."+ss1.str()+".fadalightmesh/RefineInfoML";
-    //   _refineinfo->write(outfilename, datatype);
-    // }
     count++;
   }
-
   string filename = multimeshname+"/n";
   ofstream file( filename.c_str() );
   assert( file.is_open() );
@@ -70,7 +51,6 @@ void MultiMeshCreator::createMultiMesh(std::string dirname, std::string datatype
 }
 
 /*--------------------------------------------------------------------------*/
-
 void MultiMeshCreator::_constructRefineInfo()
 {
   int n = _coarsener->getFaceCoarse().size();
@@ -78,7 +58,7 @@ void MultiMeshCreator::_constructRefineInfo()
   for(face_leafpointer f = _getFaces().begin_leaf(); f != _getFaces().end_leaf(); f++)
   {
     int i =  _coarsener->getFaceId2Id()[( *f )->id()];
-    
+
     SPC[i].set_size(_coarsener->getFaceCoarse()[f].size());
     SPC[i] = _coarsener->getFaceCoarse()[f];
 
@@ -107,7 +87,7 @@ void MultiMeshCreator::_constructRefineInfo()
   // std::cerr << "nodeid2id="<<nodeid2id<<"\n";
   // std::cerr << "edgeid2id="<<edgeid2id<<"\n";
   // std::cerr << "faceid2id="<<faceid2id<<"\n";
-  
+
   nodeids.resize(nodeid2id.size());
   for(Alat::IntMap::const_iterator p= nodeid2id.begin(); p!= nodeid2id.end(); p++)
   {
@@ -124,5 +104,3 @@ void MultiMeshCreator::_constructRefineInfo()
     cellids[p->second] = p->first;
   }
 }
-
-
