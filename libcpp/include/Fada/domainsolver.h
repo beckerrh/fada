@@ -26,7 +26,6 @@ namespace Fada
   {
   private:
     bool _varscaleafterinitialize;
-    // void _interpolateP1(Alat::VariableVectorInterface* unew, const Alat::VariableVectorInterface* uold) const;
 
 protected:
     // pour strong
@@ -146,7 +145,7 @@ public:
     Alat::VectorInterface* getVector(Alat::GhostVector& v) const;
     bool vectorExists(const Alat::GhostVector& v) const;
 
-    void linearSolve(AlatEnums::iterationstatus& status, Alat::GhostMatrix& A, Alat::GhostLinearSolver& linearsolver, Alat::GhostVector& x, const Alat::GhostVector& b);
+    // void linearSolve(AlatEnums::iterationstatus& status, Alat::GhostMatrix& A, Alat::GhostLinearSolver& linearsolver, Alat::GhostVector& x, const Alat::GhostVector& b);
     void constructRightHandSide(AlatEnums::residualstatus& status, Alat::GhostVector& f) const;
     void constructForm(AlatEnums::residualstatus& status, Alat::GhostVector& f, const Alat::GhostVector& u) const;
     void computeLinearization(AlatEnums::residualstatus& status, Alat::GhostVector& f, const Alat::GhostVector& u, const Alat::GhostVector& du) const;

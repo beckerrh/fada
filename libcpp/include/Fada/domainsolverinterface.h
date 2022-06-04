@@ -77,7 +77,7 @@ public:
     virtual void reInitCouplingSolvers(int n);
     virtual int getNcompOfVar(std::string varname) const = 0;
     virtual int getNOfVar(int level, std::string varname) const = 0;
-    virtual void linearSolve(AlatEnums::iterationstatus& status, Alat::GhostMatrix& A, Alat::GhostLinearSolver& linearsolver, Alat::GhostVector& x, const Alat::GhostVector& b) = 0;
+    // virtual void linearSolve(AlatEnums::iterationstatus& status, Alat::GhostMatrix& A, Alat::GhostLinearSolver& linearsolver, Alat::GhostVector& x, const Alat::GhostVector& b) = 0;
     virtual void constructLinearSolver(const Alat::GhostLinearSolver& linearsolver) = 0;
     virtual const DomainIntegrationLoopInterface* getDomainIntegrationLoop() const = 0;
     virtual void readUnknownVariables(Alat::GhostVector& v, int number = -1) = 0;

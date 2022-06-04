@@ -27,7 +27,6 @@ namespace Fada
   class DomainSolverInterface;
   class SparsityPatternWithRowIndexSoft;
   class ModelInterface;
-  class ModelInterface;
 
   class SolverManager : public Alat::InterfaceBase
   {
@@ -44,25 +43,16 @@ protected:
     GhostVectorAgent _ghost_vector_agent;
     double _time, _deltat;
 
-    // void setDomainsOfCoupling(Alat::Vector<Alat::FixArray<2, int> >& domainsofcoupling, Alat::SparsityPattern& _domainneighbours, Alat::Map<Alat::IntPair, int>& _couplingofdomains) const;
     void initSolverChronometer() const;
     void printSolverChronometer(std::ostream& os) const;
 
     Fada::DomainSolverInterface* newDomainSolver(const FadaMesh::MeshInterface* mesh) const;
-
-    // gestion des solvers
-    // Alat::IntVector _vectorOfCouplings;
-    // mutable Alat::Vector<Alat::IntVector> _domainspermutation;
-    // Alat::Vector<DomainSolverInterface*> _domainsolvers;
     DomainSolverInterface* _domainsolver;
-    // Alat::Map<std::string, Alat::IntSet> _domainsofvar;
     Alat::StringSet _variables;
 
-    // void _initDomainsOfVar();
     void _writePostProcessScalars(const Alat::Map<std::string, Alat::IntSet>& ppvarswithoutfem, const Alat::SystemVector& vectorallvars, std::ofstream& file, std::string first_column="t") const;
     void _writePostProcessScalarsHeader(const Alat::Map<std::string, Alat::IntSet>& ppvarswithoutfem, std::ofstream& file, std::string first_column="t") const;
 
-    // Alat::Vector<Alat::FixArray<2, int> > _domainsofcoupling;
     mutable Alat::Vector<bool> _sortcriterion;
 
     typedef Alat::Set<Alat::Pair<int, int> > SortedCouplingIndices;
@@ -77,7 +67,7 @@ protected:
 
     mutable Fada::Chronometer _chronometer;
     const Alat::ParameterFile* getParameterFile() const {return _parameterfile;}
-    DomainSolverInterface*& getDomainSolverPointer(int i) {return _domainsolver;}
+    // DomainSolverInterface*& getDomainSolverPointer(int i) {return _domainsolver;}
     Alat::LinearSolverInterface* newLinearSolver(const Alat::GhostLinearSolver& linearsolver);
     void _initStringDoubleMapForVectors(Alat::StringDoubleMap& map) const;
     void _reInitSansSolvers();

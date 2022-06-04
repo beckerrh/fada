@@ -204,10 +204,11 @@ void SolverManager::basicInit(Fada::ModelInterface* model, const FadaMesh::MeshI
 /*--------------------------------------------------------------------------*/
 void SolverManager::addLinearDomainSolvers(const Alat::GhostLinearSolver& linearsolver)
 {
-  for(int i = 0; i < getNDomainSolvers(); i++)
-  {
-    getDomainSolver(i)->registerLinearSolver(linearsolver);
-  }
+  _domainsolver->registerLinearSolver(linearsolver);
+  // for(int i = 0; i < getNDomainSolvers(); i++)
+  // {
+  //   getDomainSolver(i)->registerLinearSolver(linearsolver);
+  // }
   _domainSolversOfSolver.insert(linearsolver);
 }
 
@@ -368,6 +369,8 @@ void SolverManager::constructLinearSolver(Alat::GhostLinearSolver& linearsolver,
   _chronometer.start("ConstructLinearSolver");
   getLinearSolver(linearsolver)->compute();
   getLinearSolver(linearsolver)->restart();
+  _domainsolver->constructMultigridTransfer( linearsolver.getMatrix() );
+  // _domainsolver->constructLinearSolver(*p);
   {
     for(int i = 0; i < getNDomainSolvers(); i++)
     {

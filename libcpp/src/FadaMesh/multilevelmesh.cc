@@ -286,7 +286,7 @@ void MultiLevelMesh::readFadaMesh(const std::string& basefilename)
 {
    std::string multimeshdir = basefilename + ".fadalightmesh/MultiMesh";
 
-   std::cerr << "MultiLevelMesh::readFadaMesh() multimeshdir " << multimeshdir << "\n";
+   // std::cerr << "MultiLevelMesh::readFadaMesh() multimeshdir " << multimeshdir << "\n";
    std::string   filename = multimeshdir + "/n";
    std::ifstream file(filename.c_str());
 

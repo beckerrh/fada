@@ -1610,12 +1610,12 @@ void DomainSolver::reInitVectorForInterpolation(Alat::GhostVector& u) const
     }
   }
 }
-
-/*--------------------------------------------------------------------------*/
-void DomainSolver::linearSolve(AlatEnums::iterationstatus& status, Alat::GhostMatrix& A, Alat::GhostLinearSolver& linearsolver, Alat::GhostVector& x, const Alat::GhostVector& b)
-{
-  assert(0);
-}
+//
+// /*--------------------------------------------------------------------------*/
+// void DomainSolver::linearSolve(AlatEnums::iterationstatus& status, Alat::GhostMatrix& A, Alat::GhostLinearSolver& linearsolver, Alat::GhostVector& x, const Alat::GhostVector& b)
+// {
+//   assert(0);
+// }
 
 /*--------------------------------------------------------------------------*/
 bool DomainSolver::existsVector(const Alat::GhostVector& v) const
@@ -1650,6 +1650,7 @@ void DomainSolver::registerLinearSolver(const Alat::GhostLinearSolver& v)
   }
   // else
   // {
+  //   std::cerr << "DomainSolver::registerLinearSolver() " << v << "\n";
   //   assert(0);
   // }
   _ghost_linear_solver_agent.enrol(linearsolver);
