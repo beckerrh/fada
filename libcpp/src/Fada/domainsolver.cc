@@ -277,10 +277,10 @@ Fada::MultiLevelTransferSingleFemInterface* DomainSolver::newMultiLevelTransferS
 }
 
 /*---------------------------------------------------------*/
-void DomainSolver::basicInit(int index, Fada::ModelInterface* model, const FadaMesh::MeshInterface* mesh, const Alat::IoManager* io_manager, FadaEnums::looptype looptype, const Alat::ParameterFile* parameterfile)
+void DomainSolver::basicInit(Fada::ModelInterface* model, const FadaMesh::MeshInterface* mesh, const Alat::IoManager* io_manager, FadaEnums::looptype looptype, const Alat::ParameterFile* parameterfile)
 {
   _chronometer.start("basicInit");
-  Solver::basicInit(index, model, mesh, io_manager, looptype, parameterfile);
+  Solver::basicInit(model, mesh, io_manager, looptype, parameterfile);
 
   Alat::DataFormatHandler dataformathandler;
   dataformathandler.insert("matrixstorage", &_matrixstorage, "full");
@@ -695,7 +695,7 @@ void DomainSolver::writeUnknownVariables(Alat::GhostVector& help, const Alat::Gh
     for(int level = 0; level < nlevels; level++)
     {
       std::string filename = getIoManager()->getFileNameOut(Alat::IoManager::Unknowns, "U", number);
-      filename = getIoManager()->getFileNameOnBlock( filename, getIndex(), level ) + ".h5";
+      filename = getIoManager()->getFileNameOnLevel( filename, level ) + ".h5";
       _writeUnknownVariables(hmg->getVector(level), vmg->getVector(level), filename);
     }
   }
@@ -706,7 +706,7 @@ void DomainSolver::writeUnknownVariables(Alat::GhostVector& help, const Alat::Gh
     Alat::SystemVector* h = dynamic_cast<Alat::SystemVector*>( getVector(help) );
     assert(h);
     std::string filename = getIoManager()->getFileNameOut(Alat::IoManager::Unknowns, "U", number);
-    filename = getIoManager()->getFileNameOnBlock( filename, getIndex() )+".h5";
+    filename = getIoManager()->getFileNameOnLevel( filename, 0 )+".h5";
     _writeUnknownVariables(h, vs, filename);
   }
   _chronometer.stop("InputOutput");
@@ -724,7 +724,7 @@ void DomainSolver::readUnknownVariables(Alat::GhostVector& gv, int number)
     for(int level = 0; level < nlevels; level++)
     {
       std::string filename = getIoManager()->getFileNameIn(number);
-      filename = getIoManager()->getFileNameOnBlock( filename, getIndex(), level ) + ".h5";
+      filename = getIoManager()->getFileNameOnLevel( filename, level ) + ".h5";
       _readUnknownVariables(vmg->getVector(level), filename);
     }
   }
@@ -733,7 +733,7 @@ void DomainSolver::readUnknownVariables(Alat::GhostVector& gv, int number)
     Alat::SystemVector* v = dynamic_cast<Alat::SystemVector*>( getVector(gv) );
     assert(v);
     std::string filename = getIoManager()->getFileNameIn(number);
-    filename = getIoManager()->getFileNameOnBlock( filename, getIndex() )+".h5";
+    filename = getIoManager()->getFileNameOnLevel( filename, 0 )+".h5";
     _readUnknownVariables(v, filename);
   }
   _chronometer.stop("InputOutput");
@@ -842,7 +842,7 @@ void DomainSolver::writePostProcessVariables(Alat::DoubleVector& est, const Alat
   assert(v);
   std::string filename = getIoManager()->getFileNameOut(Alat::IoManager::PostProcess, "P", number);
   std::string filenameestimator = getIoManager()->getResultsDir() + "/" + "estimator";
-  filename = getIoManager()->getFileNameOnBlock( filename, getIndex() )+".h5";
+  filename = getIoManager()->getFileNameOnLevel( filename, 0 )+".h5";
 
 
   const VariableManager* variablemanager = getVariableManager();
@@ -1719,8 +1719,8 @@ void DomainSolver::writeVariablesInfo() const
   // unknowns
   {
     std::string filename = getIoManager()->getFileNameOut(Alat::IoManager::Unknowns, "UInfo" );
-    std::string domainfilename = Alat::IoManager::getFileNameOnBlock( filename, getIndex() );
-    std::ofstream file( domainfilename.c_str() );
+    // std::string domainfilename = Alat::IoManager::getFileNameOnLevel( filename, getIndex() );
+    std::ofstream file( filename.c_str() );
     const VariablesMap& variables = getVariableManager()->getUnknowns();
     for(VariablesMap::const_iterator p = variables.begin(); p != variables.end(); p++)
     {
@@ -1739,8 +1739,8 @@ void DomainSolver::writeVariablesInfo() const
   // postprocess
   {
     std::string filename = getIoManager()->getFileNameOut(Alat::IoManager::PostProcess, "PInfo" );
-    std::string domainfilename = Alat::IoManager::getFileNameOnBlock( filename, getIndex() );
-    std::ofstream file( domainfilename.c_str() );
+    // std::string domainfilename = Alat::IoManager::getFileNameOnLevel(filename, getIndex() );
+    std::ofstream file( filename.c_str() );
     const VariablesMap& variables = getVariableManager()->getPostProcess();
     for(VariablesMap::const_iterator p = variables.begin(); p != variables.end(); p++)
     {

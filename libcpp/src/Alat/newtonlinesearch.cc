@@ -70,7 +70,7 @@ void NewtonLineSearch::solve(Alat::NewtonData& newtondata, Alat::GhostLinearSolv
   // std::cerr << "FFFF NewtonLineSearch::solve() \n";
   // getVisitor()->vectorWrite(std::cerr, f);
   // std::cerr << "\n";
-  std::cerr << "NewtonLineSearch::solve() info =" << info << "\n";
+  // std::cerr << "NewtonLineSearch::solve() info =" << info << "\n";
   for(int iteration = 0; !reached; iteration++)
   {
     // std::cerr << "NewtonLineSearch::solve() iteration ="<<iteration<< " u =" << getVisitor()->vectorNorm(u)<< " f =" << getVisitor()->vectorNorm(f) << "\n";

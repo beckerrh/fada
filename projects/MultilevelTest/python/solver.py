@@ -2,7 +2,7 @@ import os
 import tools.pyfrunexecutable
 import tools.pyfparam
 from .resultmanager import ResultManager
-from .visumanager import VisuManager
+from .xdmfwriter import XdmfWriter
 
 # ----------------------------------------------------------------------------------
 class Solver():
@@ -21,10 +21,10 @@ class Solver():
 
         self.cpp_param = tools.pyfparam.pyfParamatersForFada()
 
-        self.result_manager = ResultManager(
+        self.resultmanager = ResultManager(
             rundir=self.rundir, resultsdirbase=self.resultsdirbase)
-        self.visu_manager = VisuManager(
-            rundir=self.rundir, resultsdirbase=self.resultsdirbase, meshinfodir=self.meshinfodir, resultmanager=self.result_manager, solverloop=self.solverloop, visutype=self.visutype)
+        self.visu_manager = XdmfWriter(
+            rundir=self.rundir, resultsdirbase=self.resultsdirbase, meshinfodir=self.meshinfodir, resultmanager=self.resultmanager, solverloop=self.solverloop, visutype=self.visutype)
 
 # ----------------------------------------------------------------------------------
     def runloop(self, loopname):
@@ -50,9 +50,9 @@ class Solver():
         # self.runloop("prolongate")
         self.runloop("static")
         self.runloop("postprocess")
-        self.result_manager.getMeshInfo(iteration, resultsdir)
-        self.result_manager.getVariablesInfo(resultsdir)
-        self.visu_manager.visu(iteration)
+        info = self.resultmanager.getMeshInfo(iteration, resultsdir)
+        self.resultmanager.getVariablesInfo(resultsdir)
+        self.visu_manager.visu(iteration, resultsdir, info)
 
 # ----------------------------------------------------------------------------------
     def interpolate(self, iteration, currentmesh, refined_mesh):
@@ -68,6 +68,6 @@ class Solver():
         self.runloop("interpolation")
         self.cpp_param.erase("IoManager", "inputdir")
         self.cpp_param.erase("IoManager", "inputfile")
-        # self.result_manager.getMeshInfo(iteration, resultsdirnext)
-        # self.result_manager.getVariablesInfo(resultsdirnext)
+        # self.resultmanager.getMeshInfo(iteration, resultsdirnext)
+        # self.resultmanager.getVariablesInfo(resultsdirnext)
         # self.visu_manager.visu(iteration, name="interpolated")

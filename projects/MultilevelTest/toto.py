@@ -1,8 +1,9 @@
 import os
 from python.meshloop import MeshLoop
 from python.solver import Solver
-from python.meshinfo import MeshInfo
+# from python.meshinfo import MeshInfo
 from python.meshmanager import MeshManager
+from python.meshmanager import MeshInfo
 import python.osadd
 
 # ----------------------------------------------------------------------------------
@@ -93,7 +94,7 @@ def main(pathmanager, args):
     if len(args)==0 or args[0] not in ['plt', 'plot']:
         loop.run()
 
-    result = solver.result_manager.getAllScalarPosrprocess(loop.niter)
+    result = solver.resultmanager.getAllScalarPosrprocess(loop.niter)
     print(f"{result.keys()=}")
     # print(f"{result=}")
     import matplotlib.pyplot as plt

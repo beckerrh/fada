@@ -29,7 +29,7 @@ public:
 
     std::string getName();
     void basicInit(const std::string& rundirectory, const Alat::ParameterFile* parameterfile = NULL);
-    static std::string getFileNameOnBlock(const std::string& basefilename, int iblock, int level=0);
+    static std::string getFileNameOnLevel(const std::string& basefilename, int level);
     std::ostream& printLoopInformation(std::ostream& os) const;
     const std::string& getRunDir() const;
     std::string getResultsDir() const;

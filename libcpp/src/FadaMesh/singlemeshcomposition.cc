@@ -148,15 +148,15 @@ std::string SingleMeshComposition::getInfo() const
 
 void SingleMeshComposition::writeMeshInfo(std::string filename) const
 {
-  std::ofstream file( filename.c_str() );
-  file <<_mesh->getDimension()<< "\n";
-  int nlevels=1;
-  file <<nlevels<< "\n";
-  file << getNDomains() << "\n";
-  file.close();
-  int iblock = 0;
-  std::string blockfilename = Alat::IoManager::getFileNameOnBlock( filename, iblock);
-  _mesh->writeMeshInfo(blockfilename);
+  // std::ofstream file( filename.c_str() );
+  // file <<_mesh->getDimension()<< "\n";
+  // int nlevels=1;
+  // file <<nlevels<< "\n";
+  // file << getNDomains() << "\n";
+  // file.close();
+  // int iblock = 0;
+  // std::string blockfilename = Alat::IoManager::getFileNameOnLevel( filename, iblock);
+  _mesh->writeMeshInfo(filename);
 }
 
 /*--------------------------------------------------------------------------*/
@@ -167,9 +167,10 @@ void SingleMeshComposition::writeH5(std::string filename) const
   for(int idomain = 0; idomain < ndomains; idomain++)
   {
     std::string blockfilename = filename;
-    std::stringstream ss;
-    ss<< std::setfill('0') << std::setw(4) << idomain;
-    blockfilename += "_block_"+ss.str()+".h5";
+    // std::stringstream ss;
+    // ss<< std::setfill('0') << std::setw(4) << idomain;
+    // blockfilename += "_block_"+ss.str()+".h5";
+    blockfilename += ".h5";
     _mesh->writeH5(blockfilename);
   }
 }

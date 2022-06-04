@@ -24,7 +24,7 @@ int main(int argc, char** argv)
   Alat::IntVector quad_of_tri;
 
   std::string filename = infilename + ".fadalightmesh/quad_of_tri";
-  std::cerr<<"filename= "<<filename<<std::endl;
+  // std::cerr<<"filename= "<<filename<<std::endl;
   std::ifstream file(filename.c_str());
   assert(file.is_open());
   quad_of_tri.loadFada(file);

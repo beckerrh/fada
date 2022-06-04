@@ -1,5 +1,4 @@
 import os, shutil, glob
-from .meshinfo import MeshInfo
 
 # ----------------------------------------------------------------------------------
 

@@ -107,7 +107,7 @@ public:
 
     static void initChronometer();
     static void printChronometer(std::ostream& os);
-    void basicInit(int index, Fada::ModelInterface* model, const FadaMesh::MeshInterface* mesh, const Alat::IoManager* io_manager, FadaEnums::looptype looptype, const Alat::ParameterFile* parameterfile = NULL);
+    void basicInit(Fada::ModelInterface* model, const FadaMesh::MeshInterface* mesh, const Alat::IoManager* io_manager, FadaEnums::looptype looptype, const Alat::ParameterFile* parameterfile = NULL);
     void reInit();
     void reInitForInterpolation(const FadaMesh::MeshInterface* mesh);
     void reInitMatrixAndLinearSolver();

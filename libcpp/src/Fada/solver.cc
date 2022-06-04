@@ -52,11 +52,6 @@ FadaEnums::looptype Solver::getType() const
   return _looptype;
 }
 
-int Solver::getIndex() const
-{
-  return _index;
-}
-
 int Solver::getNLevels() const
 {
   return getMesh()->getNLevels();
@@ -73,10 +68,9 @@ std::string Solver::getCouplingType() const
 }
 
 /*---------------------------------------------------------*/
-void Solver::basicInit(int index, ModelInterface* model, const FadaMesh::MeshInterface* mesh, const Alat::IoManager* io_manager, FadaEnums::looptype looptype, const Alat::ParameterFile* parameterfile)
+void Solver::basicInit(ModelInterface* model, const FadaMesh::MeshInterface* mesh, const Alat::IoManager* io_manager, FadaEnums::looptype looptype, const Alat::ParameterFile* parameterfile)
 {
   _looptype = looptype;
-  _index = index;
   Alat::DataFormatHandler dataformathandler;
   dataformathandler.insert("couplingtype", &_couplingtype, "cg");
   Alat::FileScanner filescanner(dataformathandler, parameterfile, "Solver", 0);

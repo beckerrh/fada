@@ -61,7 +61,6 @@ public:
     virtual IntegratorManager* getIntegratorManager()= 0;
     virtual void registerMatrix(const Alat::GhostMatrix& matrix) = 0;
     virtual int getNLevels() const = 0;
-    virtual int getIndex() const=0;
     virtual FadaEnums::looptype getType() const=0;
 
     virtual std::ostream& printLoopInformation(std::ostream& os) const = 0;

@@ -173,7 +173,7 @@ void SolverManager::basicInit(Fada::ModelInterface* model, const FadaMesh::MeshC
   }
   for(int i = 0; i < getNDomainSolvers(); i++)
   {
-    getDomainSolver(i)->basicInit( i, _model, getMeshComposition()->getMesh(i), getIoManager(), looptype, getParameterFile() );
+    getDomainSolver(i)->basicInit(_model, getMeshComposition()->getMesh(i), getIoManager(), looptype, getParameterFile() );
   }
   _initDomainsOfVar();
   _ppvarswithoutfem.clear();

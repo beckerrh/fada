@@ -22,7 +22,6 @@ namespace Fada
     double _time, _deltat, _deltatold;
     IntegratorManager _integratormanager;
 
-    int _index;
     std::string _couplingtype;
     // GhostMatrixAgent _ghost_matrix_agent;
     FadaEnums::looptype _looptype;
@@ -39,7 +38,6 @@ public:
 
     IntegratorManager* getIntegratorManager();
     FadaEnums::looptype getType() const;
-    int getIndex() const;
     std::string getName() const;
     int getNLevels() const;
     const Alat::IoManager* getIoManager() const;
@@ -48,7 +46,7 @@ public:
     const FadaMesh::MeshInterface* getRefinedMesh() const;
     void reInitForInterpolation(const FadaMesh::MeshInterface* mesh);
     const Alat::ParameterFile* getParameterFile() const;
-    void basicInit(int index, ModelInterface* model, const FadaMesh::MeshInterface* mesh, const Alat::IoManager* io_manager, FadaEnums::looptype looptype, const Alat::ParameterFile* parameterfile = NULL);
+    void basicInit(ModelInterface* model, const FadaMesh::MeshInterface* mesh, const Alat::IoManager* io_manager, FadaEnums::looptype looptype, const Alat::ParameterFile* parameterfile = NULL);
     double getTime() const;
     double getDeltaT() const;
     double getDeltaTOld() const;

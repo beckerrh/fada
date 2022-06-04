@@ -9,23 +9,19 @@ class ResultManager:
     def __init__(self, rundir, resultsdirbase):
         self.rundir = rundir
         self.resultsdirbase = resultsdirbase
-        self.blockmeshtype = {}
-        self.blocktopologydimensions = {}
-        self.blocknodesdimensions = {}
-        self.blockcellsdimensions = {}
-        self.blocknnodespercells = {}
         self.outputtimes = {}
         self.ntimestep = {}
+        self.nblocks = 1
 
-    def getSolverInfo(self, resultdir):
-        # resultdir = self.data.rundir +'/'+self.data.resultsdir
-        filename = resultdir + '/RunInfo/IterationInfo'
+    def getSolverInfo(self, resultsdir):
+        # resultsdir = self.data.rundir +'/'+self.data.resultsdir
+        filename = resultsdir + '/RunInfo/IterationInfo'
         filehandle = open(filename, 'r')
         info = filehandle.readline().split()
         filehandle.close()
         self.nnonlineariteration = int(info[0])
         self.nlineariteration = int(info[1])
-        filename = resultdir + '/RunInfo/TimerStatic'
+        filename = resultsdir + '/RunInfo/TimerStatic'
         filehandle = open(filename, 'r')
         self.cpudetails = {}
         self.cpudetailstotal = {}
@@ -49,8 +45,8 @@ class ResultManager:
     def getAllScalarPosrprocess(self, niter):
         allvalues = []
         for iter in range(niter):
-            resultdir = self.getResultDir(iter)
-            file = open(resultdir + '/PostProcess/ScalarsStatic.data', 'r')
+            resultsdir = self.getResultDir(iter)
+            file = open(resultsdir + '/PostProcess/ScalarsStatic.data', 'r')
             if iter==0:
                 names = file.readline().split('#')[1].strip().split()
                 n = len(names)
@@ -66,8 +62,8 @@ class ResultManager:
         self.cpudetails = {}
         self.cpudetailstotal = {}
         for iter in range(niter):
-            resultdir = self.getResultDir(iter)
-            filename = resultdir + '/RunInfo/Timer'
+            resultsdir = self.getResultDir(iter)
+            filename = resultsdir + '/RunInfo/Timer'
             filehandle = open(filename, 'r')
             for line in filehandle.readlines():
                 linesplit = line.split()
@@ -86,62 +82,54 @@ class ResultManager:
                         0]
             filehandle.close()
 
-    def getMeshInfo(self, iteration, resultdir):
-        # resultdir = self.data.rundir +'/'+self.data.resultsdir
-        meshinfofile = resultdir + '/MeshVisu/MeshInfo'
+    def getMeshInfo(self, iteration, resultsdir):
+        # print(f"######### {resultsdir=}")
+        # resultsdir = self.data.rundir +'/'+self.data.resultsdir
+        meshinfofile = resultsdir + '/MeshVisu/MeshInfo'
         filehandle = open(meshinfofile, 'r')
         self.dimension = int(filehandle.readline().strip())
         self.nlevels = int(filehandle.readline().strip())
         info = filehandle.readline().split()
-        self.nblocks = int(info[0])
-
-        self.blockmeshtype[iteration] = np.zeros(
-            (self.nlevels, self.nblocks), dtype=object)
-        self.blocktopologydimensions[iteration] = np.zeros(
-            (self.nlevels, self.nblocks), dtype=int)
-        self.blocknodesdimensions[iteration] = np.zeros(
-            (self.nlevels, self.nblocks), dtype=int)
-        self.blockcellsdimensions[iteration] = np.zeros(
-            (self.nlevels, self.nblocks), dtype=int)
-        self.blocknnodespercells[iteration] = np.zeros(
-            (self.nlevels, self.nblocks), dtype=int)
+        # self.nblocks = int(info[0])
+        shape = (self.nlevels, self.nblocks)
+        meshtype = np.zeros(shape=shape, dtype=object)
+        topologydimensions = np.zeros(shape=shape, dtype=int)
+        nodesdimensions = np.zeros(shape=shape, dtype=int)
+        cellsdimensions = np.zeros(shape=shape, dtype=int)
+        nnodespercells = np.zeros(shape=shape, dtype=int)
 
         filehandle.close()
         for level in range(self.nlevels):
             for iblock in range(self.nblocks):
-                blockmeshinfofile = meshinfofile + \
-                    "_block_%04d_level_%02d" % (iblock, level)
+                # blockmeshinfofile = meshinfofile + "_block_%04d_level_%02d" % (iblock, level)
+                blockmeshinfofile = meshinfofile + "_level_%02d" % (level)
                 filehandle = open(blockmeshinfofile, 'r')
-                self.blockmeshtype[iteration][level, iblock] = str(
-                    filehandle.readline().strip())
-                self.blocktopologydimensions[iteration][level, iblock] = int(
-                    filehandle.readline().strip())
-                self.blocknodesdimensions[iteration][level, iblock] = int(
-                    filehandle.readline().strip())
-                self.blockcellsdimensions[iteration][level, iblock] = int(
-                    filehandle.readline().strip())
-                self.blocknnodespercells[iteration][level, iblock] = int(
-                    filehandle.readline().strip())
+                meshtype[level, iblock] = str(filehandle.readline().strip())
+                topologydimensions[level, iblock] = int(filehandle.readline().strip())
+                nodesdimensions[level, iblock] = int(filehandle.readline().strip())
+                cellsdimensions[level, iblock] = int(filehandle.readline().strip())
+                nnodespercells[level, iblock] = int(filehandle.readline().strip())
                 filehandle.close()
+        return (meshtype, topologydimensions, nodesdimensions, cellsdimensions, nnodespercells)
 
-    def getDynamicLoopInfo(self, iteration, resultdir):
-        # resultdir = self.data.rundir +'/'+self.data.resultsdir
-        filename = resultdir + "/RunInfo/DynamicLoopInfo"
+    def getDynamicLoopInfo(self, iteration, resultsdir):
+        # resultsdir = self.data.rundir +'/'+self.data.resultsdir
+        filename = resultsdir + "/RunInfo/DynamicLoopInfo"
         filehandle = open(filename, 'r')
         line = filehandle.readline().split()
         self.ntimestep[iteration] = int(line[0]) - 1
         outputtimesofiteration = filehandle.readline().split()
         self.outputtimes[iteration] = outputtimesofiteration
 
-    def getVariablesInfo(self, resultdir):
-        # resultdir = self.data.rundir +'/'+self.data.resultsdir
+    def getVariablesInfo(self, resultsdir):
+        # resultsdir = self.data.rundir +'/'+self.data.resultsdir
         self.variablesinfo = [{}] * self.nblocks
         self.nvarsinblock = [None] * self.nblocks
-        filenamebase = resultdir + '/Unknowns/UInfo'
+        filenamebase = resultsdir + '/Unknowns/UInfo'
         level = 0
         for iblock in range(self.nblocks):
-            filename = filenamebase + \
-                "_block_%04d_level_%02d" % (iblock, level)
+            # filename = filenamebase + "_block_%04d_level_%02d" % (iblock, level)
+            filename = filenamebase
             filehandle = open(filename, 'r')
             info = filehandle.readlines()
             self.nvarsinblock[iblock] = len(info)
@@ -153,11 +141,12 @@ class ResultManager:
             self.variablesinfo[iblock] = varinblock
         self.postprocessinfo = [{}] * self.nblocks
         self.npostprocessinblock = [None] * self.nblocks
-        filenamebase = resultdir + '/PostProcess/PInfo'
-        if not os.path.isfile(filenamebase + '_block_%04d' % (0)):
-            return
+        filenamebase = resultsdir + '/PostProcess/PInfo'
+        # if not os.path.isfile(filenamebase + '_block_%04d' % (0)):
+        #     return
         for iblock in range(self.nblocks):
-            filename = filenamebase + '_block_%04d' % (iblock)
+            # filename = filenamebase + '_block_%04d' % (iblock)
+            filename = filenamebase
             filehandle = open(filename, 'r')
             info = filehandle.readlines()
             self.npostprocessinblock[iblock] = len(info)

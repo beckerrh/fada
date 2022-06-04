@@ -4,6 +4,39 @@ import tools.pyfrunexecutable
 from . import osadd
 
 # ------------------------------------------------------------------------
+class MeshInfo():
+    """
+    This class contains the following parameters:
+      dimension
+      nrefine
+      geometry
+    """
+
+    def __repr__(self):
+        string = "\tgeometrytype=" + self.geometrytype
+        string += "\tgeometry=" + self.geometry
+        string += "\tnrefine=" + str(self.nrefine)
+        string += "\tquadtotri=" + str(self.quadtotri)
+        string += "\tmarking_type=" + str(self.marking_type)
+        string += "\trefinement_parameter=" + str(self.refinement_parameter)
+        string += "\tcoarsen_parameter=" + str(self.coarsen_parameter)
+        string += "\tnlevels=" + str(self.nlevels)
+        string += "\tncellscoarse=" + str(self.ncellscoarse)
+        return string
+
+    def __init__(self, nrefine=-1, geometrytype="Quad", geometry="none", quadtotri=False, refinement_parameter=1.0, coarsen_parameter=0.0, marking_type="random", nlevels=10, ncellscoarse=10):
+        self.nrefine = nrefine
+        self.geometrytype = geometrytype
+        self.geometry = geometry
+        self.quadtotri = quadtotri
+        self.meshtype = "QuadrilateralMesh"
+        self.refinement_parameter = refinement_parameter
+        self.coarsen_parameter = coarsen_parameter
+        self.marking_type = marking_type
+        self.nlevels = nlevels
+        self.ncellscoarse = ncellscoarse
+
+# ------------------------------------------------------------------------
 class MeshManager():
 
     def __init__(self, installdir, sourcedir, rundir, meshinfo, datatype="binary"):
@@ -53,26 +86,20 @@ class MeshManager():
     def getRefinedMeshForInterpolation(self):
         if self.quadtotri:
             return self.refined_mesh_name_tri
-            # return os.path.join(self.mesh_relative_dir, self.refined_local_name_tri)
         else:
             return self.refined_mesh_name
-        # return os.path.join(self.mesh_relative_dir, self.refined_local_name)
 
     def getCurrentMeshForSolver(self):
         if self.quadtotri:
             return self.current_mesh_name_tri
-            # return os.path.join(self.mesh_relative_dir, self.current_local_name_tri)
         return self.current_mesh_name
-        # return os.path.join(self.mesh_relative_dir, self.current_local_name)
 
     def copyMesh(self, destination):
-        print('# pyfUnStructuredMeshManager copying',
               self.current_mesh_name, ' ==> ', destination)
         osadd.copytree(
             self.current_mesh_name + '.fadalightmesh', destination + '.fadalightmesh')
 
     def updateMesh(self):
-        # print "=== pyfUnStructuredMeshManager 'updateMesh' "
         osadd.copytree(
             self.current_mesh_name + '.fadalightmesh', self.preceding_mesh_name + '.fadalightmesh')
         cshort = os.path.split(self.current_mesh_name)[-1]
@@ -84,8 +111,6 @@ class MeshManager():
         shutil.move(adaptmeshp, adaptmeshc)
         self.current_mesh_name = self.preceding_mesh_name
         if self.quadtotri:
-            # print 'current_mesh_name', self.current_mesh_name
-            # print 'current_mesh_name_tri', self.current_mesh_name_tri
             file = open(self.current_mesh_name_tri +
                         '.fadalightmesh/quadfilename')
             quadname = file.readline()
@@ -95,28 +120,23 @@ class MeshManager():
             file = open(self.current_mesh_name_tri +
                         '.fadalightmesh/quadfilename', 'w')
             file.write(quadname)
-            # self.current_mesh_name_tri=self.preceding_mesh_name_tri
 
     def getNcells(self):
         if self.quadtotri:
             meshfile = self.current_mesh_name_tri + '.fadalightmesh'
         else:
             meshfile = self.current_mesh_name + '.fadalightmesh'
-        # print 'meshfile', meshfile
         file = open(meshfile + os.sep + 'name')
         file.readline()
         info = file.readline()
         file.close()
-        # print 'info', info
         return int(info.split('_')[-2])
 
     def updateAfterRefine(self):
-        # print "=== pyfUnStructuredMeshManager 'updateAfterRefine' "
         self.preceding_mesh_name = self.current_mesh_name
         self.current_mesh_name = self.refined_mesh_name
 
     def updateAfterCoarse(self):
-        # print "=== pyfUnStructuredMeshManager 'updateAfterCoarse' "
         self.preceding_mesh_name = self.current_mesh_name
         self.current_mesh_name = self.coarsen_mesh_name
 
@@ -146,40 +166,29 @@ class MeshManager():
 
     def refine(self, iteration, estimatorfile):
         inmeshname = self.current_mesh_name
-
-
         marking_type = self.meshinfo.marking_type
         refinement_parameter = self.meshinfo.refinement_parameter
-        # print(f"\t###{marking_type=} {refinement_parameter=}")
         executable = os.path.join(self.meshtoolspath, 'EstimatorToMarkedCells')
 
         if self.quadtotri:
             args = [self.current_mesh_name_tri, estimatorfile, self.datatype,
                     marking_type, refinement_parameter]
-            print("=== pyMeshManager 'refine' ", executable, args)
+            print("=== pyMeshManager 'refine' ", executable.split('/')[-1], args)
             self.runexecutable.run(executable, args)
 
             executable = os.path.join(self.meshtoolspath, 'MarkedCellsTriangleMeshToQuadMesh')
             args = [self.current_mesh_name_tri, self.current_mesh_name]
-            print("=== pyMeshManager 'refine' ", executable, args)
+            print("=== pyMeshManager 'refine' ", executable.split('/')[-1], args)
             self.runexecutable.run(executable, args)
-
-
         else:
             args = [self.current_mesh_name, estimatorfile, self.datatype,
                     marking_type, refinement_parameter]
-            print("=== pyMeshManager 'refine' ", executable, args)
+            print("=== pyMeshManager 'refine' ", executable.split('/')[-1], args)
             self.runexecutable.run(executable, args)
-
-
-
-
 
         executable = os.path.join(self.meshtoolspath, 'MeshRefiner')
         args = [self.current_mesh_name, self.refined_mesh_name, self.datatype]
-        print("=== pyMeshManager 'refine' ", executable, args)
-
-
+        print("=== pyMeshManager 'refine' ", executable.split('/')[-1], args)
 
         self.runexecutable.run(executable, args)
         executable = os.path.join(self.meshtoolspath, 'MultiMeshConstructor')
@@ -208,25 +217,20 @@ class MeshManager():
         executable = os.path.join(self.meshtoolspath, 'EstimatorToMarkedCells')
         args = [inmeshname, estimatorfile, self.datatype,
                 marking_type, coarsen_parameter]
-        # print "=== pyfUnStructuredMeshManager 'refine' ", executable, args
         self.runexecutable.run(executable, args)
         executable = os.path.join(self.meshtoolspath, 'MeshCoarsener')
         args = [self.current_mesh_name, self.refined_mesh_name, self.datatype]
-        # print "=== pyfUnStructuredMeshManager 'refine' ", executable, args
         self.runexecutable.run(executable, args)
         executable = os.path.join(self.meshtoolspath, 'MultiMeshConstructor')
         nlevels = self.meshinfo.nlevels
         ncellscoarse = self.meshinfo.ncellscoarse
         args = [self.refined_mesh_name, self.datatype, nlevels, ncellscoarse]
-        # print "=== pyfUnStructuredMeshManager 'refine' ", executable, args
         self.runexecutable.run(executable, args)
         if self.quadtotri:
             executable = os.path.join(self.meshtoolspath, 'ReaderMesh')
             args = [self.refined_mesh_name,
                     self.refined_mesh_name_tri, "quadtotri", self.datatype]
-            # print "=== pyfUnStructuredMeshManager 'refine' ", executable, args
             self.runexecutable.run(executable, args)
             executable = os.path.join(self.meshtoolspath, 'MultiMeshConstructorQuadToTri')
             args = [self.refined_mesh_name_tri, self.datatype]
-            # print "=== pyfUnStructuredMeshManager 'refine' ", executable, args
             self.runexecutable.run(executable, args)

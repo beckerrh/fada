@@ -36,7 +36,6 @@ FadaMesh::MeshCompositionInterface* MeshSelector::newMeshComposition(std::string
   FadaMesh::MeshCompositionInterface* meshcomposition;
   if(meshtype == "unstructured")
   {
-    assert(0);
     meshcomposition = new FadaMesh::SingleMeshComposition;
     meshcomposition->constructFadaMesh(meshnamebase);
   }

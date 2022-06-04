@@ -254,14 +254,16 @@ std::string IoManager::resultSubDirToString(resultsubdir subdir) const
 
 /*---------------------------------------------------------*/
 
-std::string IoManager::getFileNameOnBlock(const std::string& basefilename, int iblock, int level)
+std::string IoManager::getFileNameOnLevel(const std::string& basefilename, int level)
 {
   std::stringstream ss;
-  ss<< "_block_" << std::setfill('0') << std::setw(4) << iblock<< "_level_" << std::setfill('0') << std::setw(2) << level;
+  // ss<< "_block_" << std::setfill('0') << std::setw(4) << iblock<< "_level_" << std::setfill('0') << std::setw(2) << level;
+  ss<< "_level_" << std::setfill('0') << std::setw(2) << level;
   return basefilename+ss.str();
-  char st[5];
-  sprintf(st, "%04d", iblock);
+  // char st[5];
+  // sprintf(st, "%04d", iblock);
   char st2[3];
   sprintf(st2, "%02d", level);
-  return basefilename+"_block_"+std::string(st)+"_level_"+st2;
+  // return basefilename+"_block_"+std::string(st)+"_level_"+st2;
+  return basefilename+"_level_"+st2;
 }

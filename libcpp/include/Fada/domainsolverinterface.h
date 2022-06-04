@@ -48,7 +48,7 @@ public:
     DomainSolverInterface& operator=( const DomainSolverInterface& domainsolverinterface);
     std::string getName() const;
 
-    virtual void basicInit(int index, Fada::ModelInterface* model, const FadaMesh::MeshInterface* mesh, const Alat::IoManager* io_manager, FadaEnums::looptype looptype, const Alat::ParameterFile* parameterfile = NULL) = 0;
+    virtual void basicInit(Fada::ModelInterface* model, const FadaMesh::MeshInterface* mesh, const Alat::IoManager* io_manager, FadaEnums::looptype looptype, const Alat::ParameterFile* parameterfile = NULL) = 0;
 
     virtual void registerVector(const Alat::GhostVector& v) = 0;
     virtual void registerLinearSolver(const Alat::GhostLinearSolver& v) = 0;

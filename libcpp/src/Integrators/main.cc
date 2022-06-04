@@ -177,7 +177,7 @@ void Main::run()
 
   Integrators::MeshSelector meshselector;
 
-  std::cerr << "Main::run() _meshname = " << _meshname << "\n";
+  // std::cerr << "Main::run() _meshname = " << _meshname << "\n";
 
   loop->getMeshCompositionPointer() = meshselector.newMeshComposition(_meshtype, _meshname);
   if(loop->getType() == FadaEnums::InterpolationLoop)

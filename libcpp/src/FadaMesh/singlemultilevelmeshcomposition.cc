@@ -134,7 +134,7 @@ void SingleMultiLevelMeshComposition::writeMeshInfo(std::string filename) const
   int iblock = 0;
   for(int level=0;level<nlevels;level++)
   {
-    std::string blockfilename = Alat::IoManager::getFileNameOnBlock( filename, iblock, level);
+    std::string blockfilename = Alat::IoManager::getFileNameOnLevel( filename, level);
     mlmesh->getMesh(level)->writeMeshInfo(blockfilename);
   }
 }
@@ -152,11 +152,9 @@ void SingleMultiLevelMeshComposition::writeH5(std::string filename) const
     {
       std::string blockfilename = filename;
       std::stringstream ss;
-      ss<< std::setfill('0') << std::setw(4) << idomain<< "_level_" << std::setfill('0') << std::setw(2) << level;
-      blockfilename += "_block_"+ss.str()+".h5";
-      // const H5std_string h5filename(blockfilename);
-      // H5::H5File file( h5filename, H5F_ACC_TRUNC );
-      // mlmesh->getMesh(level)->writeH5(file);
+      // ss<< "_block_" + std::setfill('0') << std::setw(4) << idomain<< "_level_" << std::setfill('0') << std::setw(2) << level;
+      ss<<  "_level_" << std::setfill('0') << std::setw(2) << level;
+      blockfilename += ss.str()+".h5";
       mlmesh->getMesh(level)->writeH5(blockfilename);
       // file.close();
     }
