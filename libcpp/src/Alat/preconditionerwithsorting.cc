@@ -109,7 +109,8 @@ void PreconditionerWithSorting::permute_from(int icomp, Alat::DoubleVector& x, c
   assert( _p.size() == x.size() );
   for(int i = 0; i < x.size(); i++)
   {
-    x[i] =  y(icomp, _p[i]);
+    // x[i] =  y(icomp, _p[i]);
+    x[i] =  y(_p[i], icomp);
   }
 }
 
@@ -119,6 +120,7 @@ void PreconditionerWithSorting::permute_to(int icomp, Alat::VariableVector& y, c
   assert( _p.size() == x.size() );
   for(int i = 0; i < y.n(); i++)
   {
-    y(icomp, i) =  x[_pinv[i]];
+    // y(icomp, i) =  x[_pinv[i]];
+    y(i, icomp) =  x[_pinv[i]];
   }
 }

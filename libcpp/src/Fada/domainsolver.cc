@@ -2154,7 +2154,8 @@ void DomainSolver::strongDirichletMatrix(int level, Alat::MatrixAllVariables* ma
       const Alat::IntVector& sideids = boundaryinfo->getSidesIdOfCellsOfColor(color);
       if(strongnormaldirichlet)
       {
-        _strongNormalDirichletMatrix(varname, ncomp, matrix, dofinfo, sides, cells, sideids);
+        assert(0);
+        // _strongNormalDirichletMatrix(varname, ncomp, matrix, dofinfo, sides, cells, sideids);
       }
       else if(strongdirichlet)
       {
@@ -2164,49 +2165,49 @@ void DomainSolver::strongDirichletMatrix(int level, Alat::MatrixAllVariables* ma
   }
 }
 
-void DomainSolver::_strongNormalDirichletMatrix(const std::string& varname, int ncomp, Alat::MatrixAllVariables* matrixallvariables, const Fada::DofInformationInterface* dofinfo, const Alat::IntVector& sides, const Alat::IntVector& cells, const Alat::IntVector& sideids) const
-{
-  assert( ncomp == getMesh()->getDimension() );
-  Fada::FemInterface* fem = _femmanager->getFem(varname );
-  Alat::Vector<Alat::Node> F( getMesh()->getNNodesPerCell(0) );
-  // Alat::SystemMatrixInterface* smatrix = matrixallvariables->getMatrix(ivar, ivar);
-  // assert(smatrix);
-
-  for(int i = 0; i < sides.size(); i++)
-  {
-    int iS = sides[i];
-    int iK = cells[i];
-    int iil = sideids[i];
-    getMesh()->getNodesOfCell(iK, F);
-    getFemManager()->initCellAndSide( F, iil, getMesh()->cellIsCurved(iK) );
-    fem->reInitCellAndSide( F, iil);
-    Alat::Node vhat;
-    vhat.x() = 0.5;
-    fem->reInitReferencePointBoundary(vhat);
-    Alat::Node normal = fem->getNormal();
-    // std::cerr << "normal=" << normal<<"\n";
-    Alat::IntVector ids;
-    dofinfo->setDofIdsOnSide(iS, ids);
-
-    int vcomp = 0;
-    if( fabs( normal.x() ) < fabs( normal.y() ) )
-    {
-      vcomp = 1;
-    }
-    for(int ii = 0; ii < ids.size(); ii++)
-    {
-      for(Alat::MatrixAllVariables::iterator p = matrixallvariables->begin(); p != matrixallvariables->end(); p++)
-      {
-        p->second->zeroLine(ids[ii], vcomp);
-        if(p->first.first == p->first.second)
-        {
-          p->second->setElement( ids[ii], vcomp, 0, normal.x() );
-          p->second->setElement( ids[ii], vcomp, 1, normal.y() );
-        }
-      }
-    }
-  }
-}
+// void DomainSolver::_strongNormalDirichletMatrix(const std::string& varname, int ncomp, Alat::MatrixAllVariables* matrixallvariables, const Fada::DofInformationInterface* dofinfo, const Alat::IntVector& sides, const Alat::IntVector& cells, const Alat::IntVector& sideids) const
+// {
+//   assert( ncomp == getMesh()->getDimension() );
+//   Fada::FemInterface* fem = _femmanager->getFem(varname );
+//   Alat::Vector<Alat::Node> F( getMesh()->getNNodesPerCell(0) );
+//   // Alat::SystemMatrixInterface* smatrix = matrixallvariables->getMatrix(ivar, ivar);
+//   // assert(smatrix);
+//
+//   for(int i = 0; i < sides.size(); i++)
+//   {
+//     int iS = sides[i];
+//     int iK = cells[i];
+//     int iil = sideids[i];
+//     getMesh()->getNodesOfCell(iK, F);
+//     getFemManager()->initCellAndSide( F, iil, getMesh()->cellIsCurved(iK) );
+//     fem->reInitCellAndSide( F, iil);
+//     Alat::Node vhat;
+//     vhat.x() = 0.5;
+//     fem->reInitReferencePointBoundary(vhat);
+//     Alat::Node normal = fem->getNormal();
+//     // std::cerr << "normal=" << normal<<"\n";
+//     Alat::IntVector ids;
+//     dofinfo->setDofIdsOnSide(iS, ids);
+//
+//     int vcomp = 0;
+//     if( fabs( normal.x() ) < fabs( normal.y() ) )
+//     {
+//       vcomp = 1;
+//     }
+//     for(int ii = 0; ii < ids.size(); ii++)
+//     {
+//       for(Alat::MatrixAllVariables::iterator p = matrixallvariables->begin(); p != matrixallvariables->end(); p++)
+//       {
+//         p->second->zeroLine(ids[ii], vcomp);
+//         if(p->first.first == p->first.second)
+//         {
+//           p->second->setElement( ids[ii], vcomp, 0, normal.x() );
+//           p->second->setElement( ids[ii], vcomp, 1, normal.y() );
+//         }
+//       }
+//     }
+//   }
+// }
 
 void DomainSolver::_strongDirichletMatrix(const std::string& varname, int ncomp, Alat::MatrixAllVariables* matrixallvariables, const Fada::DofInformationInterface* dofinfo, const Alat::IntVector& sides, const Alat::IntVector& cells, const Alat::IntVector& sideids) const
 {
@@ -2295,7 +2296,8 @@ void DomainSolver::strongDirichletVectorSolution(int level, Alat::SystemVector* 
       const Alat::IntVector& sideids = boundaryinfo->getSidesIdOfCellsOfColor(color);
       if(strongnormaldirichlet)
       {
-        _strongNormalDirichletVector(varname, ncomp, color, vvector, dofinfo, sides, cells, sideids, dirichlet);
+        assert(0);
+        // _strongNormalDirichletVector(varname, ncomp, color, vvector, dofinfo, sides, cells, sideids, dirichlet);
       }
       else if(strongdirichlet)
       {
@@ -2304,47 +2306,47 @@ void DomainSolver::strongDirichletVectorSolution(int level, Alat::SystemVector* 
     }
   }
 }
-
-/*--------------------------------------------------------------------------*/
-void DomainSolver::_strongNormalDirichletVector(const std::string& varname, int ncomp, int color, Alat::VariableVector* vvector, const Fada::DofInformationInterface* dofinfo, const Alat::IntVector& sides, const Alat::IntVector& cells, const Alat::IntVector& sideids, const Fada::DirichletInterface* dirichlet) const
-{
-  // Fada::FemInterface* fem = getFemManager()->getFem(varname );
-  Fada::FemInterface* fem = _femmanager->getFem(varname );
-  Alat::Vector<Alat::Node> F( getMesh()->getNNodesPerCell(0) );
-  Alat::DoubleVector udir(ncomp);
-  for(int i = 0; i < sides.size(); i++)
-  {
-    int iS = sides[i];
-    int iK = cells[i];
-    int iil = sideids[i];
-    getMesh()->getNodesOfCell(iK, F);
-    getFemManager()->initCellAndSide( F, iil, getMesh()->cellIsCurved(iK) );
-    fem->reInitCellAndSide( F, iil);
-    Alat::Node vhat;
-    vhat.x() = 0.0;
-    fem->reInitReferencePointBoundary(vhat);
-    Alat::Node normal = fem->getNormal();
-    // std::cerr << "normal=" << normal<<"\n";
-    Alat::IntVector ids;
-    dofinfo->setDofIdsOnSide(iS, ids);
-
-    int vcomp = 0;
-    if( fabs( normal.x() ) < fabs( normal.y() ) )
-    {
-      vcomp = 1;
-    }
-    for(int ii = 0; ii < ids.size(); ii++)
-    {
-      udir.zeros();
-      if(dirichlet)
-      {
-        Alat::Node coords = getMesh()->getNode(ids[ii]);
-        dirichlet->getValue( udir, color, normal, coords.x(), coords.y(), coords.z(), getTime() );
-      }
-      ( *vvector )(vcomp, ids[ii]) = udir[vcomp];
-    }
-  }
-}
+//
+// /*--------------------------------------------------------------------------*/
+// void DomainSolver::_strongNormalDirichletVector(const std::string& varname, int ncomp, int color, Alat::VariableVector* vvector, const Fada::DofInformationInterface* dofinfo, const Alat::IntVector& sides, const Alat::IntVector& cells, const Alat::IntVector& sideids, const Fada::DirichletInterface* dirichlet) const
+// {
+//   // Fada::FemInterface* fem = getFemManager()->getFem(varname );
+//   Fada::FemInterface* fem = _femmanager->getFem(varname );
+//   Alat::Vector<Alat::Node> F( getMesh()->getNNodesPerCell(0) );
+//   Alat::DoubleVector udir(ncomp);
+//   for(int i = 0; i < sides.size(); i++)
+//   {
+//     int iS = sides[i];
+//     int iK = cells[i];
+//     int iil = sideids[i];
+//     getMesh()->getNodesOfCell(iK, F);
+//     getFemManager()->initCellAndSide( F, iil, getMesh()->cellIsCurved(iK) );
+//     fem->reInitCellAndSide( F, iil);
+//     Alat::Node vhat;
+//     vhat.x() = 0.0;
+//     fem->reInitReferencePointBoundary(vhat);
+//     Alat::Node normal = fem->getNormal();
+//     // std::cerr << "normal=" << normal<<"\n";
+//     Alat::IntVector ids;
+//     dofinfo->setDofIdsOnSide(iS, ids);
+//
+//     int vcomp = 0;
+//     if( fabs( normal.x() ) < fabs( normal.y() ) )
+//     {
+//       vcomp = 1;
+//     }
+//     for(int ii = 0; ii < ids.size(); ii++)
+//     {
+//       udir.zeros();
+//       if(dirichlet)
+//       {
+//         Alat::Node coords = getMesh()->getNode(ids[ii]);
+//         dirichlet->getValue( udir, color, normal, coords.x(), coords.y(), coords.z(), getTime() );
+//       }
+//       ( *vvector )(vcomp, ids[ii]) = udir[vcomp];
+//     }
+//   }
+// }
 
 /*--------------------------------------------------------------------------*/
 void DomainSolver::_strongDirichletVector(const std::string& varname, int ncomp, int color, Alat::VariableVector* vvector, const Fada::DofInformationInterface* dofinfo, const Alat::IntVector& sides, const Alat::IntVector& cells, const Alat::IntVector& sideids, const Fada::DirichletInterface* dirichlet) const
@@ -2378,9 +2380,11 @@ void DomainSolver::_strongDirichletVector(const std::string& varname, int ncomp,
         dirichlet->getValue( udir, color, normal, coords.x(), coords.y(), coords.z(), getTime() );
         // std::cerr << "DomainSolver::_strongDirichletVector() coords=" << coords << " udir="<<udir<<"\n";
       }
+      // ( *vvector )(ids[ii]) = udir.t();
       for(int icomp = 0; icomp < ncomp; icomp++)
       {
-        ( *vvector )(icomp, ids[ii]) = udir[icomp];
+        // ( *vvector )(icomp, ids[ii]) = udir[icomp];
+        ( *vvector )(ids[ii], icomp) = udir[icomp];
       }
     }
   }
@@ -2440,7 +2444,8 @@ void DomainSolver::strongDirichletVectorZero(int level, Alat::SystemVector* f) c
       const Alat::IntVector& sideids = boundaryinfo->getSidesIdOfCellsOfColor(color);
       if(strongnormaldirichlet)
       {
-        _strongNormalDirichletVectorZero(varname, ncomp, vvector, dofinfo, sides, cells, sideids);
+        assert(0);
+        // _strongNormalDirichletVectorZero(varname, ncomp, vvector, dofinfo, sides, cells, sideids);
       }
       else if(strongdirichlet)
       {
@@ -2449,38 +2454,38 @@ void DomainSolver::strongDirichletVectorZero(int level, Alat::SystemVector* f) c
     }
   }
 }
-
-/*--------------------------------------------------------------------------*/
-void DomainSolver::_strongNormalDirichletVectorZero(const std::string& varname, int ncomp, Alat::VariableVector* vvector, const Fada::DofInformationInterface* dofinfo, const Alat::IntVector& sides, const Alat::IntVector& cells, const Alat::IntVector& sideids) const
-{
-  Fada::FemInterface* fem = _femmanager->getFem(varname );
-  Alat::Vector<Alat::Node> F( getMesh()->getNNodesPerCell(0) );
-  for(int i = 0; i < sides.size(); i++)
-  {
-    int iS = sides[i];
-    int iK = cells[i];
-    int iil = sideids[i];
-    getMesh()->getNodesOfCell(iK, F);
-    getFemManager()->initCellAndSide( F, iil, getMesh()->cellIsCurved(iK) );
-    fem->reInitCellAndSide( F, iil);
-    Alat::Node vhat;
-    vhat.x() = 0.0;
-    fem->reInitReferencePointBoundary(vhat);
-    Alat::Node normal = fem->getNormal();
-    // std::cerr << "normal=" << normal<<"\n";
-    Alat::IntVector ids;
-    dofinfo->setDofIdsOnSide(iS, ids);
-    int vcomp = 0;
-    if( fabs( normal.x() ) < fabs( normal.y() ) )
-    {
-      vcomp = 1;
-    }
-    for(int ii = 0; ii < ids.size(); ii++)
-    {
-      ( *vvector )(vcomp, ids[ii]) = 0.0;
-    }
-  }
-}
+//
+// /*--------------------------------------------------------------------------*/
+// void DomainSolver::_strongNormalDirichletVectorZero(const std::string& varname, int ncomp, Alat::VariableVector* vvector, const Fada::DofInformationInterface* dofinfo, const Alat::IntVector& sides, const Alat::IntVector& cells, const Alat::IntVector& sideids) const
+// {
+//   Fada::FemInterface* fem = _femmanager->getFem(varname );
+//   Alat::Vector<Alat::Node> F( getMesh()->getNNodesPerCell(0) );
+//   for(int i = 0; i < sides.size(); i++)
+//   {
+//     int iS = sides[i];
+//     int iK = cells[i];
+//     int iil = sideids[i];
+//     getMesh()->getNodesOfCell(iK, F);
+//     getFemManager()->initCellAndSide( F, iil, getMesh()->cellIsCurved(iK) );
+//     fem->reInitCellAndSide( F, iil);
+//     Alat::Node vhat;
+//     vhat.x() = 0.0;
+//     fem->reInitReferencePointBoundary(vhat);
+//     Alat::Node normal = fem->getNormal();
+//     // std::cerr << "normal=" << normal<<"\n";
+//     Alat::IntVector ids;
+//     dofinfo->setDofIdsOnSide(iS, ids);
+//     int vcomp = 0;
+//     if( fabs( normal.x() ) < fabs( normal.y() ) )
+//     {
+//       vcomp = 1;
+//     }
+//     for(int ii = 0; ii < ids.size(); ii++)
+//     {
+//       ( *vvector )(ids[ii], vcomp) = 0.0;
+//     }
+//   }
+// }
 
 /*--------------------------------------------------------------------------*/
 void DomainSolver::_strongDirichletVectorZero(const std::string& varname, int ncomp, Alat::VariableVector* vvector, const Fada::DofInformationInterface* dofinfo, const Alat::IntVector& sides, const Alat::IntVector& cells, const Alat::IntVector& sideids) const
@@ -2495,10 +2500,11 @@ void DomainSolver::_strongDirichletVectorZero(const std::string& varname, int nc
     dofinfo->setDofIdsOnSide(iS, ids);
     for(int ii = 0; ii < ids.size(); ii++)
     {
-      for(int icomp = 0; icomp < ncomp; icomp++)
-      {
-        ( *vvector )(icomp, ids[ii]) = 0.0;
-      }
+      ( *vvector )(ids[ii]) = 0.0;
+      // for(int icomp = 0; icomp < ncomp; icomp++)
+      // {
+      //   ( *vvector )(icomp, ids[ii]) = 0.0;
+      // }
     }
   }
 }
@@ -2560,24 +2566,19 @@ void DomainSolver::_interpolateP1(Alat::VariableVectorInterface* unew, const Ala
         int nodeidf = quadmeshfine.getNodeIdOfCell(iKf, ii);
         for(int icomp = 0; icomp < ncomp; icomp++)
         {
-          ( *unewv )(icomp, nodeidf) = ( *uoldv )(icomp, nodeidc);
+          // ( *unewv )(icomp, nodeidf) = ( *uoldv )(icomp, nodeidc);
+          ( *unewv )(nodeidf, icomp) = ( *uoldv )(nodeidc, icomp);
         }
       }
       int centernodef = quadtotrifine->getCenterNodeIdOfQuad(iKf);
       int centernodec = quadtotricoarse->getCenterNodeIdOfQuad(iK);
       for(int icomp = 0; icomp < ncomp; icomp++)
       {
-        ( *unewv )(icomp, centernodef) = ( *uoldv )(icomp, centernodec);
+        // ( *unewv )(icomp, centernodef) = ( *uoldv )(icomp, centernodec);
+        ( *unewv )(centernodef, icomp) = ( *uoldv )(centernodec, icomp);
       }
       continue;
     }
-    //  raffine
-    // std::cerr << "refined Refinfo nodes: ";
-    // for(int ii=0;ii<9;ii++)
-    // {
-    //   std::cerr <<   refinfo->getCoarseNodesNumber(iK,ii) << " ";
-    // }
-    // std::cerr << "\n";
     for(int ii = 0; ii < 4; ii++)
     {
       int nodeidc = quadmeshcoarse.getNodeIdOfCell(iK, ii);
@@ -2585,15 +2586,18 @@ void DomainSolver::_interpolateP1(Alat::VariableVectorInterface* unew, const Ala
       // std::cerr << "nodeidc nodeidf " << nodeidc << " ---> " << nodeidf << "\n";
       for(int icomp = 0; icomp < ncomp; icomp++)
       {
-        ( *unewv )(icomp, nodeidf) = ( *uoldv )(icomp, nodeidc);
+        // ( *unewv )(icomp, nodeidf) = ( *uoldv )(icomp, nodeidc);
+        // ( *unewv )(nodeidf, icomp) = ( *uoldv )(nodeidc, icomp);
       }
+      ( *unewv )(nodeidf) = ( *uoldv )(nodeidc);
     }
     int centernodec = quadmeshcoarse.getNNodes()+iK;
     int centernodef = refinfo->getCoarseNodesNumber(iK, 3);
     // std::cerr << "centernodec " << centernodec << " ---> " << centernodef << "\n";
     for(int icomp = 0; icomp < ncomp; icomp++)
     {
-      ( *unewv )(icomp, centernodef) = ( *uoldv )(icomp, centernodec);
+      // ( *unewv )(icomp, centernodef) = ( *uoldv )(icomp, centernodec);
+      ( *unewv )(centernodef, icomp) = ( *uoldv )(centernodec, icomp);
     }
     for(int ii = 0; ii < 4; ii++)
     {
@@ -2603,7 +2607,8 @@ void DomainSolver::_interpolateP1(Alat::VariableVectorInterface* unew, const Ala
       // std::cerr << "nodec1 nodec2  " << nodec1 << " : " << nodec2 << " ---> " << nodeidf << "\n";
       for(int icomp = 0; icomp < ncomp; icomp++ )
       {
-        ( *unewv )(icomp, nodeidf) = 0.5*( ( *uoldv )(icomp, nodec1) + ( *uoldv )(icomp, nodec2) );
+        // ( *unewv )(icomp, nodeidf) = 0.5*( ( *uoldv )(icomp, nodec1) + ( *uoldv )(icomp, nodec2) );
+        ( *unewv )(nodeidf, icomp) = 0.5*( ( *uoldv )(nodec1, icomp) + ( *uoldv )(nodec2, icomp) );
       }
     }
     for(int ii = 0; ii < 4; ii++)
@@ -2616,7 +2621,8 @@ void DomainSolver::_interpolateP1(Alat::VariableVectorInterface* unew, const Ala
       // std::cerr << "nodeidc centernodec  " << nodeidc << " : " << centernodec << " ---> " << centernodef << "\n";
       for(int icomp = 0; icomp < ncomp; icomp++)
       {
-        ( *unewv )(icomp, centernodef) = 0.5*( ( *uoldv )(icomp, centernodec) + ( *uoldv )(icomp, nodeidc) );
+        // ( *unewv )(icomp, centernodef) = 0.5*( ( *uoldv )(icomp, centernodec) + ( *uoldv )(icomp, nodeidc) );
+        ( *unewv )(centernodef, icomp) = 0.5*( ( *uoldv )(centernodec, icomp) + ( *uoldv )(nodeidc, icomp) );
       }
     }
   }

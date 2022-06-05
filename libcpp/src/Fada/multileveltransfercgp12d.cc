@@ -85,10 +85,11 @@ void MultiLevelTransferCgP12d::project(int level, Alat::VariableVectorInterface*
   for(int i=0; i< nodeids.size(); i++)
   {
     int ifine = nodeids[i];
-    for(int icomp=0;icomp<ncomp;icomp++)
-    {
-      (*uc)(icomp, i) = (*uf)(icomp, ifine);
-    }
+    (*uc)(i) = (*uf)(ifine);
+    // for(int icomp=0;icomp<ncomp;icomp++)
+    // {
+    //   (*uc)(icomp, i) = (*uf)(icomp, ifine);
+    // }
   }
 }
 

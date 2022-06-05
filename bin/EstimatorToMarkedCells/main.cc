@@ -139,9 +139,11 @@ int main(int argc, char** argv)
 
     int n = estimator.n();
     indicator.resize(n);
+    int icomp = 0;
     for(int i = 0; i < n; i++)
     {
-      indicator[i] = estimator(0, i);
+      // indicator[i] = estimator(0, i);
+      indicator[i] = estimator(i, icomp);
     }
     // std::cerr << "@@@@@ indicator " << indicator << "\n";
   }

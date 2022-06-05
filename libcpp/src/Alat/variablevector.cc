@@ -18,10 +18,12 @@ VariableVector::VariableVector() : Alat::armamat(), Alat::VariableVectorInterfac
 {
   // assert(0);
 }
-VariableVector::VariableVector(int ncomp) : Alat::armamat(ncomp, 1), Alat::VariableVectorInterface()
+// VariableVector::VariableVector(int ncomp) : Alat::armamat(ncomp, 1), Alat::VariableVectorInterface()
+VariableVector::VariableVector(int ncomp) : Alat::armamat(1, ncomp), Alat::VariableVectorInterface()
 {
 }
-VariableVector::VariableVector(int ncomp, int n) : Alat::armamat(ncomp, n), Alat::VariableVectorInterface()
+// VariableVector::VariableVector(int ncomp, int n) : Alat::armamat(ncomp, n), Alat::VariableVectorInterface()
+VariableVector::VariableVector(int ncomp, int n) : Alat::armamat(n, ncomp), Alat::VariableVectorInterface()
 {
 }
 VariableVector::VariableVector(const VariableVector& v) : Alat::armamat(v), Alat::VariableVectorInterface(v)
@@ -49,10 +51,12 @@ std::string VariableVector::getName() const
 /*----------------------------------------------------------*/
 int VariableVector::getNComponents() const
 {
+  return n_cols;
   return n_rows;
 }
 int VariableVector::n() const
 {
+  return n_rows;
   return n_cols;
 }
 
@@ -98,7 +102,8 @@ void VariableVector::setSingleVectorFromDirectSolver(int offset, const Alat::Dou
     for(int i = 0; i < n(); i++)
     {
       // Attention : numerotation renversee
-      ( *this )(icomp, i) = u[offset + i*ncomp + icomp];
+      // ( *this )(icomp, i) = u[offset + i*ncomp + icomp];
+      ( *this )(i, icomp) = u[offset + i*ncomp + icomp];
     }
   }
 }
@@ -113,7 +118,8 @@ void VariableVector::addVectorRhsForDirectSolver(int offset, Alat::DoubleVector&
     for(int i = 0; i < n(); i++)
     {
       // Attention : numerotation renversee
-      f[offset + i*ncomp + icomp] += ( *this )(icomp, i);
+      // f[offset + i*ncomp + icomp] += ( *this )(icomp, i);
+      f[offset + i*ncomp + icomp] += ( *this )(i, icomp);
     }
   }
 }
@@ -128,7 +134,8 @@ void VariableVector::set(const Alat::AssembleVector& vloc, const Alat::IntVector
   {
     for(int ii = 0; ii < indices.size(); ii++)
     {
-      ( *this )(icomp, indices[ii]) = vloc(icomp, ii);
+      // ( *this )(icomp, indices[ii]) = vloc(icomp, ii);
+      ( *this )(indices[ii], icomp) = vloc(icomp, ii);
     }
   }
 }
@@ -152,7 +159,8 @@ void VariableVector::assemble(const Alat::AssembleVector& vloc, const Alat::IntV
     double s = d/scale[icomp];
     for(int ii = 0; ii < indices.size(); ii++)
     {
-      ( *this )(icomp, indices[ii]) += s*vloc(icomp,ii);
+      // ( *this )(icomp, indices[ii]) += s*vloc(icomp,ii);
+      ( *this )(indices[ii], icomp) += s*vloc(icomp,ii);
     }
   }
 }
@@ -169,7 +177,8 @@ void VariableVector::extract(Alat::AssembleVector& uloc, const Alat::IntVector& 
   {
     for(int ii = 0; ii < indices.size(); ii++)
     {
-      uloc(icomp,ii) = scale[icomp] * ( *this )(icomp, indices[ii]);
+      // uloc(icomp,ii) = scale[icomp] * ( *this )(icomp, indices[ii]);
+      uloc(icomp,ii) = scale[icomp] * ( *this )(indices[ii], icomp);
     }
   }
 }
@@ -178,7 +187,8 @@ void VariableVector::extract(Alat::AssembleVector& uloc, const Alat::IntVector& 
 
 void VariableVector::set_size(int ncomp, int n)
 {
-  Alat::armamat::set_size(ncomp, n);
+  // Alat::armamat::set_size(ncomp, n);
+  Alat::armamat::set_size(n, ncomp);
 }
 
 /*----------------------------------------------------------*/
@@ -189,7 +199,8 @@ void VariableVector::scaleIntVector(const Alat::IntVector& count)
   {
     for(int icomp = 0; icomp < getNComponents(); icomp++)
     {
-      operator()(icomp, idof) /= (double) count[idof];
+      // operator()(icomp, idof) /= (double) count[idof];
+      operator()(idof, icomp) /= (double) count[idof];
     }
   }
 }
@@ -280,9 +291,10 @@ double VariableVector::maxnorm(int icomp) const
 }
 double VariableVector::sum(int icomp) const
 {
-  // result = arma::sum(static_cast<const Alat::armamat&>(*this), 1);
-  arma::Col<double> result = arma::sum(static_cast<const Alat::armamat&>(*this), 1);
+  // arma::Col<double> result = arma::sum(static_cast<const Alat::armamat&>(*this), 1);
+  arma::Row<double> result = arma::sum(static_cast<const Alat::armamat&>(*this));
   return result[icomp];
+
   assert(0);
   double d = 0.0;
   const_iterator p = begin(icomp);
