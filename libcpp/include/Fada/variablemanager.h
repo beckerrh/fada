@@ -6,7 +6,7 @@
 #include  "Alat/map.h"
 #include  "Alat/set.h"
 #include  "Alat/stringvector.h"
-#include  "Alat/uniquemap.h"
+#include  "Alat/map.h"
 #include  "integratorinterface.h"
 #include  "variableinterface.h"
 #include  "variablesmap.h"
@@ -29,7 +29,7 @@ namespace Fada
 public:
     typedef VariablesMap::const_iterator const_iterator;
     typedef Alat::Vector<VariableInterface*> VariablesVector;
-    typedef Alat::UniqueMap<std::string, const IntegratorInterface*> IntegratorOfName;
+    typedef Alat::Map<std::string, const IntegratorInterface*> IntegratorOfName;
 
 protected:
     VariablesMap _datavariables;

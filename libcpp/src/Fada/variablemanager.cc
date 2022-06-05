@@ -165,12 +165,24 @@ void VariableManager::_insertVariableNames(IntegratorOfName& integratorofundefin
     std::string name = output[i];
     if( ( _unknownvariables.find(name) == _unknownvariables.end() ) && ( _postprocessvariables.find(name) == _postprocessvariables.end() ) )
     {
+      if(integratorofundefinedpostprocess.hasKey(name))
+      {
+        std::cerr << "VariableManager::_insertVariableNames : have already key \"" << name << "\"\n" << "\n I have:\n";
+        integratorofundefinedpostprocess.write(std::cerr, "ascii");
+        assert(0);
+      }
       integratorofundefinedpostprocess[name] = integrator;
     }
   }
   for(int i = 0; i < data.size(); i++)
   {
     std::string name = data[i];
+    if(integratorofundefineddata.hasKey(name))
+    {
+      std::cerr << "VariableManager::_insertVariableNames : have already key \"" << name << "\"\n" << "\n I have:\n";
+      integratorofundefineddata.write(std::cerr, "ascii");
+      assert(0);
+    }
     if( _datavariables.find(name) == _datavariables.end() )
     {
       integratorofundefineddata[name] = integrator;
