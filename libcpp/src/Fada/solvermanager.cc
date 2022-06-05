@@ -183,7 +183,7 @@ void SolverManager::basicInit(Fada::ModelInterface* model, const FadaMesh::MeshI
     int nbouts = bouts.size();
     if(nbouts <= 1)
     {
-      _error_string("basicInit", "in Block SolverManager linearsolver=richardson|U:mg");
+      _error_string("basicInit", "in Block SolverManager (need linearsolver=richardson|U:mg)");
     }
     for(int i = 1; i < nbouts; i++)
     {
@@ -205,10 +205,6 @@ void SolverManager::basicInit(Fada::ModelInterface* model, const FadaMesh::MeshI
 void SolverManager::addLinearDomainSolvers(const Alat::GhostLinearSolver& linearsolver)
 {
   _domainsolver->registerLinearSolver(linearsolver);
-  // for(int i = 0; i < getNDomainSolvers(); i++)
-  // {
-  //   getDomainSolver(i)->registerLinearSolver(linearsolver);
-  // }
   _domainSolversOfSolver.insert(linearsolver);
 }
 

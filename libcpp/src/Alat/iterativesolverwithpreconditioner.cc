@@ -44,6 +44,7 @@ Alat::IterativeSolverWithPreconditioner*  IterativeSolverWithPreconditioner::clo
 /*--------------------------------------------------------------------------*/
 void IterativeSolverWithPreconditioner::basicInit(const Alat::ParameterFile* parameterfile, std::string blockname)
 {
+  // std::cerr << "IterativeSolverWithPreconditioner::basicInit() " << getName() << " blockname " << blockname <<"\n";
   // std::cerr << "IterativeSolverWithPreconditioner::basicInit() " << getName() << " --> visitor =  " << getVisitor()->getName() << " --> preconditioner =  " << getPreconditioner()->getName() <<"\n";
   IterativeSolverWithVisitor::basicInit(parameterfile, blockname);
   assert(_preconditioner);
@@ -68,7 +69,7 @@ void IterativeSolverWithPreconditioner::compute()
 
 /*--------------------------------------------------------------------------*/
 std::ostream& IterativeSolverWithPreconditioner::printLoopInformation(std::ostream& os) const
-{             
+{
   IterativeSolverWithVisitor::printLoopInformation(os);
   os << " ";
   getPreconditioner()->printLoopInformation(os);
@@ -106,6 +107,6 @@ Alat::PreconditionerInterface* IterativeSolverWithPreconditioner::getPreconditio
 
 /*--------------------------------------------------------------------------*/
 void IterativeSolverWithPreconditioner::addUpdate(AlatEnums::iterationstatus& status, const Alat::GhostVector& w, Alat::GhostVector& u) const
-{  
+{
   getVisitor()->vectorAdd( u, 1.0, w );
 }

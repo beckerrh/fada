@@ -63,7 +63,7 @@ def main(pathmanager, args):
     solver.cpp_param.parameters["SolverManager"]["linearsolver"]="richardson|U:mg"
     solver.cpp_param.parameters["SolverManager"]["gtol"]="1e-14"
     solver.cpp_param.parameters["SolverManager"]["rtol"]="1e-10"
-    solver.cpp_param.parameters["SolverManager"]["printstep"]="1"
+    solver.cpp_param.parameters["SolverManager"]["printstep"]="0"
     # solver.cpp_param.parameters["SolverManager"]["linearsolver"]="direct"
     solver.cpp_param.addBlock("MultiLevelLinearSolver_U")
     solver.cpp_param.parameters["MultiLevelLinearSolver_U"]["printstep"]="0"

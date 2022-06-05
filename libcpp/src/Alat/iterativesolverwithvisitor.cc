@@ -65,7 +65,7 @@ IterativeSolverWithVisitor* IterativeSolverWithVisitor::clone() const
 /*--------------------------------------------------------------------------*/
 std::ostream& IterativeSolverWithVisitor::printLoopInformation(std::ostream& os) const
 {
-  os << "\"" << getName() << "\" "; 
+  os << "\"" << getName() << "\" ";
   getVisitor()->printLoopInformation(os);
   os << " info: ";
   getIterationInfo()->printLoopInformation(os);
