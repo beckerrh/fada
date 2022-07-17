@@ -5,14 +5,14 @@ using namespace Fada;
 
 /*--------------------------------------------------------------------------*/
 DomainSolverInterface::~DomainSolverInterface(){}
-DomainSolverInterface::DomainSolverInterface() : SolverInterface(){}
-DomainSolverInterface::DomainSolverInterface( const DomainSolverInterface& domainsolverinterface) : SolverInterface(domainsolverinterface)
+DomainSolverInterface::DomainSolverInterface() : Alat::InterfaceBase(){}
+DomainSolverInterface::DomainSolverInterface( const DomainSolverInterface& domainsolverinterface) : Alat::InterfaceBase(domainsolverinterface)
 {
   assert(0);
 }
 DomainSolverInterface& DomainSolverInterface::operator=( const DomainSolverInterface& domainsolverinterface)
 {
-  SolverInterface::operator=(domainsolverinterface);
+  Alat::InterfaceBase::operator=(domainsolverinterface);
   assert(0);
   return *this;
 }
@@ -23,13 +23,6 @@ std::string DomainSolverInterface::getInterfaceName() const
 std::string DomainSolverInterface::getName() const
 {
   return "DomainSolverInterface";
-}
-
-/*--------------------------------------------------------------------------*/
-DomainIntegrationLoopInterface* DomainSolverInterface::newDomainIntegrationLoop() const
-{
-  _notWritten("newDomainIntegrationLoop");
-  return NULL;
 }
 
 /*--------------------------------------------------------------------------*/

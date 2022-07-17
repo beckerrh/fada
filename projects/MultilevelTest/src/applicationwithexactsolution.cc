@@ -1,3 +1,4 @@
+#include  "Alat/tokenize.h"
 #include  "Fada/constantfunction.h"
 #include  "Fada/datafunctionvector.h"
 #include  "Fada/dirichletwithexactsolution.h"
@@ -10,8 +11,8 @@
 #include  "applicationwithexactsolution.h"
 #include  "neumannwithexactsolution.h"
 #include  "pwlinearsolution.h"
+#include  "reaction.h"
 #include  "righthandsidewithexactsolution.h"
-#include  "Alat/tokenize.h"
 #include  <cassert>
 
 // using namespace FadaConvectionDiffusionReaction;
@@ -200,10 +201,12 @@ Fada::DataInterface* ApplicationWithExactSolution::defineData(std::string name) 
     }
     return datafct;
   }
+  else if(name == "reaction")
+  {
+    return new Reaction;
+  }
   else
   {
-    return NULL;
-
     assert(0);
   }
 }

@@ -154,7 +154,7 @@ namespace Fada
     std::string _couplingtype;
 
   public:
-    VisitorIntegrationLoopMatrix( const LocalGlobal& localglobal, const VariableManager* variablemanager, Alat::SystemMatrixInterface* matrix, std::string couplingtype);
+    VisitorIntegrationLoopMatrix( const LocalGlobal& localglobal, const VariableManager* variablemanager, Alat::SystemMatrixInterface* matrix);
     Alat::SystemVector* getOutputVector();
     void setOuputZero() const;
     void setOuputZeroAll() const;

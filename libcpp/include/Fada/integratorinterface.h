@@ -45,7 +45,7 @@ namespace Fada
   class FemInterface;
   class LocalVectors;
   class ProblemData;
-  class SolverInterface;
+  class DomainSolverInterface;
   class TermAndDomain;
   class TimeData;
   class VariableManager;
@@ -83,7 +83,7 @@ public:
     virtual const DomainsOfTerm& getDomainsOfTerm() const = 0;
 
     virtual bool noIntegration(Fada::TermAndDomain term_and_domain) const=0;
-    virtual void basicInit(const Fada::SolverInterface* solver);
+    virtual void basicInit(const Fada::DomainSolverInterface* solver);
     virtual bool worksOn(FadaEnums::term t) const = 0;
     virtual bool worksOn(FadaEnums::domain d) const = 0;
     virtual bool worksOnDomainOfTerm(FadaEnums::term t, FadaEnums::domain d) const = 0;

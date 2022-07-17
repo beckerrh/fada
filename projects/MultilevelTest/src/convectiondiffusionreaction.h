@@ -1,7 +1,7 @@
 // #ifndef __Model_h
 // #define __Model_h
 
-#include  "model.h"
+#include  "laplace.h"
 
 /*--------------------------------------------------------------------------*/
 
@@ -14,7 +14,7 @@ namespace Fada
   class ModelInterface;
 }
 
-  class ConvectionDiffusionReaction : public virtual Model
+  class ConvectionDiffusionReaction : public Laplace
   {
 public:
     ~ConvectionDiffusionReaction();

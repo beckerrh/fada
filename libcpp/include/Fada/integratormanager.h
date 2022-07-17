@@ -52,7 +52,7 @@ public:
     const_iterator_all end_all() const;
     iterator_all begin_all();
     iterator_all end_all();
-    void initIntegrators(const Fada::SolverInterface* solver);
+    void initIntegrators(const Fada::DomainSolverInterface* solver);
     void setData(const std::string& integratorname, const std::string& dataname, const DataInterface* data);
     void setDataIfDefined(const std::string& integratorname, const std::string& dataname, const DataInterface* data);
     // void setParameter(const std::string& integratorname, const std::string& parametername, double d);

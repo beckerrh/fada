@@ -1,7 +1,7 @@
 #include  "Fada/dirichletinterface.h"
 #include  "Fada/integratorsinglevariable.h"
 #include  "FadaMesh/meshinterface.h"
-#include  "Fada/solverinterface.h"
+#include  "Fada/domainsolverinterface.h"
 #include  "Fada/varinfointegrator.h"
 #include  "Alat/systemassemblevector.h"
 #include  <cassert>
@@ -33,7 +33,7 @@ std::string IntegratorSingleVariable::getName() const
 }
 
 /*--------------------------------------------------------------------------*/
-void IntegratorSingleVariable::basicInit(const Fada::SolverInterface* solver)
+void IntegratorSingleVariable::basicInit(const Fada::DomainSolverInterface* solver)
 {
   Fada::Integrator::basicInit(solver);
   _mesh = solver->getMesh();

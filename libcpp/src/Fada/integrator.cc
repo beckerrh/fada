@@ -65,7 +65,7 @@ void Integrator::defineVariables(const std::string& output, const std::string& i
 }
 
 /*--------------------------------------------------------------------------*/
-void Integrator::basicInit(const Fada::SolverInterface* solver)
+void Integrator::basicInit(const Fada::DomainSolverInterface* solver)
 {
   _basicInit(solver);
 
@@ -84,7 +84,7 @@ const VarInfoIntegrator* Integrator::getVarInfo() const
 }
 
 /*--------------------------------------------------------------------------*/
-void Integrator::_basicInit(const Fada::SolverInterface* solver)
+void Integrator::_basicInit(const Fada::DomainSolverInterface* solver)
 {
   if(_basicinitcalled)
   {

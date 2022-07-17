@@ -20,9 +20,11 @@ using namespace Fada;
 /*--------------------------------------------------------------------------*/
 UnStructuredIntegrationLoop::~UnStructuredIntegrationLoop()
 {}
-UnStructuredIntegrationLoop::UnStructuredIntegrationLoop() : Fada::DomainIntegrationLoop(), Fada::IntegrationLoop()
+  // UnStructuredIntegrationLoop::UnStructuredIntegrationLoop() : Fada::DomainIntegrationLoop(), Fada::IntegrationLoop()
+  UnStructuredIntegrationLoop::UnStructuredIntegrationLoop() : Fada::DomainIntegrationLoop()
 {}
-UnStructuredIntegrationLoop::UnStructuredIntegrationLoop( const UnStructuredIntegrationLoop& unstructuredintegrationloop) : Fada::DomainIntegrationLoop(unstructuredintegrationloop), Fada::IntegrationLoop(unstructuredintegrationloop)
+  // UnStructuredIntegrationLoop::UnStructuredIntegrationLoop( const UnStructuredIntegrationLoop& unstructuredintegrationloop) : Fada::DomainIntegrationLoop(unstructuredintegrationloop), Fada::IntegrationLoop(unstructuredintegrationloop)
+  UnStructuredIntegrationLoop::UnStructuredIntegrationLoop( const UnStructuredIntegrationLoop& unstructuredintegrationloop) : Fada::DomainIntegrationLoop(unstructuredintegrationloop)
 {
   assert(0);
 }
@@ -114,7 +116,7 @@ void UnStructuredIntegrationLoop::matrixConnectivityCells(const std::string& var
       dofinfoI->getCellIndices(iK, indices);
       dofinfoJ->getCellIndices(iK, jndices);
       for(int ii = 0; ii < indices.size(); ii++)
-      {  
+      {
         assert(indices[ii]<sparsitypatternsoft.size());
         for(int jj = 0; jj < jndices.size(); jj++)
         {

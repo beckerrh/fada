@@ -335,7 +335,7 @@ void VisitorIntegrationLoopLinearization::perBoundarySideBeforeIntegration(AlatE
 }
 
 /*--------------------------------------------------------------------------*/
-VisitorIntegrationLoopMatrix::VisitorIntegrationLoopMatrix(const LocalGlobal& localglobal, const VariableManager* variablemanager, Alat::SystemMatrixInterface* matrix, std::string couplingtype) : _localglobal(localglobal), _variablemanager(variablemanager), _couplingtype(couplingtype)
+VisitorIntegrationLoopMatrix::VisitorIntegrationLoopMatrix(const LocalGlobal& localglobal, const VariableManager* variablemanager, Alat::SystemMatrixInterface* matrix) : _localglobal(localglobal), _variablemanager(variablemanager)
 {
   _matrix = dynamic_cast<Alat::MatrixAllVariables*>( matrix );
   assert(_matrix);

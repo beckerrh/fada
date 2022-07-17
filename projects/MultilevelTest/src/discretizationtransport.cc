@@ -364,7 +364,7 @@ void DiscretizationTransport::constructJacobianMatrix(AlatEnums::residualstatus&
 /*--------------------------------------------------------------------------*/
 void DiscretizationTransport::constructJacobianMatrix(int level, AlatEnums::residualstatus& status, Alat::SystemMatrixInterface* As, const Alat::SystemVector* us, const Alat::SystemVector* uold, const Alat::SystemVector* uveryold) const
 {
-  Fada::VisitorIntegrationLoopMatrix visitor(_localglobal, _variablemanager, As, _couplingtype);
+  Fada::VisitorIntegrationLoopMatrix visitor(_localglobal, _variablemanager, As);
   _dofmanagerallvariables->setMeshLevel(level);
   Fada::LocalGlobal::VectorMap vectormap;
   _fillVectorMap( vectormap, FadaEnums::Matrix, us, uold, uveryold );

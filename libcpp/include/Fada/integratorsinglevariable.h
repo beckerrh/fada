@@ -39,7 +39,7 @@ public:
     IntegratorSingleVariable( const IntegratorSingleVariable& integratorsinglevariable);
     IntegratorSingleVariable& operator=( const IntegratorSingleVariable& integratorsinglevariable);
     std::string getName() const;
-    void basicInit(const Fada::SolverInterface* solver);
+    void basicInit(const Fada::DomainSolverInterface* solver);
     void initData(std::string bdrycond="");
     void setFemFunctions(const Fada::FemFunctionsMap& femfctmap) const;
     void setFemFunctions(const Fada::FemFunctionsMap& femfctmapL, const Fada::FemFunctionsMap& femfctmapR) const;

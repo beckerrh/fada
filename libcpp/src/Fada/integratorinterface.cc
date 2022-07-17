@@ -22,7 +22,7 @@ std::string IntegratorInterface::getInterfaceName() const
 
 /*--------------------------------------------------------------------------*/
 void IntegratorInterface::initData(){}
-void IntegratorInterface::basicInit(const Fada::SolverInterface* solver){}
+void IntegratorInterface::basicInit(const Fada::DomainSolverInterface* solver){}
 
 /*--------------------------------------------------------------------------*/
 Fada::VariableInterface* IntegratorInterface::constructPostProcessVariable(std::string name, const Fada::VariableManager& variablemanager) const

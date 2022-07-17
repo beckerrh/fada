@@ -236,7 +236,7 @@ const IntegratorInterface* IntegratorManager::getIntegrator(const std::string& i
 }
 
 /*---------------------------------------------------------*/
-void IntegratorManager::initIntegrators(const Fada::SolverInterface* solver)
+void IntegratorManager::initIntegrators(const Fada::DomainSolverInterface* solver)
 {
   // std::cerr << "IntegratorManager::initIntegrators() DEBUT="<<"\n";
   for(IntegratorManager::iterator_all p = begin_all(); p != end_all(); p++)

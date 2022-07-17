@@ -21,7 +21,7 @@ protected:
       Alat::DataFormatHandler dataformathandler;
       std::string             modelname;
       dataformathandler.insert("model", &modelname, "none");
-      Alat::FileScanner FS(dataformathandler, getParameterFile(), "ModelManager", 0);
+      Alat::FileScanner FS(dataformathandler, getParameterFile(), "Main", 0);
 
       if (modelname == "ConvectionDiffusionReaction")
       {

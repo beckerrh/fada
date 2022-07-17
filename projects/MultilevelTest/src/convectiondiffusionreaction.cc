@@ -1,5 +1,4 @@
-#include  "Integrators/identityintegrator.h"
-#include  "Integrators/laplacedgintegrator.h"
+#include  "Fada/integratormanager.h"
 #include  "Integrators/reactionintegrator.h"
 #include  "Integrators/righthandsideboundaryintegrator.h"
 #include  "Integrators/righthandsidedomainintegrator.h"
@@ -7,69 +6,87 @@
 #include  "transportintegrator.h"
 #include  "transportintegratorsupg.h"
 #include  "convectiondiffusionreaction.h"
+#include  "reaction.h"
 #include  <cassert>
 
 // using namespace FadaConvectionDiffusionReaction;
 
 /*--------------------------------------------------------------------------*/
-ConvectionDiffusionReaction::~ConvectionDiffusionReaction() {}
-ConvectionDiffusionReaction::ConvectionDiffusionReaction() : Model() {}
-ConvectionDiffusionReaction::ConvectionDiffusionReaction( const ConvectionDiffusionReaction& model) : Model(model)
+ConvectionDiffusionReaction::~ConvectionDiffusionReaction()
 {
 }
-ConvectionDiffusionReaction& ConvectionDiffusionReaction::operator=( const ConvectionDiffusionReaction& model)
+
+ConvectionDiffusionReaction::ConvectionDiffusionReaction() : Laplace()
 {
-  Model::operator=(model);
-  assert(0);
-  return *this;
 }
-Fada::ModelInterface* ConvectionDiffusionReaction::clone() const
+
+ConvectionDiffusionReaction::ConvectionDiffusionReaction(const ConvectionDiffusionReaction& model) : Laplace(model)
 {
-  return new ConvectionDiffusionReaction(*this);
 }
+
+ConvectionDiffusionReaction& ConvectionDiffusionReaction::operator=(const ConvectionDiffusionReaction& model)
+{
+   Laplace::operator=(model);
+   assert(0);
+   return(*this);
+}
+
+Fada::ModelInterface * ConvectionDiffusionReaction::clone() const
+{
+   return(new ConvectionDiffusionReaction(*this));
+}
+
 std::string ConvectionDiffusionReaction::getName() const
 {
-  return "ConvectionDiffusionReaction";
+   return("ConvectionDiffusionReaction");
 }
 
 /*--------------------------------------------------------*/
-void ConvectionDiffusionReaction::addStringsAndParameters(const Alat::ParameterFile* parameterfile, const FadaMesh::MeshInterface* mesh)
+void ConvectionDiffusionReaction::addStringsAndParameters(const Alat::ParameterFile *parameterfile, const FadaMesh::MeshInterface *mesh)
 {
-  Model::addStringsAndParameters(parameterfile, mesh);
-  addNumericalParameter("boundarypenalty", 10.0);
-  addNumericalParameter("interiorpenalty", 2.0);
-  addNumericalParameter("interiorderivativepenalty", 0.0);
-  addNumericalParameter("nitschesigma", 1.0);
-  addPhysicalParameter("viscosity", 1.0);
-  addPhysicalParameter("alpha", 0.0);
+   Laplace::addStringsAndParameters(parameterfile, mesh);
 }
 
 /*--------------------------------------------------------*/
 void ConvectionDiffusionReaction::defineParametersForProblemData()
 {
-  Fada::DataInterface* beta = getApplication()->defineData("beta");
-  Fada::DataInterface* reaction = getApplication()->defineData("reaction");
-  if(beta)
-  {
-    setData("beta") =  beta;
-  }
-  if( isDataDefined("beta") )
-  {
-    if( getProblemData("U", "RightHandSide") )
-    {
-      setDataForProblemData( "U", "RightHandSide", "beta", getData("beta") );
-    }
-    setDataForProblemData( "U", "Neumann", "beta", getData("beta") );
-  }
+   Laplace::defineParametersForProblemData();
 
-  setParameterForProblemDataIfDefined( "U", "RightHandSide", "alpha", getPhysicalParameter("alpha") );
-  setParameterForProblemDataIfDefined( "U", "RightHandSide", "diffusion", getPhysicalParameter("viscosity") );
-  setParameterForProblemDataIfDefined( "U", "Neumann", "diffusion", getPhysicalParameter("viscosity") );
+   // setData("reaction") = new Reaction;
+   // std::string reaction = getStringParameter("reaction");
+   // if(reaction == "simple")
+   // {
+   // }
+   // else if(reaction == "nonlinear")
+   // {
+   //   setData("reaction") = new NonlinearReaction;
+   // }
+   // else
+   // {
+   //   _error_string("unknown reaction", reaction);
+   // }
+
+
+   Fada::DataInterface *beta     = getApplication()->defineData("beta");
+   Fada::DataInterface *reaction = getApplication()->defineData("reaction");
+   setData("beta")     = beta;
+   setData("reaction") = reaction;
+   if (getProblemData("U", "RightHandSide"))
+   {
+      setDataForProblemData("U", "RightHandSide", "beta", beta);
+      setDataForProblemData("U", "RightHandSide", "reaction", getData("reaction"));
+   }
+   setDataForProblemData("U", "Neumann", "beta", beta);
 }
 
 /*--------------------------------------------------------*/
-void ConvectionDiffusionReaction::defineIntegrators(Fada::IntegratorManager* integratormanager) const
+void ConvectionDiffusionReaction::defineIntegrators(Fada::IntegratorManager *integratormanager) const
 {
-  Model::defineIntegrators(integratormanager);
-  assert(0);  
+   Laplace::defineIntegrators(integratormanager);
+
+
+
+   integratormanager->add("Reaction", new Integrators::ReactionIntegrator, "{U}", "{U}");
+   integratormanager->setDataIfDefined( "reaction", "reaction", getData("reaction") );
+   integratormanager->setData("Reaction", "reaction", getData("reaction"));
 }

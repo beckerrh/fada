@@ -1,7 +1,6 @@
 import os
 from python.meshloop import MeshLoop
 from python.solver import Solver
-# from python.meshinfo import MeshInfo
 from python.meshmanager import MeshManager
 from python.meshmanager import MeshInfo
 import python.osadd
@@ -30,17 +29,21 @@ def main(pathmanager, args):
     # Step 2: create Solver
     rundir = "RunTest"
     modelname = "Laplace"
+    modelname = "ConvectionDiffusionReaction"
     solver = Solver(args=args, rundir=rundir)
+
     solver.cpp_param.addBlock("Mesh")
     solver.cpp_param.parameters["Mesh"]["meshtype"] = "MultilevelTriangleMesh"
-    solver.cpp_param.addBlock("ModelManager")
-    solver.cpp_param.parameters["ModelManager"]["numberofmodels"] = 1
-    solver.cpp_param.parameters["ModelManager"]["model"] = modelname
+    solver.cpp_param.addBlock("Main")
+    solver.cpp_param.parameters["Main"]["model"] = modelname
+
     solver.cpp_param.addBlock(f"Model_{modelname}")
     solver.cpp_param.parameters[f"Model_{modelname}"]["matrixstorage"] = "U-U"
     solver.cpp_param.parameters[f"Model_{modelname}"]["applicationname"] = "ExactSolution"
     solver.cpp_param.parameters[f"Model_{modelname}"]["fem"] = "cg1"
+
     solver.cpp_param.addBlock(f"Application_{modelname}")
+    solver.cpp_param.parameters[f"Application_{modelname}"]["beta"] = "0|0|0"
     solver.cpp_param.parameters[f"Application_{modelname}"]["variablescales"] = "U:1.0"
     solver.cpp_param.parameters[f"Application_{modelname}"]["exactsolution"] = "linear"
     solver.cpp_param.parameters[f"Application_{modelname}"]["exactsolution"]="quadratic"

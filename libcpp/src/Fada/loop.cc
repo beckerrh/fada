@@ -1,6 +1,6 @@
 #include  "Alat/filescanner.h"
 #include  "Fada/loop.h"
-#include  "Fada/solver.h"
+#include  "Fada/domainsolver.h"
 #include  "Fada/solvermanager.h"
 #include  "Fada/timedata.h"
 #include  "Alat/userandsysteminfo.h"

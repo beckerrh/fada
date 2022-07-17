@@ -85,9 +85,9 @@ DomainSolver::~DomainSolver()
   }
 }
 
-DomainSolver::DomainSolver() : Solver(), DomainSolverInterface(), _model(NULL), _domainintegrationloop(NULL), _femmanagerR(NULL), _varscaleafterinitialize(false)
+DomainSolver::DomainSolver() : DomainSolverInterface(), _model(NULL), _domainintegrationloop(NULL), _femmanagerR(NULL), _varscaleafterinitialize(false)
 {}
-DomainSolver::DomainSolver( const DomainSolver& domainsolver) : Solver(domainsolver), DomainSolverInterface(domainsolver)
+DomainSolver::DomainSolver( const DomainSolver& domainsolver) : DomainSolverInterface(domainsolver)
 {
   assert(0);
 }
@@ -280,14 +280,18 @@ Fada::MultiLevelTransferSingleFemInterface* DomainSolver::newMultiLevelTransferS
 void DomainSolver::basicInit(Fada::ModelInterface* model, const FadaMesh::MeshInterface* mesh, const Alat::IoManager* io_manager, FadaEnums::looptype looptype, const Alat::ParameterFile* parameterfile)
 {
   _chronometer.start("basicInit");
-  Solver::basicInit(model, mesh, io_manager, looptype, parameterfile);
+  assert(mesh);
+  _model = model;
+  _mesh = mesh;
+  _io_manager = io_manager;
+  _looptype = looptype;
+  _parameterfile = parameterfile;
 
   Alat::DataFormatHandler dataformathandler;
   dataformathandler.insert("matrixstorage", &_matrixstorage, "full");
   dataformathandler.insert("mgtransfer", &_mgtransfer, "galerkin");
   dataformathandler.insert("linalg", &_linalg, "structured");
   Alat::FileScanner filescanner(dataformathandler, parameterfile, "Solver", 0);
-  _model = model;
 
   getBoundaryManager()->basicInit(parameterfile, model);
   getBoundaryManager()->checkBoundaryConditions( getVariableManager()->getUnknowns(), getMesh()->getBoundaryInfo() );
@@ -390,7 +394,7 @@ void DomainSolver::reInitForInterpolation(const FadaMesh::MeshInterface* mesh)
   {
     getDomainIntegrationLoop()->setDataVector( getVector(gdata) );
   }
-  Solver::reInitForInterpolation(mesh);
+  _refinedmesh = mesh;
   _chronometer.stop("Memory");
 }
 

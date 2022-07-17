@@ -1,6 +1,6 @@
 #include  "Fada/linearloop.h"
 #include  "Fada/model.h"
-#include  "Fada/solver.h"
+#include  "Fada/domainsolver.h"
 #include  "Fada/solvermanager.h"
 #include  <fstream>
 

@@ -61,7 +61,7 @@ protected:
     std::string getStringParameter(const std::string& parametername, std::string d) const;
     double getTime() const;
     bool tangentMode() const;
-    void _basicInit(const Fada::SolverInterface* solver);
+    void _basicInit(const Fada::DomainSolverInterface* solver);
     const FemInterface* fem(std::string ivar) const;
     const FemInterface* femL(std::string ivar) const;
     const FemInterface* femR(std::string ivar) const;
@@ -76,7 +76,7 @@ public:
     const Fada::VarInfoIntegrator* getVarInfo() const;
     const Fada::DomainSolverInterface* getSolver() const;
     const Fada::ModelInterface* getModel() const;
-    void basicInit(const Fada::SolverInterface* solver);
+    void basicInit(const Fada::DomainSolverInterface* solver);
     void defineVariables(const std::string& output, const std::string& input, const std::string& data);
 
     int getOrderForIntegrationFormula(int orderin, int orderout) const;

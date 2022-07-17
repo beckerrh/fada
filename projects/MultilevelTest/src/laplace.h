@@ -1,5 +1,5 @@
-// #ifndef __FadaLaplace_Model_h
-// #define __FadaLaplace_Model_h
+#ifndef __FadaLaplace_Model_h
+#define __FadaLaplace_Model_h
 
 #include  "model.h"
 
@@ -27,4 +27,4 @@ public:
 
 /*--------------------------------------------------------------------------*/
 
-// #endif
+#endif
